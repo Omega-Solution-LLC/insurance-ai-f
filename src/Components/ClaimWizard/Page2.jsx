@@ -138,7 +138,7 @@ export default function Page2() {
                     onClick={() =>
                       document.getElementById("file-upload").click()
                     }
-                    className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300">
+                    className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300">
                     Browse Files
                   </button>
                 </div>

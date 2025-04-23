@@ -5,7 +5,7 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [tailwindcss(), react()],
-  base: "https://insurance-ai.osllc.us",
+  base: "https://ai-insurance.osllc.us",
   resolve: {
     alias: {
       // eslint-disable-next-line no-undef

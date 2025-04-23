@@ -1,0 +1,134 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLogoutMutation } from "../../Redux/features/register/registerApi";
+import StepIndicator from "./StepIndicator";
+import Page1Content from "./Steps/Step1Content";
+import Page2Content from "./Steps/Step2Content";
+import Page3Content from "./Steps/Step3Content";
+import Page4Content from "./Steps/Step4Content";
+
+export default function ClaimWizard() {
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState({
+    description: "",
+    uploadedFiles: [],
+  });
+  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+
+  const handleTextChange = (e) => {
+    setFormData({
+      ...formData,
+      description: e.target.value,
+    });
+  };
+
+  const handleFileUpload = (files) => {
+    setFormData({
+      ...formData,
+      uploadedFiles: [...formData.uploadedFiles, ...files],
+    });
+  };
+
+  const removeFile = (index) => {
+    const newFiles = [...formData.uploadedFiles];
+    newFiles.splice(index, 1);
+    setFormData({
+      ...formData,
+      uploadedFiles: newFiles,
+    });
+  };
+
+  const nextStep = () => {
+    if (currentStep < 4) {
+      setCurrentStep(currentStep + 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const prevStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const goToStep = (step) => {
+    if (step >= 1 && step <= 4) {
+      setCurrentStep(step);
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.replace("/");
+  };
+
+  return (
+    <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10" />
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2" />
+
+      {/* Logout Button */}
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          onClick={handleLogout}
+          disabled={isLoggingOut}
+          className="flex items-center space-x-2 py-2 px-4 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-gray-700 hover:text-purple-600 border border-gray-200">
+          {isLoggingOut ? (
+            <span>Logging out...</span>
+          ) : (
+            <>
+              <span>Logout</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+            </>
+          )}
+        </button>
+      </div>
+
+      <div className="max-w-[600px] mx-auto">
+        <StepIndicator currentStep={currentStep} />
+      </div>
+
+      <div className="max-w-3xl mx-auto">
+        {currentStep === 1 && (
+          <Page1Content
+            formData={formData.description}
+            handleTextChange={handleTextChange}
+            handleContinue={nextStep}
+          />
+        )}
+
+        {currentStep === 2 && (
+          <Page2Content
+            uploadedFiles={formData.uploadedFiles}
+            handleFiles={handleFileUpload}
+            removeFile={removeFile}
+            handleContinue={nextStep}
+            handleBack={prevStep}
+          />
+        )}
+
+        {currentStep === 3 && (
+          <Page3Content handleContinue={nextStep} handleBack={prevStep} />
+        )}
+
+        {currentStep === 4 && <Page4Content handleBack={prevStep} />}
+      </div>
+    </div>
+  );
+}

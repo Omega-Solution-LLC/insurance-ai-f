@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite --port 3000 --host",
     "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "test": "node test.js"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.6.1",

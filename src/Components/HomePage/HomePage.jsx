@@ -10,7 +10,10 @@ export default function HomePage() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 rounded-full opacity-20 -mt-20 -mr-20" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-200 rounded-full opacity-30 -mb-20 -ml-10" />
+      <div className="absolute top-1/2 -left-36 w-64 h-64 bg-indigo-200 rounded-full opacity-20 transform -translate-y-1/2" />
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Background design elements */}
@@ -41,7 +44,7 @@ export default function HomePage() {
               onClick={() => navigate("/wizard/page1")}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
-              className="space-x-2 bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out">
+              className="space-x-2 bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out">
               <p className="font-medium flex items-center gap-2">
                 Start My Claim{" "}
                 <FiArrowRight
@@ -221,7 +224,7 @@ export default function HomePage() {
           </p>
           <button
             onClick={() => navigate("/wizard/page1")}
-            className="bg-gradient-to-r from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out font-medium">
+            className="bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out font-medium">
             Get Started Now
           </button>
         </div>

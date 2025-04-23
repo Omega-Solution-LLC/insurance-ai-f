@@ -10,6 +10,7 @@ import Page4Content from "./Steps/Step4Content";
 export default function ClaimWizard() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+
   const [formData, setFormData] = useState({
     description: "",
     uploadedFiles: [],

@@ -47,16 +47,16 @@ export default function Page2() {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
+    <div className="h-screen p-4 md:p-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 rounded-full opacity-20 -mt-20 -mr-20" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-200 rounded-full opacity-30 -mb-20 -ml-10" />
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-200 rounded-full opacity-20 transform -translate-y-1/2" />
 
-      <div className="max-w-[600px] mx-auto mt-5">
+      <div className="max-w-[600px] mx-auto ">
         <StepIndicator currentStep={2} />
       </div>
       <div className="max-w-3xl mx-auto">
-        <div className="rounded-3xl  p-6 md:p-8 mb-12">
+        <div className="rounded-3xl  p-6  mb-12">
           <div className="pt-3">
             <h1 className="text-center text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Upload Your Policy
@@ -138,7 +138,7 @@ export default function Page2() {
                     onClick={() =>
                       document.getElementById("file-upload").click()
                     }
-                    className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white px-6 py-3 rounded-lg font-medium shadow-md hover:shadow-lg transition-all duration-300">
+                    className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300">
                     Browse Files
                   </button>
                 </div>

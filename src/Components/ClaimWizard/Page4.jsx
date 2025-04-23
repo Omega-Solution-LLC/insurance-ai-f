@@ -17,11 +17,11 @@ export default function Page4() {
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 rounded-full opacity-20 -mt-20 -mr-20" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-200 rounded-full opacity-30 -mb-20 -ml-10" />
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-200 rounded-full opacity-20 transform -translate-y-1/2" />
-      <div className="max-w-[600px] mx-auto mt-5">
+      <div className="max-w-[600px] mx-auto">
         <StepIndicator currentStep={4} />
       </div>
       <div className="max-w-3xl mx-auto">
-        <div className="rounded-3xl  p-6 md:p-10 mb-12">
+        <div className="rounded-3xl  p-6  mb-12">
           <div className="pt-3">
             <h2 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Your Claim Letter

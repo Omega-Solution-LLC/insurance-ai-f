@@ -12,19 +12,4 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src/"),
     },
   },
-  // build: {
-  //   rollupOptions: {
-  //     output: {
-  //       manualChunks(id) {
-  //         console.log(id);
-  //         if (id.includes("node_modules")) {
-  //           if (id.includes("antd") || id.includes("@ant-design")) {
-  //             return "vendor-large";
-  //           }
-  //           return "vendor";
-  //         }
-  //       },
-  //     },
-  //   },
-  // },
 });

@@ -57,7 +57,10 @@ export const registerApi = apiSlice.injectEndpoints({
           localStorage.setItem("role", data.role?.name);
           toastHandler("Registration successful!", "success");
         } catch (err) {
-          toastHandler("Registration failed. Please try again.", "warning");
+          toastHandler(
+            err?.error?.data?.error || "Something went wrong, Please try again",
+            "warning"
+          );
         }
       },
       invalidatesTags: ["Logins", "LoginsAll", "Lead"],

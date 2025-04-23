@@ -56,7 +56,10 @@ export const loginApi = apiSlice.injectEndpoints({
           localStorage.setItem("role", data.role?.name);
           toastHandler("Login added successfully", "success");
         } catch (err) {
-          toastHandler("Something went wrong, Please try again", "warning");
+          toastHandler(
+            err?.error?.data?.error || "Something went wrong, Please try again",
+            "warning"
+          );
         }
       },
       invalidatesTags: ["Logins", "LoginsAll", "Lead"],

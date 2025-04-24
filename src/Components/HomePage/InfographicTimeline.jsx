@@ -16,7 +16,7 @@ export default function InfographicTimeline() {
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto px-4">
+    <div className="max-w-7xl mx-auto px-4">
       {isLargeScreen ? (
         // Desktop/tablet version - cards with perfect path alignment
         <div className="relative h-120" style={{ height: "600px" }}>
@@ -35,7 +35,7 @@ export default function InfographicTimeline() {
             </div>
 
             {/* Content Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-50">
+            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-50 hover:scale-105 transition-transform duration-500">
               <div className="inline-block px-3 py-1 bg-indigo-50 rounded-full mb-3">
                 <span className="text-indigo-600 font-medium text-sm">
                   STEP 01
@@ -63,7 +63,7 @@ export default function InfographicTimeline() {
             </div>
 
             {/* Content Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-50">
+            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-50 hover:scale-105 transition-transform duration-500">
               <div className="inline-block px-3 py-1 bg-violet-50 rounded-full mb-3">
                 <span className="text-violet-600 font-medium text-sm">
                   STEP 02
@@ -91,7 +91,7 @@ export default function InfographicTimeline() {
             </div>
 
             {/* Content Card */}
-            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-50">
+            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-50 hover:scale-105 transition-transform duration-500">
               <div className="inline-block px-3 py-1 bg-blue-50 rounded-full mb-3">
                 <span className="text-blue-600 font-medium text-sm">
                   STEP 03
@@ -105,27 +105,6 @@ export default function InfographicTimeline() {
                 professional claim letter in minutes.
               </p>
             </div>
-          </div>
-
-          {/* Paper airplane animation */}
-          <div className="absolute top-36 left-24">
-            <svg width="40" height="40" viewBox="0 0 40 40">
-              <path
-                d="M0,0 L30,15 L0,30 L7,15 Z"
-                fill="url(#paperAirplaneGradient)"
-              />
-              <defs>
-                <linearGradient
-                  id="paperAirplaneGradient"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="100%">
-                  <stop offset="0%" stopColor="#6366f1" />
-                  <stop offset="100%" stopColor="#8b5cf6" />
-                </linearGradient>
-              </defs>
-            </svg>
           </div>
 
           {/* SVG paths connecting the steps */}
@@ -160,8 +139,8 @@ export default function InfographicTimeline() {
               d="M170,10 C270,-50 280,200 400,280"
               fill="none"
               stroke="url(#pathGradient1)"
-              strokeWidth="3"
-              strokeDasharray="30,12"
+              strokeWidth="4"
+              strokeDasharray="10,12"
               strokeLinecap="round"
             />
 
@@ -170,8 +149,8 @@ export default function InfographicTimeline() {
               d="M450,280 C550,400 650,100 750,150"
               fill="none"
               stroke="url(#pathGradient2)"
-              strokeWidth="3"
-              strokeDasharray="30,12"
+              strokeWidth="4"
+              strokeDasharray="10,12"
               strokeLinecap="round"
             />
           </svg>
@@ -190,7 +169,6 @@ export default function InfographicTimeline() {
               boxShadow: "0 0 10px rgba(99, 102, 241, 0.2)",
             }}></div>
 
-          {/* Paper airplane at start */}
           <div className="absolute left-2 top-0">
             <svg width="32" height="32" viewBox="0 0 32 32">
               <path

@@ -52,6 +52,7 @@ export const loginApi = apiSlice.injectEndpoints({
           localStorage.setItem("role", data.role);
           localStorage.setItem("user", nameRender(data));
           localStorage.setItem("id", data.id);
+          localStorage.setItem("roleId", data.roleId);
           localStorage.setItem("isLogged", true);
           localStorage.setItem("role", data.role?.name);
           toastHandler("Login added successfully", "success");

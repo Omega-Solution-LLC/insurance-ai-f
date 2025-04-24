@@ -5,6 +5,7 @@ import Login from "./Components/Authentication/Login";
 import Register from "./Components/Authentication/Register";
 import ClaimWizard from "./Components/ClaimWizard/ClaimWizard";
 import HomePage from "./Components/HomePage/HomePage";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute.jsx";
 
 function App() {
   return (
@@ -12,9 +13,17 @@ function App() {
       <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<HomePage />} />
+
+        <Route
+          path="/wizard"
+          element={
+            <PrivateRoute>
+              <ClaimWizard />
+            </PrivateRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/wizard" element={<ClaimWizard />} />
       </Routes>
     </BrowserRouter>
   );

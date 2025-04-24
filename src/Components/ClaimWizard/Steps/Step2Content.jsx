@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useAddLoginMutation } from "../../../Redux/features/login/loginApi";
 import { FileTextIcon } from "../../Icons/Icons";
 
 const Step2Content = ({
@@ -7,8 +8,11 @@ const Step2Content = ({
   removeFile,
   handleContinue,
   handleBack,
+  formData,
 }) => {
   const [dragActive, setDragActive] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fileSelected, setFileSelected] = useState(null);
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -32,6 +36,8 @@ const Step2Content = ({
           name: file.name,
           size: (file.size / 1024).toFixed(1),
           type: file.type,
+          // Add a unique identifier to each file for drag and drop as well
+          id: Date.now() + "-" + Math.random().toString(36).substr(2, 9),
         }))
       );
     }
@@ -39,13 +45,33 @@ const Step2Content = ({
 
   const handleFileInput = (e) => {
     if (e.target.files && e.target.files[0]) {
+      setFileSelected(e.target.files[0]);
       handleFiles(
         Array.from(e.target.files).map((file) => ({
           name: file.name,
           size: (file.size / 1024).toFixed(1),
           type: file.type,
+          // Add a unique identifier to each file
+          id: Date.now() + "-" + Math.random().toString(36).substr(2, 9),
         }))
       );
+    }
+  };
+
+  const [Login] = useAddLoginMutation();
+  const handleSubmit = async () => {
+    try {
+      setIsSubmitting(true);
+      const formDataToSubmit = new FormData();
+      formDataToSubmit.append("description", formData?.description || "");
+      formDataToSubmit.append("file[]", fileSelected);
+
+      const response = await Login(formDataToSubmit);
+    } catch (error) {
+      console.error("Error submitting files:", error);
+      // Handle error
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -218,22 +244,27 @@ const Step2Content = ({
             Back
           </button>
           <button
-            onClick={handleContinue}
-            className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
-            Continue
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 ml-2 transition-transform duration-300 transform group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M14 5l7 7m0 0l-7 7m7-7H3"
-              />
-            </svg>
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className={`bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group ${
+              isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+            }`}>
+            {isSubmitting ? "Submitting..." : "Continue"}
+            {!isSubmitting && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 ml-2 transition-transform duration-300 transform group-hover:translate-x-1"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M14 5l7 7m0 0l-7 7m7-7H3"
+                />
+              </svg>
+            )}
           </button>
         </div>
       </div>

@@ -15,6 +15,8 @@ export default function ClaimWizard() {
     description: "",
     uploadedFiles: [],
   });
+
+  const [aiData, setAiData] = useState({});
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
   const handleTextChange = (e) => {
@@ -38,6 +40,12 @@ export default function ClaimWizard() {
       ...formData,
       uploadedFiles: newFiles,
     });
+
+    // Reset the file input to allow the same file to be selected again
+    const fileInput = document.getElementById("file-upload");
+    if (fileInput) {
+      fileInput.value = "";
+    }
   };
 
   const nextStep = () => {
@@ -121,14 +129,22 @@ export default function ClaimWizard() {
             removeFile={removeFile}
             handleContinue={nextStep}
             handleBack={prevStep}
+            formData={formData}
+            setAiData={setAiData}
           />
         )}
 
         {currentStep === 3 && (
-          <Page3Content handleContinue={nextStep} handleBack={prevStep} />
+          <Page3Content
+            handleContinue={nextStep}
+            handleBack={prevStep}
+            aiData={aiData}
+          />
         )}
 
-        {currentStep === 4 && <Page4Content handleBack={prevStep} />}
+        {currentStep === 4 && (
+          <Page4Content handleBack={prevStep} aiData={aiData} />
+        )}
       </div>
     </div>
   );

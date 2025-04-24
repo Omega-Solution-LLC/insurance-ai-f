@@ -8,7 +8,7 @@ import InfographicTimeline from "./InfographicTimeline";
 export default function HomePage() {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
-
+  const isLogged = localStorage.getItem("isLogged");
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-200 rounded-full opacity-20 -mt-20 -mr-20" />
@@ -41,7 +41,7 @@ export default function HomePage() {
             </p>
 
             <button
-              onClick={() => navigate("/register")}
+              onClick={() => navigate(`${isLogged ? "/wizard" : "/login"}`)}
               onMouseEnter={() => setIsHovered(true)}
               onMouseLeave={() => setIsHovered(false)}
               className="space-x-2 bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out">

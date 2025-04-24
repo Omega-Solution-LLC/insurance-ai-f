@@ -9,53 +9,46 @@ const nameRender = (data) => {
     : data.email || "User";
 };
 
-export const loginApi = apiSlice.injectEndpoints({
+export const documentsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getLogin: builder.query({
+    getDocument: builder.query({
       query: (id) => ({
-        url: `customer/login/${id}`,
+        url: `insurance/${id}`,
       }),
-      providesTags: ["Login"],
+      providesTags: ["Documents"],
     }),
-    getLogins: builder.query({
+    getDocuments: builder.query({
       query: (id) => ({
-        url: `customer/login?query=all`,
+        url: `insurance?query=all`,
       }),
-      providesTags: ["LoginAll"],
+      providesTags: ["DocumentsAll"],
     }),
-    getLoginsPaginated: builder.query({
+    getDocumentsPaginated: builder.query({
       query: (arg) => {
         const query = queryGenerator(arg, false);
         return {
-          url: `customer/login?${query}`,
+          url: `insurance?${query}`,
         };
       },
-      providesTags: ["Logins"],
+      providesTags: ["Documents"],
     }),
 
-    addLogin: builder.mutation({
+    addDocument: builder.mutation({
       query: (values) => ({
         method: "POST",
         headers: {
           Accept: "application/json",
-          "Content-Type": "application/json;charset=UTF-8",
+          // "Content-Type": "application/json;charset=UTF-8",
         },
-        url: `customer/login`,
+        url: `insurance`,
         body: values,
       }),
 
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          const { data } = await queryFulfilled;
-          localStorage.setItem("access-token", data.token);
-          localStorage.setItem("role", data.role);
-          localStorage.setItem("user", nameRender(data));
-          localStorage.setItem("id", data.id);
-          localStorage.setItem("roleId", data.roleId);
-          localStorage.setItem("isLogged", true);
-          localStorage.setItem("role", data.role?.name);
-          toastHandler("Login added successfully", "success");
+
+          toastHandler("Document added successfully", "success");
         } catch (err) {
           toastHandler(
             err?.error?.data?.error || "Something went wrong, Please try again",
@@ -63,12 +56,12 @@ export const loginApi = apiSlice.injectEndpoints({
           );
         }
       },
-      invalidatesTags: ["Logins", "LoginsAll", "Lead"],
+      invalidatesTags: ["Documents", "DocumentsAll", "Lead"],
     }),
 
-    deleteLogin: builder.mutation({
+    deleteDocument: builder.mutation({
       query: (id) => ({
-        url: `customer/login/${id}`,
+        url: `insurance/${id}`,
         method: "DELETE",
         headers: {
           Accept: "application/json",
@@ -78,20 +71,20 @@ export const loginApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toastHandler(`Login deleted Successfully`, "success");
+          toastHandler(`Document deleted Successfully`, "success");
         } catch (err) {
           toastHandler("Something went wrong, Please try again", "warning");
         }
       },
-      invalidatesTags: ["Logins", "LoginsAll", "Login", "Lead"],
+      invalidatesTags: ["Documents", "DocumentsAll", "Document", "Lead"],
     }),
   }),
 });
 
 export const {
-  useAddLoginMutation,
-  useDeleteLoginMutation,
-  useGetLoginQuery,
-  useGetLoginsQuery,
-  useGetLoginsPaginatedQuery,
-} = loginApi;
+  useAddDocumentMutation,
+  useDeleteDocumentMutation,
+  useGetDocumentQuery,
+  useGetDocumentsQuery,
+  useGetDocumentsPaginatedQuery,
+} = documentsApi;

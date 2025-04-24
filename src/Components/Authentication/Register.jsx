@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAddRegisterMutation } from "../../Redux/features/register/registerApi";
 
 const Register = () => {
@@ -15,7 +15,16 @@ const Register = () => {
   const [formErrors, setFormErrors] = useState({});
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/wizard";
   const [addRegister, { isLoading }] = useAddRegisterMutation();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    if (localStorage.getItem("isLogged")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,7 +81,8 @@ const Register = () => {
       // const { confirmPassword, ...dataToSubmit } = registerData;
       const resp = await addRegister(registerData);
       if (resp?.data) {
-        navigate("/wizard");
+        localStorage.setItem("isLogged", "true");
+        navigate(from, { replace: true });
       }
     } catch (error) {
       console.error("Registration failed:", error);

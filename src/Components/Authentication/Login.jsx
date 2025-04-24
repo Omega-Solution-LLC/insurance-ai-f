@@ -63,7 +63,6 @@ const Login = () => {
 
     try {
       const resp = await addLogin(loginData);
-      console.log("Login response:", resp);
       if (resp?.data) {
         localStorage.setItem("isLogged", "true");
         navigate(from, { replace: true });

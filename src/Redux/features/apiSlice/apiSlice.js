@@ -54,6 +54,10 @@ export const apiSlice = createApi({
     "Logins",
     "LoginsAll",
     "Login",
+    "Documents",
+    "DocumentsAll",
+    "Document",
+    "Lead",
   ],
   endpoints: () => ({
     // Define your endpoints here

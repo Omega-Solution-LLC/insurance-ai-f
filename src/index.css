@@ -22,6 +22,47 @@
   padding: 0 !important;
 }
 
+/* QuillEditor custom styles */
+.quill-editor-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.quill-editor-container .p-editor-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.quill-editor-container .ql-container {
+  height: auto !important;
+  min-height: 250px;
+  flex: 1;
+  font-size: 16px;
+}
+
+.quill-editor-container .ql-editor {
+  min-height: 250px;
+  height: 100%;
+  font-family: "Arial", sans-serif;
+  line-height: 1.6;
+}
+
+/* Responsive styling for the editor */
+@media (min-width: 768px) {
+  .quill-editor-container .ql-container,
+  .quill-editor-container .ql-editor {
+    min-height: 350px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .quill-editor-container .ql-container,
+  .quill-editor-container .ql-editor {
+    min-height: 450px;
+  }
+}
+
 /* 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

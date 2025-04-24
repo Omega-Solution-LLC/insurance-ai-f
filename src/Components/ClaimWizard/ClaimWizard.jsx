@@ -38,6 +38,12 @@ export default function ClaimWizard() {
       ...formData,
       uploadedFiles: newFiles,
     });
+
+    // Reset the file input to allow the same file to be selected again
+    const fileInput = document.getElementById("file-upload");
+    if (fileInput) {
+      fileInput.value = "";
+    }
   };
 
   const nextStep = () => {
@@ -121,6 +127,7 @@ export default function ClaimWizard() {
             removeFile={removeFile}
             handleContinue={nextStep}
             handleBack={prevStep}
+            formData={formData}
           />
         )}
 

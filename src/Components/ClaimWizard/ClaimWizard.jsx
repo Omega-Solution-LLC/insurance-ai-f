@@ -15,6 +15,8 @@ export default function ClaimWizard() {
     description: "",
     uploadedFiles: [],
   });
+
+  const [aiData, setAiData] = useState({});
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
   const handleTextChange = (e) => {
@@ -128,14 +130,21 @@ export default function ClaimWizard() {
             handleContinue={nextStep}
             handleBack={prevStep}
             formData={formData}
+            setAiData={setAiData}
           />
         )}
 
         {currentStep === 3 && (
-          <Page3Content handleContinue={nextStep} handleBack={prevStep} />
+          <Page3Content
+            handleContinue={nextStep}
+            handleBack={prevStep}
+            aiData={aiData}
+          />
         )}
 
-        {currentStep === 4 && <Page4Content handleBack={prevStep} />}
+        {currentStep === 4 && (
+          <Page4Content handleBack={prevStep} aiData={aiData} />
+        )}
       </div>
     </div>
   );

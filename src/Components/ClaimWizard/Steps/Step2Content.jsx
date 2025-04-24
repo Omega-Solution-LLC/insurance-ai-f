@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAddLoginMutation } from "../../../Redux/features/login/loginApi";
+import { useAddDocumentMutation } from "../../../Redux/features/documents/documentsApi";
 import { FileTextIcon } from "../../Icons/Icons";
 
 const Step2Content = ({
@@ -9,10 +9,12 @@ const Step2Content = ({
   handleContinue,
   handleBack,
   formData,
+  setAiData,
 }) => {
   const [dragActive, setDragActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fileSelected, setFileSelected] = useState(null);
+  const [fileSelected, setFileSelected] = useState([]);
+  const customerId = localStorage.getItem("id");
 
   const handleDrag = (e) => {
     e.preventDefault();
@@ -45,7 +47,7 @@ const Step2Content = ({
 
   const handleFileInput = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setFileSelected(e.target.files[0]);
+      setFileSelected((prev) => [...prev, e.target.files[0]]);
       handleFiles(
         Array.from(e.target.files).map((file) => ({
           name: file.name,
@@ -58,15 +60,22 @@ const Step2Content = ({
     }
   };
 
-  const [Login] = useAddLoginMutation();
+  const [addDocuments, { isLoading }] = useAddDocumentMutation();
   const handleSubmit = async () => {
     try {
       setIsSubmitting(true);
       const formDataToSubmit = new FormData();
-      formDataToSubmit.append("description", formData?.description || "");
-      formDataToSubmit.append("file[]", fileSelected);
+      formDataToSubmit.append("situation", formData?.description || "");
+      formDataToSubmit.append("customerId", customerId);
+      fileSelected.forEach((file) => {
+        formDataToSubmit.append("files[]", file);
+      });
 
-      const response = await Login(formDataToSubmit);
+      const response = await addDocuments(formDataToSubmit);
+      if (response?.data) {
+        handleContinue();
+      }
+      setAiData(response?.data);
     } catch (error) {
       console.error("Error submitting files:", error);
       // Handle error

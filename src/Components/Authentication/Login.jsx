@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAddLoginMutation } from "../../Redux/features/login/loginApi";
 
 const Login = () => {
@@ -12,7 +12,16 @@ const Login = () => {
   const [formErrors, setFormErrors] = useState({});
 
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/wizard";
   const [addLogin, { isLoading }] = useAddLoginMutation();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    if (localStorage.getItem("isLogged")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,7 +65,8 @@ const Login = () => {
       const resp = await addLogin(loginData);
       console.log("Login response:", resp);
       if (resp?.data) {
-        navigate("/wizard");
+        localStorage.setItem("isLogged", "true");
+        navigate(from, { replace: true });
       }
     } catch (error) {
       console.error("Login failed:", error);

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { FiCheck, FiMail, FiPrinter } from "react-icons/fi";
 import { RiDraftLine } from "react-icons/ri";
+import QuillEditor from "./QuillEditor";
 
-const Step4Content = ({ handleBack }) => {
+const Step4Content = ({ handleBack, aiData }) => {
   const [activeAction, setActiveAction] = useState(null);
+  const [text, setText] = useState("");
 
   const handleAction = (action) => {
     setActiveAction(action);
@@ -23,88 +25,13 @@ const Step4Content = ({ handleBack }) => {
       </div>
       <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100">
         <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-8 rounded-xl border border-gray-200 mb-8 shadow-inner">
-          <div className="bg-white rounded-lg p-8 shadow-sm border border-gray-100">
-            <div className="space-y-6">
-              <div className="border-b border-gray-100 pb-4">
-                <p className="text-gray-500 text-sm mb-1">To:</p>
-                <p className="font-medium text-gray-800">
-                  Claims Department - State Farm Insurance
-                </p>
-              </div>
-
-              <div className="border-b border-gray-100 pb-4">
-                <p className="text-gray-500 text-sm mb-1">Subject:</p>
-                <p className="font-medium text-gray-800">
-                  Claim for Auto Accident on April 10, 2025 - Policy #ABC123
-                </p>
-              </div>
-
-              <div className="prose prose-gray max-w-none">
-                <p className="mb-4">Dear Claims Representative,</p>
-
-                <p className="mb-4">
-                  I am writing to file a claim regarding an auto accident that
-                  occurred on April 10, 2025, at approximately 2:30 PM at the
-                  intersection of Main Street and Oak Avenue. I was stopped at a
-                  red light when my vehicle was struck from behind by another
-                  driver.
-                </p>
-
-                <p className="mb-4">
-                  I have filed a police report (Report #2025-0410-287) with the
-                  [City] Police Department, and the responding officer
-                  determined that the other driver was at fault. The other
-                  driver has been identified as John Doe, with insurance through
-                  Acme Insurance (Policy #XYZ789).
-                </p>
-
-                <p className="mb-4">
-                  Based on my policy coverage, I understand that I have:
-                </p>
-                <ul className="mb-4 space-y-2 list-inside pl-0">
-                  {[
-                    "Collision coverage with a $500 deductible",
-                    "Rental car reimbursement up to $30/day for 30 days",
-                    "Medical payments coverage of $5,000 per person",
-                  ].map((item, index) => (
-                    <li key={index} className="flex items-start space-x-2">
-                      <span className="inline-block rounded-full bg-green-100 p-1 text-green-600 mt-0.5 flex-shrink-0">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-3 w-3"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
-                      </span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <p className="mb-4">
-                  Please advise on next steps for processing this claim. I can
-                  be reached at [Your Phone Number] or [Your Email] for any
-                  additional information you may require.
-                </p>
-
-                <p className="mb-6">
-                  Thank you for your prompt attention to this matter.
-                </p>
-
-                <div className="border-t border-gray-100 pt-4 mt-6">
-                  <p className="mb-1">Sincerely,</p>
-                  <p className="font-medium">[Your Full Name]</p>
-                  <p className="text-gray-600">Policy #ABC123</p>
-                </div>
-              </div>
-            </div>
+          <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 min-h-[400px] md:min-h-[500px]">
+            <QuillEditor
+              text={aiData?.applicationTemplate}
+              setText={setText}
+              minHeight="350px"
+              className="h-full"
+            />
           </div>
         </div>
 

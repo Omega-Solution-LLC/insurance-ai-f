@@ -1,6 +1,6 @@
 import React from "react";
 
-const Step3Content = ({ handleContinue, handleBack }) => {
+const Step3Content = ({ handleContinue, handleBack, aiData }) => {
   return (
     <div className="rounded-3xl p-6 mb-12">
       <div className="pt-3">
@@ -34,17 +34,20 @@ const Step3Content = ({ handleContinue, handleBack }) => {
             </span>
             Out-of-Pocket Estimate
           </h3>
+
           <div className="space-y-4 bg-gradient-to-r from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200">
             <div className="flex justify-between items-center pb-3 border-b border-gray-200">
               <span className="text-gray-700">Deductible</span>
               <span className="font-semibold text-gray-900 bg-white px-4 py-1 rounded-full shadow-sm">
-                $500
+                ${aiData?.insuranceOutOfPocketEstimate?.[0]?.deductible || 0}
               </span>
             </div>
             <div className="flex justify-between items-center py-3 border-b border-gray-200">
               <span className="text-gray-700">Expected Coverage</span>
               <span className="font-semibold text-gray-900 bg-white px-4 py-1 rounded-full shadow-sm">
-                80%
+                {aiData?.insuranceOutOfPocketEstimate?.[0]?.expectedCoverage ||
+                  0}
+                %
               </span>
             </div>
             <div className="flex justify-between items-center bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-100 mt-2">
@@ -52,7 +55,9 @@ const Step3Content = ({ handleContinue, handleBack }) => {
                 Estimated Responsibility
               </span>
               <span className="font-bold text-emerald-700 bg-white px-4 py-1 rounded-full shadow-sm">
-                $700 - $1,200
+                $
+                {aiData?.insuranceOutOfPocketEstimate?.[0]
+                  ?.estimateResponsibility || 0}
               </span>
             </div>
           </div>
@@ -79,47 +84,31 @@ const Step3Content = ({ handleContinue, handleBack }) => {
             Key Policy Coverage
           </h3>
           <div className="space-y-5">
-            <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-medium text-gray-800">
-                  Collision Coverage
-                </span>
-                <span className="text-green-600 bg-green-50 px-3 py-1 rounded-full text-sm font-medium">
-                  Included
-                </span>
+            {aiData?.insuranceKeyPolicyCoverage?.map((coverage, index) => (
+              <div
+                key={coverage.id}
+                className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="font-medium text-gray-800">
+                    {coverage.title}
+                  </span>
+                  <span className="text-green-600 bg-green-50 px-3 py-1 rounded-full text-sm font-medium">
+                    {coverage.coverageAmount
+                      ? `$${coverage.coverageAmount}`
+                      : "Included"}
+                  </span>
+                </div>
+                <p className="text-sm text-gray-600">{coverage.description}</p>
               </div>
-              <p className="text-sm text-gray-600">
-                Covers damage to your vehicle in an accident regardless of fault
-              </p>
-            </div>
-            <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-medium text-gray-800">
-                  Rental Car Coverage
-                </span>
-                <span className="text-green-600 bg-green-50 px-3 py-1 rounded-full text-sm font-medium">
-                  Included
-                </span>
+            ))}
+            {(!aiData?.insuranceKeyPolicyCoverage ||
+              aiData.insuranceKeyPolicyCoverage.length === 0) && (
+              <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                <p className="text-sm text-gray-600">
+                  No policy coverage data available
+                </p>
               </div>
-              <p className="text-sm text-gray-600">
-                Up to $30/day for 30 days maximum while your vehicle is being
-                repaired
-              </p>
-            </div>
-            <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-300">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-medium text-gray-800">
-                  Medical Payments
-                </span>
-                <span className="text-green-600 bg-green-50 px-3 py-1 rounded-full text-sm font-medium">
-                  $5,000
-                </span>
-              </div>
-              <p className="text-sm text-gray-600">
-                Per person for accident-related medical expenses, regardless of
-                fault
-              </p>
-            </div>
+            )}
           </div>
         </div>
 
@@ -144,70 +133,55 @@ const Step3Content = ({ handleContinue, handleBack }) => {
             AI Advice
           </h3>
           <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-100 space-y-4">
-            <div className="flex gap-4 items-start">
-              <div className="bg-white p-2 rounded-full shadow-sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-purple-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
+            {aiData?.insuranceAiAdvice?.map((advice, index) => (
+              <div key={advice.id} className="flex gap-4 items-start">
+                <div className="bg-white p-2 rounded-full shadow-sm">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-purple-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d={
+                        index === 0
+                          ? "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                          : index === 1
+                          ? "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                          : "M13 10V3L4 14h7v7l9-11h-7z"
+                      }
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-700">{advice.advice}</p>
               </div>
-              <p className="text-gray-700">
-                Based on your situation, you should file a third-party claim
-                with the at-fault driver's insurance company since they hit you
-                from behind.
-              </p>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className="bg-white p-2 rounded-full shadow-sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-purple-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                  />
-                </svg>
+            ))}
+            {(!aiData?.insuranceAiAdvice ||
+              aiData.insuranceAiAdvice.length === 0) && (
+              <div className="flex gap-4 items-start">
+                <div className="bg-white p-2 rounded-full shadow-sm">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 text-purple-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 10V3L4 14h7v7l9-11h-7z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-700">
+                  No AI advice available at this time.
+                </p>
               </div>
-              <p className="text-gray-700">
-                Be sure to document all expenses related to the accident,
-                including medical bills and transportation costs.
-              </p>
-            </div>
-            <div className="flex gap-4 items-start">
-              <div className="bg-white p-2 rounded-full shadow-sm">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5 text-purple-500"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <p className="text-gray-700">
-                Your policy includes rental car coverage, which you should take
-                advantage of while your car is being repaired.
-              </p>
-            </div>
+            )}
           </div>
         </div>
       </div>

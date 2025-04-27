@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAddLoginMutation } from "../../Redux/features/login/loginApi";
 
 const Login = () => {
@@ -65,7 +65,8 @@ const Login = () => {
       const resp = await addLogin(loginData);
       if (resp?.data) {
         localStorage.setItem("isLogged", "true");
-        navigate(from, { replace: true });
+        // navigate(from, { replace: true });
+        navigate("/profile");
       }
     } catch (error) {
       console.error("Login failed:", error);
@@ -73,7 +74,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 px-4 py-6 font-sans">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 px-4 py-6 font-sans pt-20">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl w-full max-w-xl p-8 md:p-10 transition-all duration-300 hover:shadow-2xl">
         <div className="text-center mb-10">
           <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 mb-3">
@@ -240,11 +241,11 @@ const Login = () => {
         <div className="mt-8 text-center">
           <p className="text-gray-600 text-sm">
             Don't have an account?{" "}
-            <a
-              href="/register"
+            <Link
+              to="/register"
               className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition-colors">
               Create account
-            </a>
+            </Link>
           </p>
         </div>
 

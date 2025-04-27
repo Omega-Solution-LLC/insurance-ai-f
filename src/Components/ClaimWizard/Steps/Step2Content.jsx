@@ -66,7 +66,10 @@ const Step2Content = ({
       setIsSubmitting(true);
       const formDataToSubmit = new FormData();
       formDataToSubmit.append("situation", formData?.description || "");
-      formDataToSubmit.append("customerId", customerId);
+      {
+        customerId && formDataToSubmit.append("customerId", customerId);
+      }
+
       fileSelected.forEach((file) => {
         formDataToSubmit.append("files[]", file);
       });

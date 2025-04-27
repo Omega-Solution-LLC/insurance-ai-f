@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../../Redux/features/register/registerApi";
 import StepIndicator from "./StepIndicator";
@@ -17,6 +17,11 @@ export default function ClaimWizard() {
   });
 
   const [aiData, setAiData] = useState({});
+  useEffect(() => {
+    if (aiData?.id) {
+      localStorage.setItem("applicationData", aiData.id);
+    }
+  }, [aiData?.id]);
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
   const handleTextChange = (e) => {
@@ -69,47 +74,14 @@ export default function ClaimWizard() {
     }
   };
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.replace("/");
-  };
-
+  console.log("AI Data:", aiData?.id);
   return (
     <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />
       <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10" />
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2" />
 
-      {/* Logout Button */}
-      <div className="absolute top-4 right-4 z-10">
-        <button
-          onClick={handleLogout}
-          disabled={isLoggingOut}
-          className="flex items-center space-x-2 py-2 px-4 bg-white/80 hover:bg-white backdrop-blur-sm rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-gray-700 hover:text-purple-600 border border-gray-200">
-          {isLoggingOut ? (
-            <span>Logging out...</span>
-          ) : (
-            <>
-              <span>Logout</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                />
-              </svg>
-            </>
-          )}
-        </button>
-      </div>
-
-      <div className="max-w-[600px] mx-auto">
+      <div className="max-w-[600px] mx-auto mt-20">
         <StepIndicator currentStep={currentStep} />
       </div>
 

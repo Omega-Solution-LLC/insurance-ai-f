@@ -137,8 +137,6 @@ const Table = ({
                         "bg-white hover:bg-gray-50 transition-colors duration-150",
                         {
                           "border-b border-gray-100": index !== data.length - 1,
-                          "border-b border-gray-100":
-                            isNest && index !== data.length - 1,
                         }
                       )}>
                       {columns.map((column, colIndex) => {

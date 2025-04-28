@@ -66,7 +66,7 @@ const Login = () => {
       if (resp?.data) {
         localStorage.setItem("isLogged", "true");
         // navigate(from, { replace: true });
-        navigate("/profile");
+        navigate("/dashboard");
       }
     } catch (error) {
       console.error("Login failed:", error);

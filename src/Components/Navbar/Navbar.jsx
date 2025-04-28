@@ -82,6 +82,14 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             {isLogged && (
               <Link
+                to="/dashboard"
+                className="text-gray-700 hover:text-indigo-600 transition  py-2">
+                Dashboard
+              </Link>
+            )}
+
+            {isLogged && (
+              <Link
                 to="/wizard"
                 className="text-gray-700 hover:text-indigo-600 transition  py-2">
                 Generate New

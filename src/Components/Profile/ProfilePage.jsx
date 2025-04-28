@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetCustomerQuery } from "../../Redux/features/customer/customerApi";
-import {
-  useGetDocumentQuery,
-  useUpdateInsuranceMutation,
-} from "../../Redux/features/documents/documentsApi";
+import { useGetDocumentQuery } from "../../Redux/features/documents/documentsApi";
 import EmailTemplateDownloader from "../CommonUI/EmailTemplateDownloader";
 import TableComponent from "../CommonUI/TableComponent";
 
 const ProfilePage = () => {
   const id = localStorage.getItem("id");
-  const applicationData = localStorage.getItem("applicationData");
   const [pageConfig, setPageConfig] = useState({
     page: 1,
     count: 10,
     status: true,
   });
+  // const [updateInsurance] = useUpdateInsuranceMutation();
   const { data: userData, isLoading } = useGetCustomerQuery(id);
   const { data: documentData } = useGetDocumentQuery({ id, arg: pageConfig });
   const columns = [
@@ -53,23 +50,11 @@ const ProfilePage = () => {
     );
   }
 
-  const [updateInsurance] = useUpdateInsuranceMutation();
-
-  const handleUpdate = async () => {
-    try {
-      await updateInsurance({ id: applicationData, customerId: id });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  useEffect(() => {
-    if (applicationData) {
-      handleUpdate();
-    }
-  }, []);
-
   return (
-    <div className="min-h-screen pt-24 pb-12 bg-gradient-to-b from-white to-gray-100">
+    <div className="min-h-screen relative overflow-hidden pt-24 pb-12 ">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10" />
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2" />
       <div className="max-w-6xl mx-auto px-4">
         {/* Page Header */}
         <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
@@ -84,7 +69,7 @@ const ProfilePage = () => {
                   {userData?.username.toUpperCase()}
                 </h1>
                 <p className="text-gray-600">
-                  {userData.email || "No email available"}
+                  {userData?.email || "No email available"}
                 </p>
               </div>
               {/* <div className="sm:ml-auto mt-4 sm:mt-0">
@@ -112,21 +97,21 @@ const ProfilePage = () => {
                 <div>
                   <p className="text-sm text-gray-500 mb-1">First Name</p>
                   <p className="font-medium text-gray-800">
-                    {userData.firstName || "-"}
+                    {userData?.firstName || "-"}
                   </p>
                 </div>
 
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Last Name</p>
                   <p className="font-medium text-gray-800">
-                    {userData.lastName || "-"}
+                    {userData?.lastName || "-"}
                   </p>
                 </div>
 
                 <div>
                   <p className="text-sm text-gray-500 mb-1">Email</p>
                   <p className="font-medium text-gray-800">
-                    {userData.email || "-"}
+                    {userData?.email || "-"}
                   </p>
                 </div>
               </div>

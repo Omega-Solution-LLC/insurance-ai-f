@@ -1,16 +1,102 @@
-import React, { useState } from "react";
-import { FiCheck, FiMail, FiPrinter } from "react-icons/fi";
-import { RiDraftLine } from "react-icons/ri";
+import React, { useEffect, useState } from "react";
+import { FiCheck, FiMail, FiPrinter, FiSave } from "react-icons/fi";
+import { useNavigate } from "react-router";
+import { useUpdateDocumentInsuranceMutation } from "../../../Redux/features/documents/documentsApi";
 import QuillEditor from "./QuillEditor";
 
 const Step4Content = ({ handleBack, aiData }) => {
   const [activeAction, setActiveAction] = useState(null);
   const [text, setText] = useState("");
-
+  const [originalText, setOriginalText] = useState("");
+  const [isTextChanged, setIsTextChanged] = useState(false);
+  const navigate = useNavigate();
   const handleAction = (action) => {
     setActiveAction(action);
     // Logic for each action would go here
     setTimeout(() => setActiveAction(null), 2000); // Reset after 2 seconds
+  };
+  const [updateDocumentInsurance, { isLoading: isSaving }] =
+    useUpdateDocumentInsuranceMutation();
+
+  useEffect(() => {
+    if (aiData?.applicationTemplate) {
+      setText(aiData.applicationTemplate);
+      setOriginalText(aiData.applicationTemplate);
+    }
+  }, [aiData]);
+
+  // Check if text has changed from original
+  useEffect(() => {
+    if (originalText && text) {
+      setIsTextChanged(originalText !== text);
+    }
+  }, [text, originalText]);
+
+  const handleTextChange = (newText) => {
+    setText(newText);
+  };
+
+  const getHtmlContent = (text) => {
+    return `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Auto Accident Claim Letter</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 40px;
+            color: #333;
+          }
+          .container {
+            max-width: 700px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+          }
+          h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+          }
+          p {
+            margin: 10px 0;
+          }
+          .signature {
+            margin-top: 30px;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          
+          ${text}
+          
+        </div>
+      </body>
+      </html>
+    `;
+  };
+
+  const applicationTemplatePreview = getHtmlContent(text);
+
+  const handleSave = async () => {
+    try {
+      const resp = await updateDocumentInsurance({
+        id: aiData?.id,
+        data: {
+          applicationTemplate: applicationTemplatePreview,
+        },
+      });
+      if (resp?.data) {
+        navigate("/profile");
+      }
+      setOriginalText(text);
+      setIsTextChanged(false);
+    } catch (error) {
+      console.error("Error saving template:", error);
+    }
   };
 
   return (
@@ -28,7 +114,7 @@ const Step4Content = ({ handleBack, aiData }) => {
           <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 min-h-[400px] md:min-h-[500px]">
             <QuillEditor
               text={aiData?.applicationTemplate}
-              setText={setText}
+              setText={handleTextChange}
               minHeight="350px"
               className="h-full"
             />
@@ -65,18 +151,15 @@ const Step4Content = ({ handleBack, aiData }) => {
 
       <div className="flex flex-wrap justify-center gap-4 mt-8 mb-6">
         <button
-          onClick={() => handleAction("draft")}
+          onCl
+          disabled={!isTextChanged || isSaving}
+          onClick={handleSave}
           className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
-            activeAction === "draft"
-              ? "bg-gray-700 text-white"
-              : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
+            isTextChanged
+              ? "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
           } transition-all duration-300 shadow-sm hover:shadow`}>
-          {activeAction === "draft" ? (
-            <FiCheck className="text-green-400" />
-          ) : (
-            <RiDraftLine className="text-gray-500" />
-          )}
-          {activeAction === "draft" ? "Saved" : "Save as Draft"}
+          <FiSave /> {isSaving ? "Saving..." : "Save and Continue"}
         </button>
 
         <button

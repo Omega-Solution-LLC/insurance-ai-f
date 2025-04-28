@@ -19,7 +19,7 @@ export default function ClaimWizard() {
   const [aiData, setAiData] = useState({});
   useEffect(() => {
     if (aiData?.id) {
-      localStorage.setItem("applicationData", aiData.id);
+      localStorage.setItem("applicationId", aiData.id);
     }
   }, [aiData?.id]);
   const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
@@ -74,7 +74,6 @@ export default function ClaimWizard() {
     }
   };
 
-  console.log("AI Data:", aiData?.id);
   return (
     <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />

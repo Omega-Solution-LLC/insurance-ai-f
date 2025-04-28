@@ -76,7 +76,7 @@ const Navbar = () => {
               <Link
                 to="/wizard"
                 className="text-gray-700 hover:text-indigo-600 transition font-semibold py-2">
-                Verify
+                Application
               </Link>
             )}
           </div>
@@ -87,10 +87,7 @@ const Navbar = () => {
               <div className="relative profile-dropdown">
                 <button
                   onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                  className="flex items-center space-x-2 px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-medium">
-                  <div className="h-8 w-8 bg-gradient-to-r from-indigo-600 to-violet-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {userData?.username.charAt(0).toUpperCase()}
-                  </div>
+                  className="flex items-center space-x-2 rounded-full px-4 py-2 border border-indigo-600 text-indigo-600  hover:bg-indigo-50 transition font-medium">
                   <span>{userData?.username}</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

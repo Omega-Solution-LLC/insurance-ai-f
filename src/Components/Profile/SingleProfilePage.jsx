@@ -8,6 +8,8 @@ import {
   FiFileText,
   FiMessageSquare,
   FiPaperclip,
+  FiPrinter,
+  FiSave,
   FiShield,
 } from "react-icons/fi";
 import { MdOutlineHistoryEdu } from "react-icons/md";
@@ -67,7 +69,7 @@ export default function InsuranceDetailPage() {
   const [text, setText] = useState("");
   const [originalText, setOriginalText] = useState("");
   const [isTextChanged, setIsTextChanged] = useState(false);
-  const [activeTab, setActiveTab] = useState("details");
+  const [activeTab, setActiveTab] = useState("template");
   const [showTemplatePreview, setShowTemplatePreview] = useState(false);
 
   // Initialize text state when insuranceData is loaded
@@ -155,10 +157,11 @@ export default function InsuranceDetailPage() {
     }
   };
 
-  console.log("text", getHtmlContent(text));
-
   return (
-    <div className="min-h-screen bg-gray-100 py-6 pt-24">
+    <div className="min-h-screen relative overflow-hidden py-6 pt-24">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10" />
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2" />
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
@@ -175,21 +178,21 @@ export default function InsuranceDetailPage() {
           <nav className="flex space-x-8">
             <button
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === "template"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+              onClick={() => setActiveTab("template")}>
+              Claim Letter
+            </button>
+            <button
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 activeTab === "details"
                   ? "border-blue-500 text-blue-600"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
               }`}
               onClick={() => setActiveTab("details")}>
               Details
-            </button>
-            <button
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                activeTab === "template"
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-              }`}
-              onClick={() => setActiveTab("template")}>
-              Application Template
             </button>
           </nav>
         </div>
@@ -348,35 +351,75 @@ export default function InsuranceDetailPage() {
 
         {/* Application Template Tab */}
         {activeTab === "template" && (
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="p-4 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="text-lg font-medium">Application Template</h2>
+          <>
+            <div className="pt-3">
+              <h2 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                Your Claim Letter
+              </h2>
+              <p className="text-center text-gray-600 mb-8">
+                Use this professional letter when contacting your insurance
+                company
+              </p>
+            </div>
+            <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-8 rounded-xl border border-gray-200 mb-8 shadow-inner">
+                <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 min-h-[400px] md:min-h-[500px]">
+                  <QuillEditor
+                    text={text}
+                    setText={handleTextChange}
+                    minHeight="350px"
+                    className="h-full"
+                  />
+                </div>
+              </div>
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-8 flex items-start">
+                <div className="text-blue-500 p-2 bg-white rounded-full shadow-sm mr-4 flex-shrink-0">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <h4 className="font-medium text-blue-700 mb-1">
+                    Customize Before Sending
+                  </h4>
+                  <p className="text-blue-600 text-sm">
+                    Make sure to replace [Your Phone Number], [Your Email],
+                    [City], and [Your Full Name] with your actual information
+                    before sending.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center py-5">
               <div className="flex gap-3 items-center">
                 <button
                   onClick={handleSave}
                   disabled={!isTextChanged || isSaving}
-                  className={`px-4 py-2 text-sm font-medium rounded-md ${
+                  className={`flex cursor-pointer items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
                     isTextChanged
-                      ? "bg-blue-600 text-white hover:bg-blue-700"
+                      ? "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}>
-                  {isSaving ? "Saving..." : "Save"}
+                  } transition-all duration-300 shadow-sm hover:shadow`}>
+                  <FiSave /> {isSaving ? "Saving..." : "Save"}
+                </button>
+                <button
+                  className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium border border-gray-300 transition-all duration-300 shadow-sm hover:shadow`}>
+                  <FiPrinter size="15" className="text-gray-500" /> Print Letter
                 </button>
                 <EmailTemplateDownloader htmlString={text} />
               </div>
             </div>
-
-            <div className="p-0">
-              <div className="h-screen max-h-screen">
-                <QuillEditor
-                  text={text}
-                  setText={handleTextChange}
-                  minHeight="350px"
-                  className="h-full"
-                />
-              </div>
-            </div>
-          </div>
+          </>
         )}
       </div>
     </div>

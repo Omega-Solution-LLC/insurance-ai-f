@@ -1,3 +1,5 @@
+import { MdOutlineFileDownload } from "react-icons/md";
+
 const EmailTemplateDownloader = ({ htmlString }) => {
   const handleDownload = () => {
     const blob = new Blob([htmlString], { type: "text/html" });
@@ -15,9 +17,9 @@ const EmailTemplateDownloader = ({ htmlString }) => {
   return (
     <div>
       <button
-        className="px-4 py-2 text-sm font-medium rounded-md cursor-pointer bg-white border text-black border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        className="flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full cursor-pointer bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
         onClick={handleDownload}>
-        Download
+        <MdOutlineFileDownload size="20" /> Download
       </button>
     </div>
   );

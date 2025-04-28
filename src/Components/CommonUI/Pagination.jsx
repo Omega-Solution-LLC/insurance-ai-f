@@ -42,7 +42,7 @@ export default function Pagination({
           <button
             disabled={currentPage <= 1}
             onClick={() => handleOnPageChange(currentPage - 1, itemsPerPage)}
-            className="flex items-center justify-center w-8 h-8 rounded-md bg-gray-200 hover:bg-gray-300 focus:outline-none">
+            className="flex items-center justify-center w-8 h-8 rounded-md bg-gray-200 hover:bg-gray-300 focus:outline-none cursor-pointer">
             <FiChevronLeft className="w-5 h-5 text-gray-700" />
           </button>
         </li>
@@ -52,7 +52,7 @@ export default function Pagination({
             <button
               onClick={() => handleOnPageChange(page, itemsPerPage)}
               disabled={currentPage === page}
-              className={`flex items-center justify-center w-8 h-8 rounded-md ${
+              className={`flex items-center justify-center w-8 h-8 rounded-md cursor-pointer ${
                 currentPage === page
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 hover:bg-gray-300 text-gray-700"
@@ -66,7 +66,7 @@ export default function Pagination({
           <button
             disabled={currentPage >= totalPages}
             onClick={() => handleOnPageChange(currentPage + 1, itemsPerPage)}
-            className="flex items-center justify-center w-8 h-8 rounded-md bg-gray-200 hover:bg-gray-300 focus:outline-none">
+            className="flex items-center justify-center w-8 h-8 rounded-md bg-gray-200 hover:bg-gray-300 focus:outline-none cursor-pointer">
             <FiChevronRight className="w-5 h-5 text-gray-700" />
           </button>
         </li>

@@ -164,7 +164,7 @@ const Step2Content = ({
               />
               <button
                 onClick={() => document.getElementById("file-upload").click()}
-                className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300">
+                className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
                 Browse Files
               </button>
             </div>
@@ -215,7 +215,7 @@ const Step2Content = ({
                   </div>
                   <button
                     onClick={() => removeFile(index)}
-                    className="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition-colors">
+                    className="text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 transition-colors cursor-pointer">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5"
@@ -239,7 +239,7 @@ const Step2Content = ({
         <div className="flex justify-between mt-8">
           <button
             onClick={handleBack}
-            className="py-2 px-8 rounded-full font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex items-center">
+            className="py-2 px-8 cursor-pointer rounded-full font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 mr-2"
@@ -258,7 +258,7 @@ const Step2Content = ({
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className={`bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group ${
+            className={`bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group cursor-pointer ${
               isSubmitting ? "opacity-70 cursor-not-allowed" : ""
             }`}>
             {isSubmitting ? "Submitting..." : "Continue"}

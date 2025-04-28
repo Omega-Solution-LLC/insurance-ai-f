@@ -8,7 +8,6 @@ import {
   FiFileText,
   FiMessageSquare,
   FiPaperclip,
-  FiPrinter,
   FiSave,
   FiShield,
 } from "react-icons/fi";
@@ -20,6 +19,7 @@ import {
 } from "../../Redux/features/documents/documentsApi";
 import QuillEditor from "../ClaimWizard/Steps/QuillEditor";
 import EmailTemplateDownloader from "../CommonUI/EmailTemplateDownloader";
+import EmailTemplatePrint from "../CommonUI/EmailTemplatePrint";
 
 // Helper functions
 const formatDate = (dateString) => {
@@ -177,7 +177,7 @@ export default function InsuranceDetailPage() {
         <div className="mb-6 border-b border-gray-200">
           <nav className="flex space-x-8">
             <button
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-1 border-b-2 cursor-pointer font-medium text-sm ${
                 activeTab === "template"
                   ? "border-blue-500 text-blue-600"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -186,7 +186,7 @@ export default function InsuranceDetailPage() {
               Claim Letter
             </button>
             <button
-              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+              className={`py-4 px-1 border-b-2 font-medium text-sm cursor-pointer ${
                 activeTab === "details"
                   ? "border-blue-500 text-blue-600"
                   : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
@@ -361,7 +361,7 @@ export default function InsuranceDetailPage() {
                 company
               </p>
             </div>
-            <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100">
+            <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100 max-w-4xl mx-auto">
               <div className="bg-gradient-to-r from-gray-50 to-gray-100 p-8 rounded-xl border border-gray-200 mb-8 shadow-inner">
                 <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-100 min-h-[400px] md:min-h-[500px]">
                   <QuillEditor
@@ -372,8 +372,8 @@ export default function InsuranceDetailPage() {
                   />
                 </div>
               </div>
-              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-8 flex items-start">
-                <div className="text-blue-500 p-2 bg-white rounded-full shadow-sm mr-4 flex-shrink-0">
+              <div className="bg-gray-50  rounded-lg p-4 mb-8 flex items-start">
+                <div className="text-purple-500 p-2 bg-white rounded-full shadow-sm mr-4 flex-shrink-0">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     className="h-5 w-5"
@@ -389,10 +389,10 @@ export default function InsuranceDetailPage() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-medium text-blue-700 mb-1">
+                  <h4 className="font-medium text-gray-700 mb-1">
                     Customize Before Sending
                   </h4>
-                  <p className="text-blue-600 text-sm">
+                  <p className="text-gray-600 text-sm">
                     Make sure to replace [Your Phone Number], [Your Email],
                     [City], and [Your Full Name] with your actual information
                     before sending.
@@ -412,10 +412,8 @@ export default function InsuranceDetailPage() {
                   } transition-all duration-300 shadow-sm hover:shadow`}>
                   <FiSave /> {isSaving ? "Saving..." : "Save"}
                 </button>
-                <button
-                  className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium border border-gray-300 transition-all duration-300 shadow-sm hover:shadow`}>
-                  <FiPrinter size="15" className="text-gray-500" /> Print Letter
-                </button>
+
+                <EmailTemplatePrint htmlString={text} />
                 <EmailTemplateDownloader htmlString={text} />
               </div>
             </div>

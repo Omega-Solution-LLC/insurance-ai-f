@@ -60,59 +60,6 @@ const TableComponent = ({
   return (
     <>
       <div className="mt-2">
-        <div className="w-full dark:text-yellow-50 flex flex-wrap gap-2 items-center flex-col-reverse sm:flex-row  justify-between mb-3">
-          <div className="flex flex-wrap lg:flex-nowrap gap-2 w-full md:w-auto">
-            {isSearch && (
-              <div className="w-full sm:w-[250px]">
-                {/* <CommonSearch setPageConfig={setPageConfig} /> */}
-              </div>
-            )}
-            <div className="hideScrollBar overflow-x-auto overflow-y-hidden w-full">
-              {/* <Filter
-                setPageConfig={setPageConfig}
-                filters={filters}
-                extraFilter={extraFilter}
-              /> */}
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            {/* <Popover
-              content={
-                <Menu
-                  items={[
-                    {
-                      key: "1",
-                      label: (
-                        <PrintPDF list={list} columns={columns} title={title} />
-                      ),
-                    },
-
-                    {
-                      key: "3",
-                      label: (
-                        <CSV
-                          notButton={true}
-                          list={list}
-                          columns={columns}
-                          title={title}
-                        />
-                      ),
-                    },
-                  ]}
-                />
-              }
-              placement="bottomRight"
-              arrow={false}
-              trigger="click">
-              <Button
-                color={"gray"}
-                icon={<BsThreeDotsVertical size={15} />}
-                className="  px-3"></Button>
-            </Popover> */}
-          </div>
-        </div>
-
         {view === "list" && (
           <Table
             loading={loading}

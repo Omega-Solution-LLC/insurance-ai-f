@@ -154,7 +154,7 @@ const Step4Content = ({ handleBack, aiData }) => {
           onCl
           disabled={!isTextChanged || isSaving}
           onClick={handleSave}
-          className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
+          className={`flex items-center cursor-pointer justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
             isTextChanged
               ? "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
@@ -164,7 +164,7 @@ const Step4Content = ({ handleBack, aiData }) => {
 
         <button
           onClick={() => handleAction("print")}
-          className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
+          className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium cursor-pointer ${
             activeAction === "print"
               ? "bg-gray-700 text-white"
               : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
@@ -179,7 +179,7 @@ const Step4Content = ({ handleBack, aiData }) => {
 
         <button
           onClick={() => handleAction("email")}
-          className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
+          className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium cursor-pointer ${
             activeAction === "email"
               ? "bg-gradient-to-r from-green-600 to-green-500 text-white"
               : "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
@@ -192,7 +192,7 @@ const Step4Content = ({ handleBack, aiData }) => {
       <div className="flex justify-center">
         <button
           onClick={handleBack}
-          className="py-2 px-8 rounded-full font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex items-center">
+          className="py-2 px-8 rounded-full font-medium border border-gray-300 hover:bg-gray-50 transition-colors flex items-center cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 mr-2"

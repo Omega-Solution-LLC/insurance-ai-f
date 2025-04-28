@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { LiaEyeSolid } from "react-icons/lia";
 import { Link } from "react-router-dom";
 import { useGetCustomerQuery } from "../../Redux/features/customer/customerApi";
 import { useGetDocumentQuery } from "../../Redux/features/documents/documentsApi";
@@ -38,6 +39,18 @@ const ProfilePage = () => {
       key: "applicationTemplate",
       render: (file) => (
         <EmailTemplateDownloader htmlString={file?.applicationTemplate} />
+      ),
+    },
+    {
+      title: "Action",
+      key: "profile",
+      render: (item) => (
+        <Link to={`/profile/${item?.id}`}>
+          {" "}
+          <button className="flex justify-center items-center gap-2 cursor-pointer px-3 py-2 bg-white border border-gray-500 rounded-full text-gray-600 transition-colors duration-200">
+            <LiaEyeSolid /> View
+          </button>
+        </Link>
       ),
     },
   ];

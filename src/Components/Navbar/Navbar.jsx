@@ -87,7 +87,7 @@ const Navbar = () => {
               <div className="relative profile-dropdown">
                 <button
                   onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-                  className="flex items-center space-x-2 rounded-full px-4 py-2 border border-indigo-600 text-indigo-600  hover:bg-indigo-50 transition font-medium">
+                  className="flex items-center space-x-2 cursor-pointer rounded-full px-4 py-2 border border-indigo-600 text-indigo-600  hover:bg-indigo-50 transition font-medium">
                   <span>{userData?.username}</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -162,7 +162,7 @@ const Navbar = () => {
                         handleLogout();
                         setShowProfileDropdown(false);
                       }}
-                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
+                      className="block cursor-pointer w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
                       <div className="flex items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +203,7 @@ const Navbar = () => {
           <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 hover:text-indigo-600 focus:outline-none">
+              className="text-gray-700 hover:text-indigo-600 focus:outline-none cursor-pointer">
               {isOpen ? (
                 <HiX className="h-6 w-6" />
               ) : (
@@ -311,7 +311,7 @@ const Navbar = () => {
                         handleLogout();
                         setIsOpen(false);
                       }}
-                      className="w-full px-4 py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-medium flex items-center">
+                      className="w-full px-4 cursor-pointer py-2 border border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition font-medium flex items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-5 w-5 mr-2"

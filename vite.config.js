@@ -6,6 +6,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [tailwindcss(), react()],
   base: "https://ai-insurance.osllc.us",
+  optimizeDeps: {
+    include: ["html2pdf.js"],
+  },
   resolve: {
     alias: {
       // eslint-disable-next-line no-undef

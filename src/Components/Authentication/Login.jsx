@@ -164,7 +164,7 @@ const Login = () => {
               />
               <button
                 type="button"
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-700"
+                className="absolute cursor-pointer right-3.5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-indigo-700"
                 onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? (
                   <svg
@@ -205,7 +205,7 @@ const Login = () => {
           <button
             onClick={handleSubmit}
             type="submit"
-            className={`w-full py-3.5 px-4 rounded-xl font-medium text-white shadow-md ${
+            className={`w-full cursor-pointer py-3.5 px-4 rounded-xl font-medium text-white shadow-md ${
               isLoading
                 ? "bg-indigo-400 cursor-not-allowed"
                 : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"

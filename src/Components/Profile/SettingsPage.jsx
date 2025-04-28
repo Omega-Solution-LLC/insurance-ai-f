@@ -172,7 +172,7 @@ const SettingsPage = () => {
                   <div className="flex justify-end">
                     <button
                       type="submit"
-                      className="bg-gradient-to-r from-indigo-600 to-purple-500 hover:from-indigo-700 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-medium shadow-md transition-all duration-300">
+                      className="bg-gradient-to-r cursor-pointer from-indigo-600 to-purple-500 hover:from-indigo-700 hover:to-purple-600 text-white px-6 py-3 rounded-lg font-medium shadow-md transition-all duration-300">
                       Save Changes
                     </button>
                   </div>

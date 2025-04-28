@@ -97,7 +97,7 @@ const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
           <div className="flex justify-end mt-10">
             <button
               onClick={handleContinue}
-              className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
+              className="bg-gradient-to-r cursor-pointer from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
               Continue
               <svg
                 xmlns="http://www.w3.org/2000/svg"

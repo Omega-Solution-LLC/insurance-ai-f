@@ -226,7 +226,7 @@ export default function HomePage() {
               making it faster and easier than ever.
             </p>
             <button
-              onClick={() => navigate("/wizard/page1")}
+              onClick={() => navigate("/wizard")}
               className="bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out font-medium">
               Get Started Now
             </button>

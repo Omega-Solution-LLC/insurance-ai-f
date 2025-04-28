@@ -11,15 +11,19 @@ const Login = () => {
 
   const [formErrors, setFormErrors] = useState({});
 
-  const navigate = useNavigate();
   const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const redirectPath = queryParams.get('redirect');
+
+  const navigate = useNavigate();
+
   const from = location.state?.from?.pathname || "/wizard";
   const [addLogin, { isLoading }] = useAddLoginMutation();
 
   // Check if user is already logged in
   useEffect(() => {
     if (localStorage.getItem("isLogged")) {
-      navigate("/");
+        navigate("/");
     }
   }, [navigate]);
 
@@ -66,7 +70,11 @@ const Login = () => {
       if (resp?.data) {
         localStorage.setItem("isLogged", "true");
         // navigate(from, { replace: true });
-        navigate("/dashboard");
+        if(redirectPath) {
+          navigate(`/profile/${redirectPath}`);
+        }else{
+          navigate("/dashboard");
+        }
       }
     } catch (error) {
       console.error("Login failed:", error);

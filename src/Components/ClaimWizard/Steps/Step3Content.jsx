@@ -9,7 +9,7 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
     if (isLogged) {
       handleContinue();
     } else {
-      navigate("/login");
+      navigate(`/login?redirect=${aiData.id}`);
     }
   };
 

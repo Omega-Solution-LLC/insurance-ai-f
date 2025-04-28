@@ -30,7 +30,7 @@ function App() {
 
           {/* Nested routes will render inside the Layout's Outlet */}
           <Route
-            path="wizard"
+            path="/wizard"
             element={
               // <PrivateRoute>
               //   <ClaimWizard />

@@ -11,7 +11,7 @@ const StepIndicator = ({ currentStep }) => {
             <div
               className={`w-10 h-10 rounded-full flex items-center justify-center ${
                 index + 1 <= currentStep
-                  ? "bg-gradient-to-r from-blue-400 to-purple-300 text-white"
+                  ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white"
                   : "bg-gray-200 text-gray-500"
               }`}>
               {index + 1}

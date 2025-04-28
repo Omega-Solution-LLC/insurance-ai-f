@@ -166,7 +166,7 @@ export default function InsuranceDetailPage() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-2xl font-semibold text-gray-800">
               Insurance Claim Details
             </h1>
             <p className="text-gray-500">Claim ID: {insuranceData?.id}</p>
@@ -266,7 +266,7 @@ export default function InsuranceDetailPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="bg-white p-4 rounded-md shadow-sm text-center">
                         <p className="text-gray-500 text-sm">Deductible</p>
-                        <p className="text-xl font-bold text-blue-600">
+                        <p className="text-xl font-semibold text-blue-600">
                           ${estimate?.deductible}
                         </p>
                       </div>
@@ -274,7 +274,7 @@ export default function InsuranceDetailPage() {
                         <p className="text-gray-500 text-sm">
                           Expected Coverage
                         </p>
-                        <p className="text-xl font-bold text-green-600">
+                        <p className="text-xl font-semibold text-green-600">
                           {estimate?.expectedCoverage}%
                         </p>
                       </div>
@@ -282,7 +282,7 @@ export default function InsuranceDetailPage() {
                         <p className="text-gray-500 text-sm">
                           Your Responsibility
                         </p>
-                        <p className="text-xl font-bold text-red-600">
+                        <p className="text-xl font-semibold text-red-600">
                           ${estimate?.estimateResponsibility}
                         </p>
                       </div>
@@ -353,7 +353,7 @@ export default function InsuranceDetailPage() {
         {activeTab === "template" && (
           <>
             <div className="pt-3">
-              <h2 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <h2 className="text-3xl font-semibold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Your Claim Letter
               </h2>
               <p className="text-center text-gray-600 mb-8">
@@ -407,14 +407,17 @@ export default function InsuranceDetailPage() {
                   disabled={!isTextChanged || isSaving}
                   className={`flex cursor-pointer items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
                     isTextChanged
-                      ? "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
+                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   } transition-all duration-300 shadow-sm hover:shadow`}>
                   <FiSave /> {isSaving ? "Saving..." : "Save"}
                 </button>
 
                 <EmailTemplatePrint htmlString={text} />
-                <EmailTemplateDownloader htmlString={text} />
+                <EmailTemplateDownloader
+                  htmlString={text}
+                  isSinglePage={true}
+                />
               </div>
             </div>
           </>

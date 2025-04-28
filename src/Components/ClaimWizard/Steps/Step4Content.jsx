@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { FiCheck, FiMail, FiPrinter, FiSave } from "react-icons/fi";
+import { FiCheck, FiMail, FiSave } from "react-icons/fi";
 import { useNavigate } from "react-router";
 import { useUpdateDocumentInsuranceMutation } from "../../../Redux/features/documents/documentsApi";
+import EmailTemplatePrint from "../../CommonUI/EmailTemplatePrint";
 import QuillEditor from "./QuillEditor";
 
 const Step4Content = ({ handleBack, aiData }) => {
@@ -102,7 +103,7 @@ const Step4Content = ({ handleBack, aiData }) => {
   return (
     <div className="rounded-3xl p-6 mb-12">
       <div className="pt-3">
-        <h2 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-semibold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
           Your Claim Letter
         </h2>
         <p className="text-center text-gray-600 mb-8">
@@ -121,8 +122,8 @@ const Step4Content = ({ handleBack, aiData }) => {
           </div>
         </div>
 
-        <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-8 flex items-start">
-          <div className="text-blue-500 p-2 bg-white rounded-full shadow-sm mr-4 flex-shrink-0">
+        <div className="bg-gray-50  rounded-lg p-4 mb-8 flex items-start">
+          <div className="text-purple-500 p-2 bg-white rounded-full shadow-sm mr-4 flex-shrink-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5"
@@ -138,10 +139,10 @@ const Step4Content = ({ handleBack, aiData }) => {
             </svg>
           </div>
           <div>
-            <h4 className="font-medium text-blue-700 mb-1">
+            <h4 className="font-medium text-gray-700 mb-1">
               Customize Before Sending
             </h4>
-            <p className="text-blue-600 text-sm">
+            <p className="text-gray-600 text-sm">
               Make sure to replace [Your Phone Number], [Your Email], [City],
               and [Your Full Name] with your actual information before sending.
             </p>
@@ -156,33 +157,19 @@ const Step4Content = ({ handleBack, aiData }) => {
           onClick={handleSave}
           className={`flex items-center cursor-pointer justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
             isTextChanged
-              ? "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
+              ? "bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white"
               : "bg-gray-300 text-gray-500 cursor-not-allowed"
           } transition-all duration-300 shadow-sm hover:shadow`}>
           <FiSave /> {isSaving ? "Saving..." : "Save and Continue"}
         </button>
 
-        <button
-          onClick={() => handleAction("print")}
-          className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium cursor-pointer ${
-            activeAction === "print"
-              ? "bg-gray-700 text-white"
-              : "bg-white text-gray-700 hover:bg-gray-100 border border-gray-300"
-          } transition-all duration-300 shadow-sm hover:shadow`}>
-          {activeAction === "print" ? (
-            <FiCheck className="text-green-400" />
-          ) : (
-            <FiPrinter className="text-gray-500" />
-          )}
-          {activeAction === "print" ? "Printing..." : "Print Letter"}
-        </button>
-
+        <EmailTemplatePrint htmlString={text} />
         <button
           onClick={() => handleAction("email")}
           className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium cursor-pointer ${
             activeAction === "email"
               ? "bg-gradient-to-r from-green-600 to-green-500 text-white"
-              : "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
+              : "bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white"
           } transition-all duration-300 shadow-lg hover:shadow-xl`}>
           {activeAction === "email" ? <FiCheck /> : <FiMail />}
           {activeAction === "email" ? "Email Sent!" : "Send Email"}

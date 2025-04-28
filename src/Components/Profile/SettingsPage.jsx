@@ -74,7 +74,7 @@ const SettingsPage = () => {
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="px-6 py-8 sm:p-10">
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-6">
               Edit Profile
             </h1>
 

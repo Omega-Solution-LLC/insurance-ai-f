@@ -1,22 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
+  const [validationError, setValidationError] = useState(false);
+
+  const validateAndContinue = () => {
+    if (!formData || formData.trim() === "") {
+      setValidationError(true);
+      return;
+    }
+    setValidationError(false);
+    handleContinue();
+  };
+
   return (
     <div className="rounded-3xl p-6 mb-12">
       <div className="text-center animate-fade-in">
-        <h1 className="text-3xl md:text-4xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        <h1 className="text-3xl md:text-4xl font-semibold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
           Describe Your Situation
         </h1>
-        <p className="text-gray-400 mb-10 max-w-2xl mx-auto">
+        <p className="text-gray-400 mb-10 max-w-3xl mx-auto text-sm">
           Tell us what happened and what you need help with so we can guide you
           through the next steps
         </p>
       </div>
 
-      <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100 animate-fade-in-up">
+      <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100 animate-fade-in-up ">
         <div className="space-y-8">
           <div>
-            <h2 className="text-xl font-semibold mb-4 flex items-center">
+            <h2 className="text-xl font-medium mb-4 flex items-center">
               <span className="bg-purple-100 text-purple-600 p-2 rounded-full mr-3">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -36,19 +47,28 @@ const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
             </h2>
             <div className="relative">
               <textarea
-                className="w-full h-48 p-5 border border-gray-200 rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-purple-400 transition-all duration-300 bg-gray-50/50"
+                required
+                className={`w-full text-sm h-48 p-5 border ${validationError ? "border-red-500 ring-2 ring-red-100" : "border-gray-200"} rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-none focus:border-purple-400 transition-all duration-300 bg-gray-50/50`}
                 placeholder="For example: I was in a car accident last week. The other driver hit my car from behind while I was stopped at a red light. I've filed a police report and now need to make an insurance claim. I have comprehensive coverage with State Farm, policy #ABC123."
                 value={formData}
-                onChange={handleTextChange}
+                onChange={(e) => {
+                  handleTextChange(e);
+                  if (validationError) setValidationError(false);
+                }}
               />
               <div className="absolute bottom-4 right-4 text-xs text-gray-400">
                 {formData.length > 0 ? `${formData.length} characters` : ""}
               </div>
+              {validationError && (
+                <p className="text-red-500 text-sm mt-2">
+                  Please describe your situation before continuing
+                </p>
+              )}
             </div>
           </div>
 
           <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-100">
-            <p className="text-gray-700 font-medium flex items-center mb-4">
+            <p className="text-gray-700  flex items-center mb-4">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5 mr-2 text-purple-500"
@@ -64,7 +84,7 @@ const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
               </svg>
               Be detailed and include:
             </p>
-            <ul className="space-y-3 text-gray-600 ml-6">
+            <ul className="space-y-3 text-gray-600 ml-6 text-sm">
               {[
                 "What happened",
                 "When it happened",
@@ -96,8 +116,8 @@ const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
 
           <div className="flex justify-end mt-10">
             <button
-              onClick={handleContinue}
-              className="bg-gradient-to-r cursor-pointer from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
+              onClick={validateAndContinue}
+              className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 cursor-pointer text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
               Continue
               <svg
                 xmlns="http://www.w3.org/2000/svg"

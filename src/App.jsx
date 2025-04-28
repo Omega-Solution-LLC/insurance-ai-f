@@ -1,47 +1,35 @@
-import { Toaster } from "react-hot-toast";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./Layouts/Layout";
+import HomePage from "./Components/HomePage/HomePage";
+import ClaimWizard from "./Components/ClaimWizard/ClaimWizard";
+import ProfilePage from "./Components/Profile/ProfilePage";
+import SingleProfilePage from "./Components/Profile/SingleProfilePage";
+import SettingsPage from "./Components/Profile/SettingsPage";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import Login from "./Components/Authentication/Login";
 import Register from "./Components/Authentication/Register";
-import ClaimWizard from "./Components/ClaimWizard/ClaimWizard";
-import Dashboard from "./Components/Dashboard/Dashboard.jsx";
-import HomePage from "./Components/HomePage/HomePage";
-import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
-import ProfilePage from "./Components/Profile/ProfilePage";
-import SettingsPage from "./Components/Profile/SettingsPage";
-import SingleProfilePage from "./Components/Profile/SingleProfilePage.jsx";
-import Layout from "./Layouts/Layout.jsx";
 
-// Authentication redirect component
-const AuthRedirect = () => {
-  const isLogged = localStorage.getItem("isLogged");
-  return isLogged ? <Navigate to="/dashboard" replace /> : <HomePage />;
-};
 
-function App() {
+const App = () => {
   return (
-    <BrowserRouter>
-      <Toaster position="top-center" reverseOrder={false} />
-
+    <Router>
       <Routes>
+        {/* Main layout routes */}
         <Route path="/" element={<Layout />}>
-          {/* Index route that redirects to dashboard if logged in, or shows HomePage if not */}
-          <Route index element={<AuthRedirect />} />
-
-          {/* Nested routes will render inside the Layout's Outlet */}
+          <Route index element={<HomePage />} />
           <Route
-            path="/wizard"
+            path="wizard"
             element={
               // <PrivateRoute>
-              //   <ClaimWizard />
+                <ClaimWizard />
               // </PrivateRoute>
-              <ClaimWizard />
             }
           />
           <Route
             path="profile"
             element={
-              // <ProfilePage />
               <PrivateRoute>
                 <ProfilePage />
               </PrivateRoute>
@@ -50,7 +38,6 @@ function App() {
           <Route
             path="profile/:id"
             element={
-              // <SingleProfilePage />
               <PrivateRoute>
                 <SingleProfilePage />
               </PrivateRoute>
@@ -59,14 +46,14 @@ function App() {
           <Route
             path="settings"
             element={
-              <SettingsPage />
               // <PrivateRoute>
-              //   <SettingsPage />
+                <SettingsPage />
               // </PrivateRoute>
             }
           />
         </Route>
 
+        {/* Routes outside the main layout */}
         <Route
           path="/dashboard"
           element={
@@ -75,13 +62,11 @@ function App() {
             </PrivateRoute>
           }
         />
-
-        {/* These routes don't use the main layout */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
-}
+};
 
 export default App;

@@ -250,7 +250,7 @@ const Login = () => {
           <p className="text-gray-600 text-sm">
             Don't have an account?{" "}
             <Link
-              to="/register"
+              to={redirectPath ? `/register?redirect=${redirectPath}` : "/register"}
               className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition-colors">
               Create account
             </Link>

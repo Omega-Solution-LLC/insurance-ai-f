@@ -13,10 +13,13 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [formErrors, setFormErrors] = useState({});
+  const [serverError, setServerError] = useState(""); // New state for backend error
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/wizard";
+  const queryParams = new URLSearchParams(location.search);
+  const redirectPath = queryParams.get('redirect');
+  
   const [addRegister, { isLoading }] = useAddRegisterMutation();
 
   const handleChange = (e) => {
@@ -31,6 +34,10 @@ const Register = () => {
         ...formErrors,
         [name]: "",
       });
+    }
+
+    if (serverError) {
+      setServerError(""); // Clear server error if user starts typing
     }
   };
 
@@ -67,13 +74,20 @@ const Register = () => {
     if (!validateForm()) return;
 
     try {
-      // const { confirmPassword, ...dataToSubmit } = registerData;
       const resp = await addRegister(registerData);
+
       if (resp?.data) {
-        navigate("/login");
+        if (redirectPath) {
+          navigate(`/login?redirect=${redirectPath}`);
+        } else {
+          navigate("/login");
+        }
+      } else if (resp?.error?.data?.error) {
+        setServerError(resp.error.data.error); // Set server error from backend
       }
     } catch (error) {
       console.error("Registration failed:", error);
+      setServerError("An unexpected error occurred. Please try again.");
     }
   };
 
@@ -87,8 +101,15 @@ const Register = () => {
           <p className="text-gray-600">Create your account to get started</p>
         </div>
 
+      {/* Server Error Message */}
+      {serverError && (
+          <div className="text-rose-500 text-center my-4 text-sm">
+            {serverError}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label
                 htmlFor="firstName"
@@ -318,9 +339,7 @@ const Register = () => {
               </span>
             )}
           </div>
-
           <button
-            onClick={handleSubmit}
             type="submit"
             className={`w-full py-3.5 px-4 rounded-xl font-medium text-white shadow-md cursor-pointer ${
               isLoading
@@ -341,11 +360,13 @@ const Register = () => {
                     cy="12"
                     r="10"
                     stroke="currentColor"
-                    strokeWidth="4"></circle>
+                    strokeWidth="4">
+                  </circle>
                   <path
                     className="opacity-75"
                     fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                  </path>
                 </svg>
                 Creating Account...
               </div>
@@ -354,6 +375,8 @@ const Register = () => {
             )}
           </button>
         </form>
+
+      
 
         <div className="mt-8 text-center">
           <p className="text-gray-600 text-sm">

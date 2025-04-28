@@ -12,10 +12,19 @@ const nameRender = (data) => {
 export const documentsApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getDocument: builder.query({
+      query: ({ id, arg }) => {
+        const query = queryGenerator(arg, false);
+        return {
+          url: `insurance/customer/${id}?${query}`,
+        };
+      },
+      providesTags: ["Documents"],
+    }),
+    getDocumentInsurance: builder.query({
       query: (id) => ({
         url: `insurance/${id}`,
       }),
-      providesTags: ["Documents"],
+      providesTags: ["Insurance"],
     }),
     getDocuments: builder.query({
       query: (id) => ({
@@ -56,7 +65,7 @@ export const documentsApi = apiSlice.injectEndpoints({
           );
         }
       },
-      invalidatesTags: ["Documents", "DocumentsAll", "Lead"],
+      invalidatesTags: ["Documents", "DocumentsAll", "Insurance"],
     }),
 
     deleteDocument: builder.mutation({
@@ -76,7 +85,54 @@ export const documentsApi = apiSlice.injectEndpoints({
           toastHandler("Something went wrong, Please try again", "warning");
         }
       },
-      invalidatesTags: ["Documents", "DocumentsAll", "Document", "Lead"],
+      invalidatesTags: ["Documents", "DocumentsAll", "Document", "Insurance"],
+    }),
+
+    updateDocumentInsurance: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `insurance/${id}`,
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        body: data,
+      }),
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          toastHandler("Template updated successfully", "success");
+        } catch (err) {
+          toastHandler(
+            err?.error?.data?.error || "Something went wrong, Please try again",
+            "warning"
+          );
+        }
+      },
+      invalidatesTags: ["Documents", "DocumentsAll", "Insurance"],
+    }),
+    updateInsurance: builder.mutation({
+      query: ({ id, customerId }) => ({
+        url: `insurance/${id}`,
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        body: { customerId },
+      }),
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          toastHandler("Template updated successfully", "success");
+        } catch (err) {
+          toastHandler(
+            err?.error?.data?.error || "Something went wrong, Please try again",
+            "warning"
+          );
+        }
+      },
+      invalidatesTags: ["Documents", "DocumentsAll", "Insurance"],
     }),
   }),
 });
@@ -87,4 +143,7 @@ export const {
   useGetDocumentQuery,
   useGetDocumentsQuery,
   useGetDocumentsPaginatedQuery,
+  useGetDocumentInsuranceQuery,
+  useUpdateDocumentInsuranceMutation,
+  useUpdateInsuranceMutation,
 } = documentsApi;

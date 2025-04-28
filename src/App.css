@@ -40,3 +40,89 @@
 .read-the-docs {
   color: #888;
 }
+
+.ant-table {
+  color: var(--text) !important;
+}
+
+.ant-table-cell-row-hover {
+  background-color: var(--table-cell-row-hover) !important;
+}
+
+.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead {
+  background-color: var(--table-head) !important;
+}
+
+:is(
+    .recent
+      .ant-table
+      .ant-table-container
+      .ant-table-content
+      table
+      thead.ant-table-thead
+  ) {
+  background-color: #fafafa !important;
+  color: black !important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: var(--table-head) !important;
+  padding-top: 0.6rem !important;
+  padding-bottom: 0.6rem !important;
+}
+
+:is(.recent .ant-table-thead > tr > th) {
+  background-color: #fafafa !important;
+  color: black !important;
+}
+
+.ant-table-tbody > tr > .ant-table-cell {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+}
+
+.card-header {
+  background-color: var(--bg) !important;
+}
+
+.card-header > div > h5 {
+  color: var(--text) !important;
+}
+
+.table-responsive > h5 {
+  color: var(--text) !important;
+}
+
+.report-section-table,
+.detail-account-table {
+  color: var(--text) !important;
+}
+
+.report-section-table h5,
+.detail-account-table h5 {
+  color: var(--text) !important;
+}
+
+.report-section-table thead,
+.detail-account-table thead {
+  background-color: var(--table-head) !important;
+}
+
+.report-section-table thead th,
+.detail-account-table thead th {
+  background-color: var(--table-head) !important;
+}
+
+.table-hover {
+  color: var(--text) !important;
+}
+
+:where(.listPrint)
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  table
+  thead.ant-table-thead {
+  background-color: black !important;
+  color: white !important;
+}

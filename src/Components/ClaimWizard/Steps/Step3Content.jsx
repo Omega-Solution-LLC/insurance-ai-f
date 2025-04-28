@@ -1,6 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 const Step3Content = ({ handleContinue, handleBack, aiData }) => {
+  const isLogged = localStorage.getItem("isLogged");
+  const navigate = useNavigate();
+  const handleGenerate = () => {
+    // isLogged ? handleContinue : <Navigate to="/login" />;
+    if (isLogged) {
+      handleContinue();
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className="rounded-3xl p-6 mb-12">
       <div className="pt-3">
@@ -205,7 +217,7 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
           Back
         </button>
         <button
-          onClick={handleContinue}
+          onClick={handleGenerate}
           className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group">
           <svg
             xmlns="http://www.w3.org/2000/svg"

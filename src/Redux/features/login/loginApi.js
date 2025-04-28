@@ -44,7 +44,7 @@ export const loginApi = apiSlice.injectEndpoints({
         body: values,
       }),
 
-      async onQueryStarted(arg, { queryFulfilled }) {
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           await queryFulfilled;
           const { data } = await queryFulfilled;
@@ -55,6 +55,15 @@ export const loginApi = apiSlice.injectEndpoints({
           localStorage.setItem("roleId", data.roleId);
           localStorage.setItem("isLogged", true);
           localStorage.setItem("role", data.role?.name);
+          const applicationId = localStorage.getItem("applicationId");
+          if (applicationId) {
+            await dispatch(
+              apiSlice.endpoints.updateInsurance.initiate({
+                id: applicationId,
+                customerId: data.id,
+              })
+            );
+          }
           toastHandler("Login added successfully", "success");
         } catch (err) {
           toastHandler(

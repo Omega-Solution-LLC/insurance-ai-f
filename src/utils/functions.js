@@ -1,4 +1,6 @@
+import clsx from "clsx";
 import toast from "react-hot-toast";
+import { twMerge } from "tailwind-merge";
 
 export function toastHandler(message, status) {
   if (status === "warning") {
@@ -6,4 +8,8 @@ export function toastHandler(message, status) {
   } else if (status === "success") {
     toast.success(message);
   }
+}
+
+export function cn(...inputs) {
+  return twMerge(clsx(inputs));
 }

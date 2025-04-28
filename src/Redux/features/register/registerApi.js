@@ -49,12 +49,7 @@ export const registerApi = apiSlice.injectEndpoints({
         try {
           await queryFulfilled;
           const { data } = await queryFulfilled;
-          localStorage.setItem("access-token", data.token);
-          localStorage.setItem("role", data.role);
-          localStorage.setItem("user", nameRender(data));
-          localStorage.setItem("id", data.id);
-          localStorage.setItem("isLogged", true);
-          localStorage.setItem("role", data.role?.name);
+
           toastHandler("Registration successful!", "success");
         } catch (err) {
           toastHandler(

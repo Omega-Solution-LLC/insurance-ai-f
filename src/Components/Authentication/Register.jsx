@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAddRegisterMutation } from "../../Redux/features/register/registerApi";
 
 const Register = () => {
@@ -18,13 +18,6 @@ const Register = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || "/wizard";
   const [addRegister, { isLoading }] = useAddRegisterMutation();
-
-  // Check if user is already logged in
-  useEffect(() => {
-    if (localStorage.getItem("isLogged")) {
-      navigate("/");
-    }
-  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,10 +39,6 @@ const Register = () => {
 
     if (!registerData.firstName) {
       errors.firstName = "First name is required";
-    }
-
-    if (!registerData.lastName) {
-      errors.lastName = "Last name is required";
     }
 
     if (!registerData.email) {
@@ -81,8 +70,7 @@ const Register = () => {
       // const { confirmPassword, ...dataToSubmit } = registerData;
       const resp = await addRegister(registerData);
       if (resp?.data) {
-        localStorage.setItem("isLogged", "true");
-        navigate(from, { replace: true });
+        navigate("/login");
       }
     } catch (error) {
       console.error("Registration failed:", error);
@@ -90,7 +78,7 @@ const Register = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 px-4 py-6 font-sans">
+    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 px-4 py-6 font-sans pt-20">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl w-full max-w-xl p-8 md:p-10 transition-all duration-300 hover:shadow-2xl">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 mb-3">
@@ -176,11 +164,6 @@ const Register = () => {
                   } focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all`}
                 />
               </div>
-              {formErrors.lastName && (
-                <span className="text-red-500 text-xs mt-1.5 block">
-                  {formErrors.lastName}
-                </span>
-              )}
             </div>
           </div>
 
@@ -375,11 +358,11 @@ const Register = () => {
         <div className="mt-8 text-center">
           <p className="text-gray-600 text-sm">
             Already have an account?{" "}
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition-colors">
               Sign in
-            </a>
+            </Link>
           </p>
         </div>
       </div>

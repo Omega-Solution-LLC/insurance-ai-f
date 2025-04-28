@@ -1,10 +1,24 @@
 import { Editor } from "primereact/editor";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const QuillEditor = ({ text, setText, minHeight, className = "" }) => {
+  const [isChanged, setIsChanged] = useState(false);
+  const [initialText, setInitialText] = useState("");
+
+  // Set initial text when component mounts or text prop changes
+  useEffect(() => {
+    if (text && !initialText) {
+      setInitialText(text);
+    }
+  }, [text]);
+
   // Handle text change
   const handleTextChange = (e) => {
-    setText(e.htmlValue);
+    const newText = e.htmlValue;
+    setText(newText);
+
+    // Check if content has changed from initial state
+    setIsChanged(initialText !== newText);
   };
 
   // Full toolbar configuration

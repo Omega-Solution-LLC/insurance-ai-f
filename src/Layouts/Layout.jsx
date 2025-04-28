@@ -1,16 +1,11 @@
 import React from "react";
-import { Outlet, useLocation } from "react-router";
-import HomePage from "../Components/HomePage/HomePage";
+import { Outlet } from "react-router";
 import Navbar from "../Components/Navbar/Navbar";
 
 const Layout = () => {
-  const location = useLocation();
-  const isHomePage = location.pathname === "/";
-
   return (
     <div>
       <Navbar />
-      {isHomePage && <HomePage />}
       <Outlet />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StepIndicator from "./StepIndicator";
 import Page1Content from "./Steps/Step1Content";
@@ -74,9 +74,10 @@ export default function ClaimApplication() {
   }, [aiData?.id]);
   return (
     <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10" />
-      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2" />
+      {/* Set negative z-index for decorative background elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20 z-[-1]" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10 z-[-1]" />
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2 z-[-1]" />
 
       <div className="max-w-[600px] mx-auto mt-20">
         <StepIndicator currentStep={currentStep} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
@@ -10,6 +10,11 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const isLogged = localStorage.getItem("isLogged");
+
+  const handleRedirect = () => {
+    navigate("/application");
+    window.scrollTo(0, 0);
+  };
   return (
     <>
       <Navbar />
@@ -44,7 +49,7 @@ export default function HomePage() {
               </p>
 
               <button
-                onClick={() => navigate("/application")}
+                onClick={handleRedirect}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 className="space-x-2 bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out">
@@ -226,7 +231,7 @@ export default function HomePage() {
               making it faster and easier than ever.
             </p>
             <button
-              onClick={() => navigate("/application")}
+              onClick={handleRedirect}
               className="bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out font-medium">
               Get Started Now
             </button>

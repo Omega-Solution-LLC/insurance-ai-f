@@ -43,7 +43,7 @@ const SectionCard = ({ title, icon, children, defaultOpen = false }) => {
   return (
     <div
       onClick={() => setIsOpen(!isOpen)}
-      className="bg-white rounded-lg shadow-md mb-4 overflow-hidden cursor-pointer">
+      className="bg-white rounded-lg shadow-md mb-4 overflow-hidden cursor-pointer z-[999]">
       <div className="p-4 flex justify-between items-center cursor-pointer">
         <div className="flex items-center">
           <div className="bg-blue-100 p-2 rounded-full mr-3">{icon}</div>
@@ -194,10 +194,11 @@ export default function InsuranceDetailPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden py-6 pt-24">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10" />
-      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2" />
-      <div className="max-w-6xl mx-auto px-4">
+      {/* Lower the z-index of the decorative elements to ensure they don't interfere with interactive elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20 z-[-1]" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-100 rounded-full opacity-30 -mb-20 -ml-10 z-[-1]" />
+      <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2 z-[-1]" />
+      <div className="max-w-6xl mx-auto px-4 relative z-[1]">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
@@ -449,11 +450,15 @@ export default function InsuranceDetailPage() {
                   <FiSave /> {isSaving ? "Saving..." : "Save"}
                 </button>
 
-                <EmailTemplatePrint htmlString={text} />
+                <EmailTemplatePrint htmlString={applicationTemplatePreview} />
                 <EmailTemplateDownloader
-                  htmlString={text}
+                  htmlString={applicationTemplatePreview}
                   isSinglePage={true}
                 />
+                <button
+                  className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium cursor-pointer bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white  transition-all duration-300 shadow-lg hover:shadow-xl`}>
+                  Send Email
+                </button>
               </div>
             </div>
           </>

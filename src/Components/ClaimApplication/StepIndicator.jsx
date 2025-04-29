@@ -1,5 +1,3 @@
-import React from "react";
-
 const StepIndicator = ({ currentStep }) => {
   const steps = ["Describe", "Upload", "Results", "Letter"];
 
@@ -19,7 +17,7 @@ const StepIndicator = ({ currentStep }) => {
             <div className="mt-2 text-sm text-center">{step}</div>
             {index < steps.length - 1 && (
               <div
-                className={`absolute top-5 -right-1/2 h-[2px] w-[100%] -z-10 `}
+                className={`absolute top-5 -right-1/2 h-[2px] w-[100%] -z-[1] `}
               />
             )}
           </div>

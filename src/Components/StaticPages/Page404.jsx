@@ -1,0 +1,27 @@
+const Page404 = () => {
+  return (
+    <center className="center">
+      <section className="py-[40px] bg-white">
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-12 ">
+              <div className="col-sm-10 col-sm-offset-1  text-center">
+                <div className="bg-[url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif)] h-[500px] bg-center bg-no-repeat ">
+                  <h1 className="text-center text-[80px]">404</h1>
+                </div>
+
+                <div className="-mt-[50px]">
+                  <h3 className="h2">Look like you&apos;re lost !</h3>
+
+                  <p>The page you are looking for not available!</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </center>
+  );
+};
+
+export default Page404;

@@ -1,29 +1,31 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Layout from "./Layouts/Layout";
-import HomePage from "./Components/HomePage/HomePage";
-import ClaimWizard from "./Components/ClaimWizard/ClaimWizard";
-import ProfilePage from "./Components/Profile/ProfilePage";
-import SingleProfilePage from "./Components/Profile/SingleProfilePage";
-import SettingsPage from "./Components/Profile/SettingsPage";
-import Dashboard from "./Components/Dashboard/Dashboard";
-import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import { Toaster } from "react-hot-toast";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./Components/Authentication/Login";
 import Register from "./Components/Authentication/Register";
-
+import ClaimApplication from "./Components/ClaimApplication/ClaimApplication";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import HomePage from "./Components/HomePage/HomePage";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
+import ProfilePage from "./Components/Profile/ProfilePage";
+import SettingsPage from "./Components/Profile/SettingsPage";
+import SingleProfilePage from "./Components/Profile/SingleProfilePage";
+import Page404 from "./Components/StaticPages/Page404";
+import Layout from "./Layouts/Layout";
 
 const App = () => {
   return (
     <Router>
+      <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         {/* Main layout routes */}
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route
-            path="wizard"
+            path="application"
             element={
               // <PrivateRoute>
-                <ClaimWizard />
+              <ClaimApplication />
               // </PrivateRoute>
             }
           />
@@ -47,12 +49,13 @@ const App = () => {
             path="settings"
             element={
               // <PrivateRoute>
-                <SettingsPage />
+              <SettingsPage />
               // </PrivateRoute>
             }
           />
         </Route>
 
+        <Route path="/*" element={<Page404 />} />
         {/* Routes outside the main layout */}
         <Route
           path="/dashboard"
@@ -62,6 +65,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

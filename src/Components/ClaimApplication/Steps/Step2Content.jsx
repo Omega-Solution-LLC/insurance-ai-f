@@ -14,6 +14,7 @@ const Step2Content = ({
   const [dragActive, setDragActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileSelected, setFileSelected] = useState([]);
+  const [error, setError] = useState("");
   const customerId = localStorage.getItem("id");
 
   const handleDrag = (e) => {
@@ -62,6 +63,14 @@ const Step2Content = ({
 
   const [addDocuments, { isLoading }] = useAddDocumentMutation();
   const handleSubmit = async () => {
+    // Validate if files are attached
+    if (fileSelected.length === 0 || uploadedFiles.length === 0) {
+      setError("Please upload at least one document to continue");
+      return;
+    }
+
+    setError(""); // Clear any previous errors
+
     try {
       setIsSubmitting(true);
       const formDataToSubmit = new FormData();
@@ -234,6 +243,10 @@ const Step2Content = ({
               ))}
             </ul>
           </div>
+        )}
+
+        {error && (
+          <div className="mt-4 text-red-500 text-sm text-center">{error}</div>
         )}
 
         <div className="flex justify-between mt-8">

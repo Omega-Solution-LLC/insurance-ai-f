@@ -1,4 +1,4 @@
-import { toastHandler } from "../../../utils/functions";
+import toast from "react-hot-toast";
 import queryGenerator from "../../../utils/queryGenerator";
 import { apiSlice } from "../apiSlice/apiSlice";
 
@@ -47,6 +47,8 @@ export const loginApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           await queryFulfilled;
+
+          toast.success("successfully Logged in");
           const { data } = await queryFulfilled;
           localStorage.setItem("access-token", data.token);
           localStorage.setItem("role", data.role);
@@ -64,11 +66,9 @@ export const loginApi = apiSlice.injectEndpoints({
               })
             );
           }
-          toastHandler("Login added successfully", "success");
         } catch (err) {
-          toastHandler(
-            err?.error?.data?.error || "Something went wrong, Please try again",
-            "warning"
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
           );
         }
       },
@@ -87,9 +87,11 @@ export const loginApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toastHandler(`Login deleted Successfully`, "success");
+          toast.success(`Login deleted Successfully`);
         } catch (err) {
-          toastHandler("Something went wrong, Please try again", "warning");
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
+          );
         }
       },
       invalidatesTags: ["Logins", "LoginsAll", "Login", "Lead"],

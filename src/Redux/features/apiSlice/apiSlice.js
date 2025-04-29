@@ -14,29 +14,29 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReAuth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  // if (result.error && result.error.status === 401) {
-  //   try {
-  //     const refreshResult = await baseQuery(
-  //       `/user/refresh-token`,
-  //       api,
-  //       extraOptions
-  //     );
-  //     if (refreshResult.data) {
-  //       localStorage.setItem("access-token", refreshResult.data.token);
+  if (result.error && result.error.status === 401) {
+    try {
+      const refreshResult = await baseQuery(
+        `/user/refresh-token`,
+        api,
+        extraOptions
+      );
+      if (refreshResult.data) {
+        localStorage.setItem("access-token", refreshResult.data.token);
 
-  //       result = await baseQuery(args, api, extraOptions);
-  //     } else {
-  //       localStorage.clear();
-  //       window.location.replace("/");
-  //       return undefined;
-  //     }
-  //   } catch (error) {
-  //     console.error("Error refreshing token:", error);
-  //     localStorage.clear();
-  //     window.location.replace("/");
-  //     return undefined;
-  //   }
-  // }
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        localStorage.clear();
+        window.location.replace("/");
+        return undefined;
+      }
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      localStorage.clear();
+      window.location.replace("/");
+      return undefined;
+    }
+  }
   return result;
 };
 

@@ -12,7 +12,7 @@ const Navbar = () => {
   const isLogged = localStorage.getItem("isLogged");
   const id = localStorage.getItem("id");
 
-  const { data: userData, isLoading } = useGetCustomerQuery(id);
+  const { data: userData, isLoading } = useGetCustomerQuery(id, { skip: !id });
 
   // Handle scroll effect for navbar background
   useEffect(() => {
@@ -90,7 +90,7 @@ const Navbar = () => {
 
             {isLogged && (
               <Link
-                to="/wizard"
+                to="/application"
                 className="text-gray-700 hover:text-indigo-600 transition  py-2">
                 Generate New
               </Link>

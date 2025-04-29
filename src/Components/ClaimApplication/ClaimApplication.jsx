@@ -7,7 +7,7 @@ import Page2Content from "./Steps/Step2Content";
 import Page3Content from "./Steps/Step3Content";
 import Page4Content from "./Steps/Step4Content";
 
-export default function ClaimWizard() {
+export default function ClaimApplication() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
 

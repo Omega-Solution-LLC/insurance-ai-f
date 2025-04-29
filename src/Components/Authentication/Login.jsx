@@ -13,17 +13,17 @@ const Login = () => {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const redirectPath = queryParams.get('redirect');
+  const redirectPath = queryParams.get("redirect");
 
   const navigate = useNavigate();
 
-  const from = location.state?.from?.pathname || "/wizard";
+  const from = location.state?.from?.pathname || "/application";
   const [addLogin, { isLoading }] = useAddLoginMutation();
 
   // Check if user is already logged in
   useEffect(() => {
     if (localStorage.getItem("isLogged")) {
-        navigate("/");
+      navigate("/");
     }
   }, [navigate]);
 
@@ -70,9 +70,9 @@ const Login = () => {
       if (resp?.data) {
         localStorage.setItem("isLogged", "true");
         // navigate(from, { replace: true });
-        if(redirectPath) {
+        if (redirectPath) {
           navigate(`/profile/${redirectPath}`);
-        }else{
+        } else {
           navigate("/dashboard");
         }
       }
@@ -250,7 +250,11 @@ const Login = () => {
           <p className="text-gray-600 text-sm">
             Don't have an account?{" "}
             <Link
-              to={redirectPath ? `/register?redirect=${redirectPath}` : "/register"}
+              to={
+                redirectPath
+                  ? `/register?redirect=${redirectPath}`
+                  : "/register"
+              }
               className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition-colors">
               Create account
             </Link>

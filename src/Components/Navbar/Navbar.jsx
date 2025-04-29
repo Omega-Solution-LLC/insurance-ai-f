@@ -90,7 +90,7 @@ const Navbar = () => {
 
             {isLogged && (
               <Link
-                to="/wizard"
+                to="/application"
                 className="text-gray-700 hover:text-indigo-600 transition  py-2">
                 Generate New
               </Link>

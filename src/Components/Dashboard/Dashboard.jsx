@@ -95,7 +95,7 @@ const Dashboard = () => {
             </Link>
             {isLogged && (
               <Link
-                to="/wizard"
+                to="/application"
                 className="text-gray-700 hover:text-indigo-600 transition  py-2">
                 Generate New
               </Link>
@@ -221,7 +221,7 @@ const Dashboard = () => {
 
             {/* Support Card */}
             <Link
-              to="/wizard"
+              to="/application"
               className="flex items-center gap-2  rounded-full px-6 py-2 text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 transition-all">
               <svg
                 className="h-4 w-4 mr-1"

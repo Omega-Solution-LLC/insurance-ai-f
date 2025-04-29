@@ -82,7 +82,10 @@ export const documentsApi = apiSlice.injectEndpoints({
           await queryFulfilled;
           toastHandler(`Document deleted Successfully`, "success");
         } catch (err) {
-          toastHandler("Something went wrong, Please try again", "warning");
+          toastHandler(
+            err?.error?.data?.error || "Something went wrong, Please try again",
+            "warning"
+          );
         }
       },
       invalidatesTags: ["Documents", "DocumentsAll", "Document", "Insurance"],

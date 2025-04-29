@@ -44,7 +44,7 @@ export default function HomePage() {
               </p>
 
               <button
-                onClick={() => navigate("/wizard")}
+                onClick={() => navigate("/application")}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 className="space-x-2 bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out">
@@ -226,7 +226,7 @@ export default function HomePage() {
               making it faster and easier than ever.
             </p>
             <button
-              onClick={() => navigate("/wizard")}
+              onClick={() => navigate("/application")}
               className="bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out font-medium">
               Get Started Now
             </button>

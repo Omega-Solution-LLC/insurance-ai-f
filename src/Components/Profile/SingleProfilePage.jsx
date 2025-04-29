@@ -17,7 +17,7 @@ import {
   useGetDocumentInsuranceQuery,
   useUpdateDocumentInsuranceMutation,
 } from "../../Redux/features/documents/documentsApi";
-import QuillEditor from "../ClaimWizard/Steps/QuillEditor";
+import QuillEditor from "../ClaimApplication/Steps/QuillEditor";
 import EmailTemplateDownloader from "../CommonUI/EmailTemplateDownloader";
 import EmailTemplatePrint from "../CommonUI/EmailTemplatePrint";
 

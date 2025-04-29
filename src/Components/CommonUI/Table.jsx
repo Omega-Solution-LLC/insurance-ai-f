@@ -1,6 +1,5 @@
 import { Popover } from "antd";
 import { BsDatabaseExclamation, BsThreeDots } from "react-icons/bs";
-
 import { cn } from "../../utils/functions";
 import Menu from "./Menu";
 
@@ -14,6 +13,7 @@ const Table = ({
   nestedRowKey,
 }) => {
   let nestedRow = null;
+
   const renderItem = (item, column) => {
     if (column?.key === "action" && column?.render) {
       return (
@@ -22,7 +22,11 @@ const Table = ({
           placement="bottomRight"
           arrow={false}
           trigger="click">
-          <BsThreeDots className="cursor-pointer text-base mr-2" />
+          <div className="flex justify-end">
+            <div className="hover:bg-gray-100 p-1 rounded-lg transition-all">
+              <BsThreeDots className="cursor-pointer text-gray-500 hover:text-gray-600 text-lg" />
+            </div>
+          </div>
         </Popover>
       );
     } else if (
@@ -48,29 +52,24 @@ const Table = ({
   };
 
   return (
-    <div className="tableContainer tableScrollBar overflow-y-auto w-full">
+    <div className="  rounded-lg overflow-hidden bg-white">
       <div
+        className="tableScrollBar overflow-y-auto w-full"
         style={{
           maxHeight: scroll.y ? `${scroll.y}px` : "auto",
         }}>
-        <table
-          className=""
-          style={{
-            width: "100%",
-          }}>
+        <table className="w-full border-collapse">
           <thead
-            className={cn(
-              "font-Popins text-black/70 bg-[#f1f5f9] border-gray-200 sticky top-0 z-10",
-              { [headClass]: headClass }
-            )}>
+            className={cn("font-Popins bg-gray-100 sticky top-0 z-10", {
+              [headClass]: headClass,
+            })}>
             <tr>
               {columns.map((column, index) => (
                 <th
                   key={column.key}
-                  className={`py-[14px] pl-3 text-left whitespace-nowrap tracking-wide ${
-                    index === 0 ? "rounded-tl-lg" : "" // rounded class
-                  } ${index === columns.length - 1 ? "rounded-tr-lg" : ""}`} // rounded class
-                >
+                  className={`py-4 px-4 text-left whitespace-nowrap tracking-wide text-gray-700 font-semibold text-sm border-b border-gray-200 ${
+                    index === 0 ? "rounded-tl-lg" : ""
+                  } ${index === columns.length - 1 ? "rounded-tr-lg" : ""}`}>
                   {column.title || null}
                 </th>
               ))}
@@ -88,6 +87,7 @@ const Table = ({
                 if (isNest) {
                   nestedRow = item[nestedRowKey];
                 }
+
                 let nestContent = null;
                 if (nestedRow) {
                   nestContent = nestedRow.map((nestedItem, nestedIndex) => {
@@ -97,10 +97,10 @@ const Table = ({
                     return (
                       <tr
                         key={nestedIndex}
-                        className={`${
+                        className={`bg-gray-50 hover:bg-gray-50 transition-colors duration-150 ${
                           nestedIndex === nestedRow.length - 1
-                            ? "border-b border-gray-300"
-                            : "border-b border-gray-300"
+                            ? "border-b border-gray-200"
+                            : "border-b border-gray-200"
                         }`}>
                         {columns.map((column) => {
                           if (
@@ -113,9 +113,12 @@ const Table = ({
                             return (
                               <td
                                 key={column.key}
-                                className={cn("py-2 pl-3 whitespace-nowrap", {
-                                  [column.tdClass]: column.tdClass,
-                                })}>
+                                className={cn(
+                                  "py-3 px-4 whitespace-nowrap text-gray-600",
+                                  {
+                                    [column.tdClass]: column.tdClass,
+                                  }
+                                )}>
                                 {renderNestedRow(nestedItem, column)}
                               </td>
                             );
@@ -126,16 +129,16 @@ const Table = ({
                   });
                 }
                 nestedRow = null;
+
                 return (
-                  <tbody
-                    className="bg-tableBg hover:bg-slate-900/10 text-sm text-gray-700 font-medium"
-                    key={index}>
+                  <tbody className="text-sm font-medium" key={index}>
                     <tr
-                      className={cn({
-                        "border-b border-gray-100": index !== data.length - 1,
-                        "border-b border-gray-50":
-                          isNest && index !== data.length - 1,
-                      })}>
+                      className={cn(
+                        "bg-white hover:bg-gray-50 transition-colors duration-150",
+                        {
+                          "border-b border-gray-100": index !== data.length - 1,
+                        }
+                      )}>
                       {columns.map((column, colIndex) => {
                         const isNest = Boolean(
                           nestedRowKey &&
@@ -152,7 +155,7 @@ const Table = ({
                             }
                             key={column.key}
                             className={cn(
-                              "py-2 pl-3 whitespace-nowrap",
+                              "py-4 px-4 whitespace-nowrap text-gray-700",
                               {
                                 "rounded-bl-lg":
                                   index === data.length - 1 && colIndex === 0,
@@ -179,11 +182,14 @@ const Table = ({
           )}
         </table>
         {!data?.length && !loading && (
-          <div
-            colSpan={columns.length}
-            className="flex flex-col justify-center items-center h-full py-10">
-            <BsDatabaseExclamation className="text-slate-200" size={70} />
-            <span className="py-2 text-lg  text-slate-500"> Empty</span>
+          <div className="flex flex-col justify-center items-center h-full py-16">
+            <div className="bg-gray-50 p-6 rounded-full mb-4 border border-gray-100">
+              <BsDatabaseExclamation className="text-gray-300" size={50} />
+            </div>
+            <span className="py-2 text-lg text-gray-400 font-medium">
+              No Data Available
+            </span>
+            <p className="text-gray-400 text-sm">No records found to display</p>
           </div>
         )}
         {loading && <TableLoader length={loadingUiSize} />}
@@ -196,13 +202,17 @@ export default Table;
 
 const TableLoader = ({ length = 3 }) => {
   const loaderArray = Array(length).fill("1");
-  return loaderArray.map((_, index) => (
-    <div
-      key={index}
-      className="w-full flex justify-between px-10 border-b py-2 gap-5">
-      <div className="rounded w-full h-[18px] bg-slate-200 animate-pulse" />
-      <div className="rounded w-full h-[18px] bg-slate-200 animate-pulse" />
-      <div className="rounded w-full h-[18px] bg-slate-200 animate-pulse" />
+  return (
+    <div className="p-4">
+      {loaderArray.map((_, index) => (
+        <div
+          key={index}
+          className="w-full flex justify-between px-4 py-4 gap-5 border-b border-gray-100">
+          <div className="rounded-md w-full h-5 bg-slate-100 animate-pulse" />
+          <div className="rounded-md w-full h-5 bg-slate-100 animate-pulse" />
+          <div className="rounded-md w-full h-5 bg-slate-100 animate-pulse" />
+        </div>
+      ))}
     </div>
-  ));
+  );
 };

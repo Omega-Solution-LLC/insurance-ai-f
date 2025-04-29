@@ -31,7 +31,7 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl font-semibold mb-6 leading-tight">
                 <span className="bg-gradient-to-r from-indigo-600 to-violet-500 text-transparent bg-clip-text">
                   AI-Powered
                 </span>{" "}
@@ -44,7 +44,7 @@ export default function HomePage() {
               </p>
 
               <button
-                onClick={() => navigate("/wizard")}
+                onClick={() => navigate("/application")}
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 className="space-x-2 bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out">
@@ -79,7 +79,7 @@ export default function HomePage() {
                         </div>
                       </div>
 
-                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                      <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
                         AI + Human Expertise
                       </h2>
 
@@ -185,7 +185,7 @@ export default function HomePage() {
                 Simple 3-step process
               </span>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold">How It Works</h2>
+            <h2 className="text-3xl md:text-4xl font-semibold">How It Works</h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
               Our AI-powered system simplifies the insurance claim process so
               you can get back to what matters most.
@@ -200,15 +200,15 @@ export default function HomePage() {
           <div className="max-w-6xl mx-auto px-4 md:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
-                <p className="text-4xl font-bold text-white">93%</p>
+                <p className="text-4xl font-semibold text-white">93%</p>
                 <p className="text-indigo-200 mt-2">Faster Claim Processing</p>
               </div>
               <div className="text-center">
-                <p className="text-4xl font-bold text-white">12,000+</p>
+                <p className="text-4xl font-semibold text-white">12,000+</p>
                 <p className="text-indigo-200 mt-2">Claims Processed</p>
               </div>
               <div className="text-center">
-                <p className="text-4xl font-bold text-white">$2.4M</p>
+                <p className="text-4xl font-semibold text-white">$2.4M</p>
                 <p className="text-indigo-200 mt-2">Saved for Customers</p>
               </div>
             </div>
@@ -218,7 +218,7 @@ export default function HomePage() {
         {/* CTA Section */}
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-20">
           <div className="bg-gradient-to-r from-indigo-50 to-violet-50 rounded-3xl p-8 md:p-16 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6">
               Ready to simplify your insurance claim?
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto mb-8">
@@ -226,7 +226,7 @@ export default function HomePage() {
               making it faster and easier than ever.
             </p>
             <button
-              onClick={() => navigate("/wizard/page1")}
+              onClick={() => navigate("/application")}
               className="bg-gradient-to-r cursor-pointer from-indigo-600 to-violet-500 hover:from-indigo-700 hover:to-violet-600 text-white px-8 py-4 rounded-xl shadow-lg transition-all duration-300 ease-in-out font-medium">
               Get Started Now
             </button>

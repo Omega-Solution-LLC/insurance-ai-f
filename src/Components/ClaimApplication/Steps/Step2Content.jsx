@@ -14,6 +14,7 @@ const Step2Content = ({
   const [dragActive, setDragActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileSelected, setFileSelected] = useState([]);
+  const [error, setError] = useState("");
   const customerId = localStorage.getItem("id");
 
   const handleDrag = (e) => {
@@ -62,6 +63,14 @@ const Step2Content = ({
 
   const [addDocuments, { isLoading }] = useAddDocumentMutation();
   const handleSubmit = async () => {
+    // Validate if files are attached
+    if (fileSelected.length === 0 || uploadedFiles.length === 0) {
+      setError("Please upload at least one document to continue");
+      return;
+    }
+
+    setError(""); // Clear any previous errors
+
     try {
       setIsSubmitting(true);
       const formDataToSubmit = new FormData();
@@ -90,23 +99,23 @@ const Step2Content = ({
   return (
     <div className="rounded-3xl p-6 mb-12">
       <div className="pt-3">
-        <h1 className="text-center text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        <h1 className="text-center text-3xl font-semibold mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
           Upload Your Policy
         </h1>
-        <p className="text-center text-gray-400 mb-8 max-w-lg mx-auto">
+        <p className="text-center text-gray-400 mb-8 max-w-lg mx-auto text-sm">
           We'll analyze your policy documents to provide personalized advice
           tailored to your coverage
         </p>
       </div>
 
-      <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100">
-        <div className="mb-8 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-5 border border-blue-100">
+      <div className=" shadow-xl p-6 md:p-8 rounded-2xl ">
+        <div className="mb-8 rounded-xl p-5 bg-gray-50 ">
           <div className="flex items-start gap-3">
-            <div className="text-blue-500 bg-white p-2 rounded-full shadow-sm mt-1">
+            <div className="text-purple-500 bg-white p-2 rounded-full shadow-sm mt-1">
               <FileTextIcon />
             </div>
             <div>
-              <h4 className="text-blue-700 font-medium">Privacy Guarantee</h4>
+              <h4 className="text-gray-700 ">Privacy Guarantee</h4>
               <p className="text-gray-600 mt-1 text-sm">
                 Your documents are analyzed using secure encryption and won't be
                 stored longer than needed to process your claim assistance. We
@@ -164,7 +173,7 @@ const Step2Content = ({
               />
               <button
                 onClick={() => document.getElementById("file-upload").click()}
-                className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
+                className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
                 Browse Files
               </button>
             </div>
@@ -236,6 +245,10 @@ const Step2Content = ({
           </div>
         )}
 
+        {error && (
+          <div className="mt-4 text-red-500 text-sm text-center">{error}</div>
+        )}
+
         <div className="flex justify-between mt-8">
           <button
             onClick={handleBack}
@@ -258,7 +271,7 @@ const Step2Content = ({
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className={`bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group cursor-pointer ${
+            className={`bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group cursor-pointer ${
               isSubmitting ? "opacity-70 cursor-not-allowed" : ""
             }`}>
             {isSubmitting ? "Submitting..." : "Continue"}

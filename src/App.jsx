@@ -1,69 +1,76 @@
+import React from "react";
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./Components/Authentication/Login";
 import Register from "./Components/Authentication/Register";
-import ClaimWizard from "./Components/ClaimWizard/ClaimWizard";
+import ClaimApplication from "./Components/ClaimApplication/ClaimApplication";
+import Dashboard from "./Components/Dashboard/Dashboard";
+import HomePage from "./Components/HomePage/HomePage";
+import PrivateRoute from "./Components/PrivateRoute/PrivateRoute";
 import ProfilePage from "./Components/Profile/ProfilePage";
 import SettingsPage from "./Components/Profile/SettingsPage";
-import SingleProfilePage from "./Components/Profile/SingleProfilePage.jsx";
-import Layout from "./Layouts/Layout.jsx";
+import SingleProfilePage from "./Components/Profile/SingleProfilePage";
+import Page404 from "./Components/StaticPages/Page404";
+import Layout from "./Layouts/Layout";
 
-function App() {
+const App = () => {
   return (
-    <BrowserRouter>
+    <Router>
       <Toaster position="top-center" reverseOrder={false} />
-
       <Routes>
+        {/* Main layout routes */}
         <Route path="/" element={<Layout />}>
-          {/* Index route that renders nothing but allows HomePage to be shown */}
-          <Route index element={<div></div>} />
-
-          {/* Nested routes will render inside the Layout's Outlet */}
+          <Route index element={<HomePage />} />
           <Route
-            path="wizard"
+            path="application"
             element={
               // <PrivateRoute>
-              //   <ClaimWizard />
+              <ClaimApplication />
               // </PrivateRoute>
-              <ClaimWizard />
             }
           />
           <Route
             path="profile"
             element={
-              <ProfilePage />
-              // <PrivateRoute>
-              //   <ProfilePage />
-              // </PrivateRoute>
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
             }
           />
           <Route
             path="profile/:id"
             element={
-              <SingleProfilePage />
-              // <PrivateRoute>
-              //   <SingleProfilePage />
-              // </PrivateRoute>
+              <PrivateRoute>
+                <SingleProfilePage />
+              </PrivateRoute>
             }
           />
           <Route
             path="settings"
             element={
-              <SettingsPage />
               // <PrivateRoute>
-              //   <SettingsPage />
+              <SettingsPage />
               // </PrivateRoute>
             }
           />
         </Route>
 
-        {/* These routes don't use the main layout */}
+        <Route path="/*" element={<Page404 />} />
+        {/* Routes outside the main layout */}
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
-}
+};
 
 export default App;

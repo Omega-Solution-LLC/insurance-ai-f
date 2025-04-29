@@ -9,17 +9,17 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
     if (isLogged) {
       handleContinue();
     } else {
-      navigate("/login");
+      navigate(`/login?redirect=${aiData.id}`);
     }
   };
 
   return (
     <div className="rounded-3xl p-6 mb-12">
       <div className="pt-3">
-        <h2 className="text-3xl font-bold text-center mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+        <h2 className="text-3xl font-semibold text-center mb-4 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
           Here's What We Found
         </h2>
-        <p className="text-gray-400 text-center mb-10">
+        <p className="text-gray-400 text-center mb-10 text-sm">
           Based on your situation and policy details, we've analyzed your
           coverage
         </p>
@@ -28,7 +28,7 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
       <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100">
         {/* Out-of-Pocket Estimate Section */}
         <div className="mb-10">
-          <h3 className="text-xl font-semibold mb-5 flex items-center">
+          <h3 className="text-xl  mb-5 flex items-center">
             <span className="bg-green-100 p-2 rounded-full text-green-600 mr-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +66,7 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
               <span className="font-medium text-gray-800">
                 Estimated Responsibility
               </span>
-              <span className="font-bold text-emerald-700 bg-white px-4 py-1 rounded-full shadow-sm">
+              <span className="font-semibold text-emerald-700 bg-white px-4 py-1 rounded-full shadow-sm">
                 $
                 {aiData?.insuranceOutOfPocketEstimate?.[0]
                   ?.estimateResponsibility || 0}
@@ -77,7 +77,7 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
 
         {/* Key Policy Coverage Section */}
         <div className="mb-10">
-          <h3 className="text-xl font-semibold mb-5 flex items-center">
+          <h3 className="text-xl  mb-5 flex items-center">
             <span className="bg-blue-100 p-2 rounded-full text-blue-600 mr-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -218,7 +218,7 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
         </button>
         <button
           onClick={handleGenerate}
-          className="bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group cursor-pointer">
+          className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 px-8 rounded-full font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center group cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-5 w-5 mr-2"

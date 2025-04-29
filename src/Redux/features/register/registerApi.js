@@ -1,4 +1,4 @@
-import { toastHandler } from "../../../utils/functions";
+import toast from "react-hot-toast";
 import { apiSlice } from "../apiSlice/apiSlice";
 
 // Helper function to render user name
@@ -26,9 +26,9 @@ export const registerApi = apiSlice.injectEndpoints({
           const { data } = await queryFulfilled;
           localStorage.clear();
           window.location.href = "/supervision-panel-7834";
-          toastHandler("LogOut Successfully Done", "success");
+          toast.success("LogOut Successfully Done");
         } catch (err) {
-          toastHandler("Logout failed", "error");
+          toast.error("Logout failed");
         }
       },
       invalidatesTags: ["Logins"],
@@ -50,11 +50,10 @@ export const registerApi = apiSlice.injectEndpoints({
           await queryFulfilled;
           const { data } = await queryFulfilled;
 
-          toastHandler("Registration successful!", "success");
+          toast.success("Registration successful!");
         } catch (err) {
-          toastHandler(
-            err?.error?.data?.error || "Something went wrong, Please try again",
-            "warning"
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
           );
         }
       },

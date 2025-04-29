@@ -11,17 +11,14 @@ const Login = () => {
 
   const [formErrors, setFormErrors] = useState({});
 
-  const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/wizard";
-  const [addLogin, { isLoading }] = useAddLoginMutation();
+  const queryParams = new URLSearchParams(location.search);
+  const redirectPath = queryParams.get("redirect");
 
-  // Check if user is already logged in
-  useEffect(() => {
-    if (localStorage.getItem("isLogged")) {
-      navigate("/");
-    }
-  }, [navigate]);
+  const navigate = useNavigate();
+
+  const from = location.state?.from?.pathname || "/application";
+  const [addLogin, { isLoading }] = useAddLoginMutation();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -66,18 +63,29 @@ const Login = () => {
       if (resp?.data) {
         localStorage.setItem("isLogged", "true");
         // navigate(from, { replace: true });
-        navigate("/profile");
+        if (redirectPath) {
+          navigate(`/profile/${redirectPath}`);
+        } else {
+          navigate("/dashboard");
+        }
       }
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
 
+  // Check if user is already logged in
+  useEffect(() => {
+    if (localStorage.getItem("isLogged")) {
+      navigate("/");
+    }
+  }, [navigate]);
+
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 px-4 py-6 font-sans pt-20">
       <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-xl w-full max-w-xl p-8 md:p-10 transition-all duration-300 hover:shadow-2xl">
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 mb-3">
+          <h1 className="text-3xl md:text-4xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600 mb-3">
             Welcome Back
           </h1>
           <p className="text-gray-600">Sign in to continue your journey</p>
@@ -242,7 +250,11 @@ const Login = () => {
           <p className="text-gray-600 text-sm">
             Don't have an account?{" "}
             <Link
-              to="/register"
+              to={
+                redirectPath
+                  ? `/register?redirect=${redirectPath}`
+                  : "/register"
+              }
               className="text-indigo-600 font-medium hover:text-indigo-800 hover:underline transition-colors">
               Create account
             </Link>

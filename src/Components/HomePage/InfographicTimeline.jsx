@@ -41,7 +41,7 @@ export default function InfographicTimeline() {
                   STEP 01
                 </span>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-800">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">
                 Describe Your Case
               </h3>
               <p className="text-gray-600">
@@ -69,7 +69,7 @@ export default function InfographicTimeline() {
                   STEP 02
                 </span>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-800">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">
                 Upload Policy
               </h3>
               <p className="text-gray-600">
@@ -97,7 +97,7 @@ export default function InfographicTimeline() {
                   STEP 03
                 </span>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-800">
+              <h3 className="text-xl font-semibold mb-3 text-gray-800">
                 Get Expert Guidance
               </h3>
               <p className="text-gray-600">
@@ -210,7 +210,7 @@ export default function InfographicTimeline() {
                   STEP 01
                 </span>
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-800">
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">
                 Describe Your Case
               </h3>
               <p className="text-gray-600 text-sm">
@@ -238,7 +238,7 @@ export default function InfographicTimeline() {
                   STEP 02
                 </span>
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-800">
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">
                 Upload Policy
               </h3>
               <p className="text-gray-600 text-sm">
@@ -266,7 +266,7 @@ export default function InfographicTimeline() {
                   STEP 03
                 </span>
               </div>
-              <h3 className="text-lg font-bold mb-2 text-gray-800">
+              <h3 className="text-lg font-semibold mb-2 text-gray-800">
                 Get Expert Guidance
               </h3>
               <p className="text-gray-600 text-sm">

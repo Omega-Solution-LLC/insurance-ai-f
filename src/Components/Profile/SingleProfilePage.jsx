@@ -12,12 +12,13 @@ import {
   FiShield,
 } from "react-icons/fi";
 import { MdOutlineHistoryEdu } from "react-icons/md";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {
   useGetDocumentInsuranceQuery,
+  useGetDocumentQuery,
   useUpdateDocumentInsuranceMutation,
 } from "../../Redux/features/documents/documentsApi";
-import QuillEditor from "../ClaimWizard/Steps/QuillEditor";
+import QuillEditor from "../ClaimApplication/Steps/QuillEditor";
 import EmailTemplateDownloader from "../CommonUI/EmailTemplateDownloader";
 import EmailTemplatePrint from "../CommonUI/EmailTemplatePrint";
 
@@ -41,10 +42,10 @@ const SectionCard = ({ title, icon, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-      <div
-        className="p-4 flex justify-between items-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}>
+    <div
+      onClick={() => setIsOpen(!isOpen)}
+      className="bg-white rounded-lg shadow-md mb-4 overflow-hidden cursor-pointer">
+      <div className="p-4 flex justify-between items-center cursor-pointer">
         <div className="flex items-center">
           <div className="bg-blue-100 p-2 rounded-full mr-3">{icon}</div>
           <h3 className="font-medium text-lg">{title}</h3>
@@ -62,7 +63,20 @@ const SectionCard = ({ title, icon, children, defaultOpen = false }) => {
 // Main component
 export default function InsuranceDetailPage() {
   const { id } = useParams();
-  const { data: insuranceData } = useGetDocumentInsuranceQuery(id);
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("id");
+  const [pageConfig] = useState({
+    page: 1,
+    count: 100,
+    status: true,
+  });
+
+  // Fetch all documents to check if the ID in URL belongs to the user
+  const { data: documentData } = useGetDocumentQuery({
+    id: userId,
+    arg: pageConfig,
+  });
+  const { data: insuranceData, isLoading } = useGetDocumentInsuranceQuery(id);
   const [updateDocumentInsurance, { isLoading: isSaving }] =
     useUpdateDocumentInsuranceMutation();
 
@@ -71,21 +85,6 @@ export default function InsuranceDetailPage() {
   const [isTextChanged, setIsTextChanged] = useState(false);
   const [activeTab, setActiveTab] = useState("template");
   const [showTemplatePreview, setShowTemplatePreview] = useState(false);
-
-  // Initialize text state when insuranceData is loaded
-  useEffect(() => {
-    if (insuranceData?.applicationTemplate) {
-      setText(insuranceData.applicationTemplate);
-      setOriginalText(insuranceData.applicationTemplate);
-    }
-  }, [insuranceData]);
-
-  // Check if text has changed from original
-  useEffect(() => {
-    if (originalText && text) {
-      setIsTextChanged(originalText !== text);
-    }
-  }, [text, originalText]);
 
   // Handle text change from QuillEditor
   const handleTextChange = (newText) => {
@@ -157,6 +156,32 @@ export default function InsuranceDetailPage() {
     }
   };
 
+  // Initialize text state when insuranceData is loaded
+  useEffect(() => {
+    if (insuranceData?.applicationTemplate) {
+      setText(insuranceData.applicationTemplate);
+      setOriginalText(insuranceData.applicationTemplate);
+    }
+  }, [insuranceData]);
+
+  // Check if text has changed from original
+  useEffect(() => {
+    if (originalText && text) {
+      setIsTextChanged(originalText !== text);
+    }
+  }, [text, originalText]);
+
+  // Check if the ID exists in user's documents and redirect if not
+  useEffect(() => {
+    if (documentData && !isLoading) {
+      const userDocuments = documentData?.getAllInsurance || [];
+      const documentExists = userDocuments.some((doc) => doc.id === id);
+
+      if (!documentExists) {
+        navigate("/404");
+      }
+    }
+  }, [documentData, id, navigate, isLoading]);
   return (
     <div className="min-h-screen relative overflow-hidden py-6 pt-24">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />
@@ -166,7 +191,7 @@ export default function InsuranceDetailPage() {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-2xl font-semibold text-gray-800">
               Insurance Claim Details
             </h1>
             <p className="text-gray-500">Claim ID: {insuranceData?.id}</p>
@@ -245,6 +270,7 @@ export default function InsuranceDetailPage() {
                       </a>
                       <a
                         href={attachment?.attachmentPath}
+                        target="_blank"
                         download
                         className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-full">
                         <FiDownload size={18} />
@@ -266,7 +292,7 @@ export default function InsuranceDetailPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div className="bg-white p-4 rounded-md shadow-sm text-center">
                         <p className="text-gray-500 text-sm">Deductible</p>
-                        <p className="text-xl font-bold text-blue-600">
+                        <p className="text-xl font-semibold text-blue-600">
                           ${estimate?.deductible}
                         </p>
                       </div>
@@ -274,7 +300,7 @@ export default function InsuranceDetailPage() {
                         <p className="text-gray-500 text-sm">
                           Expected Coverage
                         </p>
-                        <p className="text-xl font-bold text-green-600">
+                        <p className="text-xl font-semibold text-green-600">
                           {estimate?.expectedCoverage}%
                         </p>
                       </div>
@@ -282,7 +308,7 @@ export default function InsuranceDetailPage() {
                         <p className="text-gray-500 text-sm">
                           Your Responsibility
                         </p>
-                        <p className="text-xl font-bold text-red-600">
+                        <p className="text-xl font-semibold text-red-600">
                           ${estimate?.estimateResponsibility}
                         </p>
                       </div>
@@ -353,7 +379,7 @@ export default function InsuranceDetailPage() {
         {activeTab === "template" && (
           <>
             <div className="pt-3">
-              <h2 className="text-3xl font-bold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              <h2 className="text-3xl font-semibold text-center mb-3 bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Your Claim Letter
               </h2>
               <p className="text-center text-gray-600 mb-8">
@@ -407,14 +433,17 @@ export default function InsuranceDetailPage() {
                   disabled={!isTextChanged || isSaving}
                   className={`flex cursor-pointer items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium ${
                     isTextChanged
-                      ? "bg-gradient-to-r from-blue-400 to-purple-300 hover:from-blue-500 hover:to-purple-400 text-white"
+                      ? "bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white"
                       : "bg-gray-300 text-gray-500 cursor-not-allowed"
                   } transition-all duration-300 shadow-sm hover:shadow`}>
                   <FiSave /> {isSaving ? "Saving..." : "Save"}
                 </button>
 
                 <EmailTemplatePrint htmlString={text} />
-                <EmailTemplateDownloader htmlString={text} />
+                <EmailTemplateDownloader
+                  htmlString={text}
+                  isSinglePage={true}
+                />
               </div>
             </div>
           </>

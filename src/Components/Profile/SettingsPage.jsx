@@ -9,6 +9,28 @@ const SettingsPage = () => {
     email: "",
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Save to localStorage (in a real app, you'd call an API here)
+    if (userData.firstName && userData.lastName) {
+      localStorage.setItem(
+        "user",
+        `${userData.firstName} ${userData.lastName}`
+      );
+    }
+
+    // Display success message
+    alert("Profile updated successfully!");
+  };
+
   useEffect(() => {
     // Get user data from localStorage
     const firstName = localStorage.getItem("firstName") || "";
@@ -38,28 +60,6 @@ const SettingsPage = () => {
     });
   }, []);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Save to localStorage (in a real app, you'd call an API here)
-    if (userData.firstName && userData.lastName) {
-      localStorage.setItem(
-        "user",
-        `${userData.firstName} ${userData.lastName}`
-      );
-    }
-
-    // Display success message
-    alert("Profile updated successfully!");
-  };
-
   return (
     <div className="min-h-screen pt-24 pb-12 bg-gradient-to-b from-white to-gray-50">
       <div className="max-w-3xl mx-auto px-4">
@@ -74,7 +74,7 @@ const SettingsPage = () => {
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
           <div className="px-6 py-8 sm:p-10">
-            <h1 className="text-2xl font-bold text-gray-800 mb-6">
+            <h1 className="text-2xl font-semibold text-gray-800 mb-6">
               Edit Profile
             </h1>
 

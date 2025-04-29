@@ -15,7 +15,6 @@ import { MdOutlineHistoryEdu } from "react-icons/md";
 import { useNavigate, useParams } from "react-router";
 import {
   useGetDocumentInsuranceQuery,
-  useGetDocumentQuery,
   useUpdateDocumentInsuranceMutation,
 } from "../../Redux/features/documents/documentsApi";
 import QuillEditor from "../ClaimApplication/Steps/QuillEditor";
@@ -64,19 +63,11 @@ const SectionCard = ({ title, icon, children, defaultOpen = false }) => {
 export default function InsuranceDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const userId = localStorage.getItem("id");
-  const [pageConfig] = useState({
-    page: 1,
-    count: 100,
-    status: true,
-  });
-
-  // Fetch all documents to check if the ID in URL belongs to the user
-  const { data: documentData } = useGetDocumentQuery({
-    id: userId,
-    arg: pageConfig,
-  });
-  const { data: insuranceData, isLoading } = useGetDocumentInsuranceQuery(id);
+  const {
+    data: insuranceData,
+    isLoading,
+    error: insuranceError,
+  } = useGetDocumentInsuranceQuery(id);
   const [updateDocumentInsurance, { isLoading: isSaving }] =
     useUpdateDocumentInsuranceMutation();
 
@@ -90,11 +81,6 @@ export default function InsuranceDetailPage() {
   const handleTextChange = (newText) => {
     setText(newText);
   };
-
-  // Handle save button click
-
-  // Extract application template content for iframe preview
-  const applicationTemplateContent = insuranceData?.applicationTemplate;
 
   const getHtmlContent = (text) => {
     return `
@@ -171,17 +157,41 @@ export default function InsuranceDetailPage() {
     }
   }, [text, originalText]);
 
-  // Check if the ID exists in user's documents and redirect if not
-  useEffect(() => {
-    if (documentData && !isLoading) {
-      const userDocuments = documentData?.getAllInsurance || [];
-      const documentExists = userDocuments.some((doc) => doc.id === id);
+  // Show data not found UI if status is 404
+  if (insuranceError?.status === 404) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
+        <div className="text-red-500 text-6xl mb-6">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-24 w-24"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h1 className="text-4xl font-bold text-gray-800 mb-4 text-center">
+          Insurance Claim Not Found
+        </h1>
+        <p className="text-gray-600 text-center mb-8 max-w-md">
+          We couldn't find the insurance claim you're looking for. It may have
+          been deleted or never existed.
+        </p>
+        <button
+          onClick={() => navigate(-1)}
+          className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300">
+          Go Back
+        </button>
+      </div>
+    );
+  }
 
-      if (!documentExists) {
-        navigate("/404");
-      }
-    }
-  }, [documentData, id, navigate, isLoading]);
   return (
     <div className="min-h-screen relative overflow-hidden py-6 pt-24">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />

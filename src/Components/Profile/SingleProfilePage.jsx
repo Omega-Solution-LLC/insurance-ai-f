@@ -42,10 +42,10 @@ const SectionCard = ({ title, icon, children, defaultOpen = false }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="bg-white rounded-lg shadow-md mb-4 overflow-hidden">
-      <div
-        className="p-4 flex justify-between items-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}>
+    <div
+      onClick={() => setIsOpen(!isOpen)}
+      className="bg-white rounded-lg shadow-md mb-4 overflow-hidden cursor-pointer">
+      <div className="p-4 flex justify-between items-center cursor-pointer">
         <div className="flex items-center">
           <div className="bg-blue-100 p-2 rounded-full mr-3">{icon}</div>
           <h3 className="font-medium text-lg">{title}</h3>
@@ -270,6 +270,7 @@ export default function InsuranceDetailPage() {
                       </a>
                       <a
                         href={attachment?.attachmentPath}
+                        target="_blank"
                         download
                         className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-full">
                         <FiDownload size={18} />

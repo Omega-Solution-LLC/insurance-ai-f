@@ -12,9 +12,10 @@ import {
   FiShield,
 } from "react-icons/fi";
 import { MdOutlineHistoryEdu } from "react-icons/md";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import {
   useGetDocumentInsuranceQuery,
+  useGetDocumentQuery,
   useUpdateDocumentInsuranceMutation,
 } from "../../Redux/features/documents/documentsApi";
 import QuillEditor from "../ClaimApplication/Steps/QuillEditor";
@@ -62,7 +63,20 @@ const SectionCard = ({ title, icon, children, defaultOpen = false }) => {
 // Main component
 export default function InsuranceDetailPage() {
   const { id } = useParams();
-  const { data: insuranceData } = useGetDocumentInsuranceQuery(id);
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("id");
+  const [pageConfig] = useState({
+    page: 1,
+    count: 100,
+    status: true,
+  });
+
+  // Fetch all documents to check if the ID in URL belongs to the user
+  const { data: documentData } = useGetDocumentQuery({
+    id: userId,
+    arg: pageConfig,
+  });
+  const { data: insuranceData, isLoading } = useGetDocumentInsuranceQuery(id);
   const [updateDocumentInsurance, { isLoading: isSaving }] =
     useUpdateDocumentInsuranceMutation();
 
@@ -156,6 +170,18 @@ export default function InsuranceDetailPage() {
       setIsTextChanged(originalText !== text);
     }
   }, [text, originalText]);
+
+  // Check if the ID exists in user's documents and redirect if not
+  useEffect(() => {
+    if (documentData && !isLoading) {
+      const userDocuments = documentData?.getAllInsurance || [];
+      const documentExists = userDocuments.some((doc) => doc.id === id);
+
+      if (!documentExists) {
+        navigate("/404");
+      }
+    }
+  }, [documentData, id, navigate, isLoading]);
   return (
     <div className="min-h-screen relative overflow-hidden py-6 pt-24">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />

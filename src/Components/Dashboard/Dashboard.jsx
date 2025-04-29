@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoMdEye } from "react-icons/io";
 import { Link, useNavigate } from "react-router";
 import { useGetCustomerQuery } from "../../Redux/features/customer/customerApi";
@@ -60,6 +60,8 @@ const Dashboard = () => {
     localStorage.clear();
     navigate("/");
   };
+
+  useEffect(() => {}, []);
 
   return (
     <div className=" relative overflow-hidden">

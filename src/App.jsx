@@ -1,4 +1,5 @@
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./Components/Authentication/Login";
 import Register from "./Components/Authentication/Register";
@@ -15,6 +16,7 @@ import Layout from "./Layouts/Layout";
 const App = () => {
   return (
     <Router>
+      <Toaster position="top-center" reverseOrder={false} />
       <Routes>
         {/* Main layout routes */}
         <Route path="/" element={<Layout />}>

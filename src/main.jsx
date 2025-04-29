@@ -17,63 +17,63 @@ axios.interceptors.request.use(async (config) => {
   return config;
 });
 
-// const refreshAccessToken = async () => {
-//   try {
-//     const response = await fetch(
-//       `${import.meta.env.VITE_APP_API}/user/refresh-token`,
-//       {
-//         credentials: "include",
-//         headers: {
-//           Accept: "application/json",
-//         },
-//       }
-//     );
+const refreshAccessToken = async () => {
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_APP_API}/user/refresh-token`,
+      {
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+        },
+      }
+    );
 
-//     const data = await response.json();
-//     if (data?.token) {
-//       localStorage.setItem("access-token", data.token);
-//       return data.token;
-//     } else {
-//       localStorage.clear();
-//       // If token refresh fails or for other errors, reject the promise
-//       window.location.replace("/");
-//       return undefined;
-//     }
-//   } catch (err) {
-//     localStorage.clear();
-//     // If token refresh fails or for other errors, reject the promise
-//     window.location.replace("/");
-//     return undefined;
-//   }
-// };
+    const data = await response.json();
+    if (data?.token) {
+      localStorage.setItem("access-token", data.token);
+      return data.token;
+    } else {
+      localStorage.clear();
+      // If token refresh fails or for other errors, reject the promise
+      window.location.replace("/");
+      return undefined;
+    }
+  } catch (err) {
+    localStorage.clear();
+    // If token refresh fails or for other errors, reject the promise
+    window.location.replace("/");
+    return undefined;
+  }
+};
 
-// axios.interceptors.response.use(
-//   (response) => response,
-//   async (error) => {
-//     const prevRequest = error?.config;
-//     const isLoginPath = window.location.pathname.includes("/");
-//     if (error?.response?.status === 401 && !prevRequest?.sent && !isLoginPath) {
-//       prevRequest.sent = true;
-//       const refreshedToken = await refreshAccessToken();
-//       if (refreshedToken) {
-//         // Retry the original request with the new token
-//         error.config.headers.Authorization = `Bearer ${refreshedToken}`;
-//         return axios(error.config);
-//       }
-//     } else if (error?.response?.status === 401) {
-//       localStorage.removeItem("id");
-//       localStorage.removeItem("access-token");
-//       localStorage.removeItem("role");
-//       localStorage.removeItem("user");
-//       localStorage.removeItem("isLogged");
-//       window.location.replace("/");
-//     } else if (isLoginPath) {
-//       return Promise.reject(error);
-//     } else {
-//       return Promise.reject(error);
-//     }
-//   }
-// );
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const prevRequest = error?.config;
+    const isLoginPath = window.location.pathname.includes("/");
+    if (error?.response?.status === 401 && !prevRequest?.sent && !isLoginPath) {
+      prevRequest.sent = true;
+      const refreshedToken = await refreshAccessToken();
+      if (refreshedToken) {
+        // Retry the original request with the new token
+        error.config.headers.Authorization = `Bearer ${refreshedToken}`;
+        return axios(error.config);
+      }
+    } else if (error?.response?.status === 401) {
+      localStorage.removeItem("id");
+      localStorage.removeItem("access-token");
+      localStorage.removeItem("role");
+      localStorage.removeItem("user");
+      localStorage.removeItem("isLogged");
+      window.location.replace("/");
+    } else if (isLoginPath) {
+      return Promise.reject(error);
+    } else {
+      return Promise.reject(error);
+    }
+  }
+);
 
 root.render(
   <Provider store={store}>

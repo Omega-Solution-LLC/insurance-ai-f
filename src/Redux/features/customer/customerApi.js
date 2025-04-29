@@ -1,4 +1,4 @@
-import { toastHandler } from "../../../utils/functions";
+import toast from "react-hot-toast";
 import queryGenerator from "../../../utils/queryGenerator";
 import { apiSlice } from "../apiSlice/apiSlice";
 
@@ -48,11 +48,10 @@ export const customersApi = apiSlice.injectEndpoints({
         try {
           await queryFulfilled;
 
-          toastHandler("Customer added successfully", "success");
+          toast.success("Customer added successfully");
         } catch (err) {
-          toastHandler(
-            err?.error?.data?.error || "Something went wrong, Please try again",
-            "warning"
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
           );
         }
       },
@@ -71,9 +70,9 @@ export const customersApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toastHandler(`Customer deleted Successfully`, "success");
+          toast.success(`Customer deleted Successfully`);
         } catch (err) {
-          toastHandler("Something went wrong, Please try again", "warning");
+          toast.error("Something went wrong, Please try again");
         }
       },
       invalidatesTags: ["Customers", "CustomersAll", "Customer"],

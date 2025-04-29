@@ -1,4 +1,4 @@
-import { toastHandler } from "../../../utils/functions";
+import toast from "react-hot-toast";
 import queryGenerator from "../../../utils/queryGenerator";
 import { apiSlice } from "../apiSlice/apiSlice";
 
@@ -56,11 +56,10 @@ export const documentsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toastHandler("Document added successfully", "success");
+          toast.success("Document added successfully");
         } catch (err) {
-          toastHandler(
-            err?.error?.data?.error || "Something went wrong, Please try again",
-            "warning"
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
           );
         }
       },
@@ -79,11 +78,10 @@ export const documentsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toastHandler(`Document deleted Successfully`, "success");
+          tost.success(`Document deleted Successfully`, "success");
         } catch (err) {
-          toastHandler(
-            err?.error?.data?.error || "Something went wrong, Please try again",
-            "warning"
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
           );
         }
       },
@@ -103,11 +101,10 @@ export const documentsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toastHandler("Template updated successfully", "success");
+          toast.success("Template updated successfully");
         } catch (err) {
-          toastHandler(
-            err?.error?.data?.error || "Something went wrong, Please try again",
-            "warning"
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
           );
         }
       },
@@ -126,11 +123,10 @@ export const documentsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-          toastHandler("Template updated successfully", "success");
+          toast.success("Template updated successfully");
         } catch (err) {
-          toastHandler(
-            err?.error?.data?.error || "Something went wrong, Please try again",
-            "warning"
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
           );
         }
       },

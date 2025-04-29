@@ -56,7 +56,6 @@ export const documentsApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled }) {
         try {
           await queryFulfilled;
-
           toastHandler("Document added successfully", "success");
         } catch (err) {
           toastHandler(

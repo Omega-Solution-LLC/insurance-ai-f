@@ -72,21 +72,6 @@ export default function InsuranceDetailPage() {
   const [activeTab, setActiveTab] = useState("template");
   const [showTemplatePreview, setShowTemplatePreview] = useState(false);
 
-  // Initialize text state when insuranceData is loaded
-  useEffect(() => {
-    if (insuranceData?.applicationTemplate) {
-      setText(insuranceData.applicationTemplate);
-      setOriginalText(insuranceData.applicationTemplate);
-    }
-  }, [insuranceData]);
-
-  // Check if text has changed from original
-  useEffect(() => {
-    if (originalText && text) {
-      setIsTextChanged(originalText !== text);
-    }
-  }, [text, originalText]);
-
   // Handle text change from QuillEditor
   const handleTextChange = (newText) => {
     setText(newText);
@@ -157,6 +142,20 @@ export default function InsuranceDetailPage() {
     }
   };
 
+  // Initialize text state when insuranceData is loaded
+  useEffect(() => {
+    if (insuranceData?.applicationTemplate) {
+      setText(insuranceData.applicationTemplate);
+      setOriginalText(insuranceData.applicationTemplate);
+    }
+  }, [insuranceData]);
+
+  // Check if text has changed from original
+  useEffect(() => {
+    if (originalText && text) {
+      setIsTextChanged(originalText !== text);
+    }
+  }, [text, originalText]);
   return (
     <div className="min-h-screen relative overflow-hidden py-6 pt-24">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />

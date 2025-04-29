@@ -9,6 +9,28 @@ const SettingsPage = () => {
     email: "",
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({
+      ...userData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Save to localStorage (in a real app, you'd call an API here)
+    if (userData.firstName && userData.lastName) {
+      localStorage.setItem(
+        "user",
+        `${userData.firstName} ${userData.lastName}`
+      );
+    }
+
+    // Display success message
+    alert("Profile updated successfully!");
+  };
+
   useEffect(() => {
     // Get user data from localStorage
     const firstName = localStorage.getItem("firstName") || "";
@@ -37,28 +59,6 @@ const SettingsPage = () => {
       email,
     });
   }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({
-      ...userData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Save to localStorage (in a real app, you'd call an API here)
-    if (userData.firstName && userData.lastName) {
-      localStorage.setItem(
-        "user",
-        `${userData.firstName} ${userData.lastName}`
-      );
-    }
-
-    // Display success message
-    alert("Profile updated successfully!");
-  };
 
   return (
     <div className="min-h-screen pt-24 pb-12 bg-gradient-to-b from-white to-gray-50">

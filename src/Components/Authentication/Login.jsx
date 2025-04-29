@@ -20,13 +20,6 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/application";
   const [addLogin, { isLoading }] = useAddLoginMutation();
 
-  // Check if user is already logged in
-  useEffect(() => {
-    if (localStorage.getItem("isLogged")) {
-      navigate("/");
-    }
-  }, [navigate]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLoginData((prev) => ({
@@ -80,6 +73,13 @@ const Login = () => {
       console.error("Login failed:", error);
     }
   };
+
+  // Check if user is already logged in
+  useEffect(() => {
+    if (localStorage.getItem("isLogged")) {
+      navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-blue-100 px-4 py-6 font-sans pt-20">

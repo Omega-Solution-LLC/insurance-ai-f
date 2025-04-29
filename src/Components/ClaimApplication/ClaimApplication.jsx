@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "../../Redux/features/register/registerApi";
 import StepIndicator from "./StepIndicator";
 import Page1Content from "./Steps/Step1Content";
 import Page2Content from "./Steps/Step2Content";
@@ -17,12 +16,6 @@ export default function ClaimApplication() {
   });
 
   const [aiData, setAiData] = useState({});
-  useEffect(() => {
-    if (aiData?.id) {
-      localStorage.setItem("applicationId", aiData.id);
-    }
-  }, [aiData?.id]);
-  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
 
   const handleTextChange = (e) => {
     setFormData({
@@ -74,6 +67,11 @@ export default function ClaimApplication() {
     }
   };
 
+  useEffect(() => {
+    if (aiData?.id) {
+      localStorage.setItem("applicationId", aiData.id);
+    }
+  }, [aiData?.id]);
   return (
     <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100 rounded-full opacity-20 -mt-20 -mr-20" />

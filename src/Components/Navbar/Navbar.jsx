@@ -12,7 +12,7 @@ const Navbar = () => {
   const isLogged = localStorage.getItem("isLogged");
   const id = localStorage.getItem("id");
 
-  const { data: userData, isLoading } = useGetCustomerQuery(id);
+  const { data: userData, isLoading } = useGetCustomerQuery(id, { skip: !id });
 
   // Handle scroll effect for navbar background
   useEffect(() => {

@@ -17,7 +17,7 @@ const Dashboard = () => {
   });
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const { data: documentData } = useGetDocumentQuery({ id, arg: pageConfig });
-  const { data: userData } = useGetCustomerQuery(id);
+  const { data: userData } = useGetCustomerQuery(id, { skip: !isLogged });
 
   const columns = [
     {

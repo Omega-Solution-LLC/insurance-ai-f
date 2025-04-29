@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { toastHandler } from "../../../utils/functions";
 import queryGenerator from "../../../utils/queryGenerator";
 import { apiSlice } from "../apiSlice/apiSlice";
@@ -47,6 +48,9 @@ export const loginApi = apiSlice.injectEndpoints({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           await queryFulfilled;
+
+          // toastHandler("Login added successfully", "success");
+          toast.success("successfully Logged in");
           const { data } = await queryFulfilled;
           localStorage.setItem("access-token", data.token);
           localStorage.setItem("role", data.role);
@@ -64,7 +68,6 @@ export const loginApi = apiSlice.injectEndpoints({
               })
             );
           }
-          toastHandler("Login added successfully", "success");
         } catch (err) {
           toastHandler(
             err?.error?.data?.error || "Something went wrong, Please try again",

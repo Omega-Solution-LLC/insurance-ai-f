@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { FiCheck, FiMail, FiSave } from "react-icons/fi";
-import { useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { FiCheck, FiHome, FiMail, FiSave } from "react-icons/fi";
+import { Link, useNavigate } from "react-router";
 import { useUpdateDocumentInsuranceMutation } from "../../../Redux/features/documents/documentsApi";
 import EmailTemplatePrint from "../../CommonUI/EmailTemplatePrint";
 import QuillEditor from "./QuillEditor";
@@ -174,6 +174,12 @@ const Step4Content = ({ handleBack, aiData }) => {
           {activeAction === "email" ? <FiCheck /> : <FiMail />}
           {activeAction === "email" ? "Email Sent!" : "Send Email"}
         </button>
+
+        <Link
+          to="/dashboard"
+          className={`flex items-center justify-center gap-2 py-2 px-8 rounded-full text-sm font-medium cursor-pointer bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white transition-all duration-300 shadow-lg hover:shadow-xl`}>
+          <FiHome /> Dashboard
+        </Link>
       </div>
 
       <div className="flex justify-center">

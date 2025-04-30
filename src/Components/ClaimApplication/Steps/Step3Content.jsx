@@ -1,4 +1,3 @@
-import React from "react";
 import { useNavigate } from "react-router";
 
 const Step3Content = ({ handleContinue, handleBack, aiData }) => {
@@ -57,9 +56,9 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
             <div className="flex justify-between items-center py-3 border-b border-gray-200">
               <span className="text-gray-700">Expected Coverage</span>
               <span className="font-semibold text-gray-900 bg-white px-4 py-1 rounded-full shadow-sm">
+                $
                 {aiData?.insuranceOutOfPocketEstimate?.[0]?.expectedCoverage ||
                   0}
-                %
               </span>
             </div>
             <div className="flex justify-between items-center bg-gradient-to-r from-green-50 to-emerald-50 p-4 rounded-lg border border-green-100 mt-2">
@@ -146,28 +145,8 @@ const Step3Content = ({ handleContinue, handleBack, aiData }) => {
           </h3>
           <div className="bg-gradient-to-r from-purple-50 to-indigo-50 p-6 rounded-xl border border-purple-100 space-y-4">
             {aiData?.insuranceAiAdvice?.map((advice, index) => (
-              <div key={advice.id} className="flex gap-4 items-start">
-                <div className="bg-white p-2 rounded-full shadow-sm">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5 text-purple-500"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d={
-                        index === 0
-                          ? "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                          : index === 1
-                            ? "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                            : "M13 10V3L4 14h7v7l9-11h-7z"
-                      }
-                    />
-                  </svg>
-                </div>
+              <div key={advice.id} className="flex items-start gap-4 ">
+                <div className="bg-purple-400 p-1 rounded-full shadow-sm mt-2"></div>
                 <p className="text-gray-700">{advice.advice}</p>
               </div>
             ))}

@@ -84,15 +84,13 @@ const Step4Content = ({ handleBack, aiData }) => {
 
   const handleSave = async () => {
     try {
-      const resp = await updateDocumentInsurance({
+      await updateDocumentInsurance({
         id: aiData?.id,
         data: {
           applicationTemplate: applicationTemplatePreview,
         },
       });
-      if (resp?.data) {
-        navigate("/profile");
-      }
+
       setOriginalText(text);
       setIsTextChanged(false);
     } catch (error) {

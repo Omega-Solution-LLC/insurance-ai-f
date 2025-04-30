@@ -65,7 +65,7 @@ const Dashboard = () => {
 
   return (
     <div className=" relative overflow-hidden">
-      <header className="bg-white max-w-7xl mx-auto sticky top-0 z-10">
+      <header className="bg-white max-w-7xl mx-auto sticky top-0 z-10 px-3">
         <div className="flex justify-between items-center  py-4">
           {/* Logo */}
           <div className="flex items-center space-x-2">

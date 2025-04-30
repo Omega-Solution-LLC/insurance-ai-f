@@ -1,11 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import DateTimePicker from "../DateTimePicker";
 
-const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
+const Step1Content = ({
+  description,
+  handleTextChange,
+  handleContinue,
+  formData,
+  setFormData,
+}) => {
   const [validationError, setValidationError] = useState(false);
+  const [validateDate, setValidateDate] = useState(false);
+  const [validateTime, setValidateTime] = useState(false);
 
   const validateAndContinue = () => {
-    if (!formData || formData.trim() === "") {
+    if (!description || description.trim() === "") {
       setValidationError(true);
+      return;
+    }
+    if (formData.date === "") {
+      setValidateDate(true);
+      return;
+    }
+    if (formData.time === "") {
+      setValidateTime(true);
       return;
     }
     setValidationError(false);
@@ -26,7 +43,15 @@ const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
 
       <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100 animate-fade-in-up ">
         <div className="space-y-8">
-          <div>
+          <DateTimePicker
+            formData={formData}
+            setFormData={setFormData}
+            validateDate={validateDate}
+            validateTime={validateTime}
+          />
+
+          {/* situation */}
+          <div className="pt-4">
             <h2 className="text-xl font-medium mb-4 flex items-center">
               <span className="bg-purple-100 text-purple-600 p-2 rounded-full mr-3">
                 <svg
@@ -50,18 +75,21 @@ const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
                 required
                 className={`w-full text-sm h-48 p-5 border ${validationError ? "border-red-500 ring-2 ring-red-100" : "border-gray-200"} rounded-xl focus:ring-4 focus:ring-purple-100 focus:border-none focus:border-purple-400 transition-all duration-300 bg-gray-50/50`}
                 placeholder="For example: I was in a car accident last week. The other driver hit my car from behind while I was stopped at a red light. I've filed a police report and now need to make an insurance claim. I have comprehensive coverage with State Farm, policy #ABC123."
-                value={formData}
+                value={description}
                 onChange={(e) => {
                   handleTextChange(e);
                   if (validationError) setValidationError(false);
                 }}
               />
               <div className="absolute bottom-4 right-4 text-xs text-gray-400">
-                {formData.length > 0 ? `${formData.length} characters` : ""}
+                {description.length > 0
+                  ? `${description.length} characters`
+                  : ""}
               </div>
               {validationError && (
                 <p className="text-red-500 text-sm mt-2">
-                  Please describe your situation before continuing
+                  Please Select Date and Time and also describe your situation
+                  before continuing
                 </p>
               )}
             </div>
@@ -86,10 +114,10 @@ const Step1Content = ({ formData, handleTextChange, handleContinue }) => {
             </p>
             <ul className="space-y-3 text-gray-600 ml-6 text-sm">
               {[
-                "What happened",
-                "When it happened",
+                "Police report number",
+                "Any relevant information",
                 "Your insurance provider",
-                "Policy number (if you have it handy)",
+                "Other party insurance information",
               ].map((item, index) => (
                 <li
                   key={index}

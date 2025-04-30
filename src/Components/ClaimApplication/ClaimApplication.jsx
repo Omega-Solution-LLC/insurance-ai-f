@@ -13,6 +13,8 @@ export default function ClaimApplication() {
   const [formData, setFormData] = useState({
     description: "",
     uploadedFiles: [],
+    date: "",
+    time: "",
   });
 
   const [aiData, setAiData] = useState({});
@@ -86,9 +88,11 @@ export default function ClaimApplication() {
       <div className="max-w-3xl mx-auto">
         {currentStep === 1 && (
           <Page1Content
-            formData={formData.description}
+            description={formData.description}
             handleTextChange={handleTextChange}
             handleContinue={nextStep}
+            formData={formData}
+            setFormData={setFormData}
           />
         )}
 

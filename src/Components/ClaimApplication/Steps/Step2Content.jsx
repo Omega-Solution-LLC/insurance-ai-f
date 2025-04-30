@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAddDocumentMutation } from "../../../Redux/features/documents/documentsApi";
 import { FileTextIcon } from "../../Icons/Icons";
 
@@ -75,6 +75,8 @@ const Step2Content = ({
       setIsSubmitting(true);
       const formDataToSubmit = new FormData();
       formDataToSubmit.append("situation", formData?.description || "");
+      formDataToSubmit.append("date", formData?.date || "");
+      formDataToSubmit.append("time", formData?.time || "");
       {
         customerId && formDataToSubmit.append("customerId", customerId);
       }

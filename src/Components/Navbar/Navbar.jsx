@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetCustomerQuery } from "../../Redux/features/customer/customerApi";
 
@@ -48,9 +48,16 @@ const Navbar = () => {
     };
   }, [showProfileDropdown]);
 
+  // Handle Generate New click with auto-reload
+  const handleGenerateNewClick = (e) => {
+    e.preventDefault();
+    localStorage.removeItem("applicationId");
+    window.location.href = "/application";
+  };
+
   return (
     <nav
-      className={`fixed w-full z-50 transition-all duration-300  ${
+      className={`fixed w-full z-50 transition-all duration-300 px-3  ${
         scrolled
           ? "bg-white/90 backdrop-blur-md shadow-md py-2"
           : "bg-transparent py-4"
@@ -89,11 +96,11 @@ const Navbar = () => {
             )}
 
             {isLogged && (
-              <Link
-                to="/application"
-                className="text-gray-700 hover:text-indigo-600 transition  py-2">
+              <button
+                onClick={handleGenerateNewClick}
+                className="text-gray-700 hover:text-indigo-600 transition py-2">
                 Generate New
-              </Link>
+              </button>
             )}
           </div>
 

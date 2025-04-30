@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // Custom Calendar Icon Component
 const CalendarIcon = () => (
@@ -36,7 +36,12 @@ const ClockIcon = () => (
   </svg>
 );
 
-export default function DateTimePicker({ formData, setFormData }) {
+export default function DateTimePicker({
+  formData,
+  setFormData,
+  validateTime,
+  validateDate,
+}) {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [showCalendar, setShowCalendar] = useState(false);
@@ -77,7 +82,7 @@ export default function DateTimePicker({ formData, setFormData }) {
     setDate(newDate);
     setFormData((prev) => ({
       ...prev,
-      date: date,
+      date: newDate,
     }));
     updateSelection(newDate, time);
   };
@@ -268,23 +273,13 @@ export default function DateTimePicker({ formData, setFormData }) {
     );
   };
 
-  // Get current date as default
-  useEffect(() => {
-    const now = new Date();
-    const formattedDate = formatDate(now);
-    const formattedTime = formatTime(now);
-    setDate(formattedDate);
-    setTime(formattedTime);
-    updateSelection(formattedDate, formattedTime);
-  }, []);
-
   return (
     <div className=" ">
       <h3 className="text-lg font-semibold mb-4 text-gray-800">
         When did the accident happen?
       </h3>
 
-      {selection && (
+      {selection && date && time && (
         <div className="bg-purple-50 p-4 rounded-full mb-4">
           <p className="text-purple-800 font-medium">{selection}</p>
         </div>
@@ -300,7 +295,9 @@ export default function DateTimePicker({ formData, setFormData }) {
               type="date"
               value={date}
               onChange={(e) => handleDateChange(e)}
-              className="w-full p-2 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 "
+              className={`w-full p-2 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                validateDate ? "border-red-500" : ""
+              } `}
             />
             <button
               className="absolute left-2 top-2 text-gray-500 hover:text-blue-500"
@@ -309,6 +306,11 @@ export default function DateTimePicker({ formData, setFormData }) {
             </button>
             {showCalendar && renderCalendar()}
           </div>
+          {validateDate && (
+            <p className="text-red-500 text-sm mt-2">
+              Please select a valid date and time
+            </p>
+          )}
         </div>
 
         <div className="relative">
@@ -320,7 +322,9 @@ export default function DateTimePicker({ formData, setFormData }) {
               type="time"
               value={time}
               onChange={(e) => handleTimeChange(e)}
-              className="w-full p-2 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 "
+              className={`w-full p-2 pl-10 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                validateTime ? "border-red-500" : ""
+              }`}
             />
             <button
               className="absolute left-2 top-2 text-gray-500 hover:text-blue-500 flex"
@@ -329,6 +333,11 @@ export default function DateTimePicker({ formData, setFormData }) {
             </button>
             {showTimePicker && renderTimePicker()}
           </div>
+          {validateTime && (
+            <p className="text-red-500 text-sm mt-2">
+              Please select a valid date and time
+            </p>
+          )}
         </div>
       </div>
     </div>

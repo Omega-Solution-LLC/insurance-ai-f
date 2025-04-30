@@ -9,10 +9,20 @@ const Step1Content = ({
   setFormData,
 }) => {
   const [validationError, setValidationError] = useState(false);
+  const [validateDate, setValidateDate] = useState(false);
+  const [validateTime, setValidateTime] = useState(false);
 
   const validateAndContinue = () => {
     if (!description || description.trim() === "") {
       setValidationError(true);
+      return;
+    }
+    if (formData.date === "") {
+      setValidateDate(true);
+      return;
+    }
+    if (formData.time === "") {
+      setValidateTime(true);
       return;
     }
     setValidationError(false);
@@ -33,7 +43,12 @@ const Step1Content = ({
 
       <div className="bg-white shadow-xl p-6 md:p-8 rounded-2xl border border-gray-100 animate-fade-in-up ">
         <div className="space-y-8">
-          <DateTimePicker formData={formData} setFormData={setFormData} />
+          <DateTimePicker
+            formData={formData}
+            setFormData={setFormData}
+            validateDate={validateDate}
+            validateTime={validateTime}
+          />
 
           {/* situation */}
           <div className="pt-4">
@@ -73,7 +88,8 @@ const Step1Content = ({
               </div>
               {validationError && (
                 <p className="text-red-500 text-sm mt-2">
-                  Please describe your situation before continuing
+                  Please Select Date and Time and also describe your situation
+                  before continuing
                 </p>
               )}
             </div>

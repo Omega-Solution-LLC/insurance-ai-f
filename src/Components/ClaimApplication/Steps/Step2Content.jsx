@@ -69,6 +69,11 @@ const Step2Content = ({
       // Reset the fileSelected state to ensure only the latest file is kept
       setFileSelected([]);
 
+      if (e.target.files.length > 1 || uploadedFiles.length >= 1) {
+        setError("Only one file can be uploaded");
+        return;
+      }
+
       // Check if the file is a PDF
       const file = e.target.files[0];
       if (file.type !== "application/pdf") {
@@ -77,20 +82,14 @@ const Step2Content = ({
       }
 
       setFileSelected([file]);
-      handleFiles([
-        {
-          name: file.name,
-          size: (file.size / 1024).toFixed(1),
-          type: file.type,
-        },
-      ]);
+      handleFiles([file]);
     }
   };
 
   const [addDocuments, { isLoading }] = useAddDocumentMutation();
   const handleSubmit = async () => {
     // Validate if files are attached
-    if (fileSelected.length === 0 || uploadedFiles.length === 0) {
+    if (uploadedFiles.length === 0) {
       setError("Please upload at least one document to continue");
       return;
     }
@@ -107,7 +106,9 @@ const Step2Content = ({
         customerId && formDataToSubmit.append("customerId", customerId);
       }
 
-      fileSelected.forEach((file) => {
+      const filesToSubmit =
+        fileSelected.length > 0 ? fileSelected : uploadedFiles;
+      filesToSubmit?.forEach((file) => {
         formDataToSubmit.append("files[]", file);
       });
 
@@ -117,11 +118,6 @@ const Step2Content = ({
       }
       setAiData(response?.data);
     } catch (error) {
-      console.error("Error submitting files:", error);
-      // setFormData({
-      //   ...formData,
-      //   uploadedFiles: [],
-      // });
       console.log("Error:", error);
       setFileSelected([]);
       // Handle error

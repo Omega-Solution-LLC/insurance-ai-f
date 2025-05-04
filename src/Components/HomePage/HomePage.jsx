@@ -10,11 +10,45 @@ export default function HomePage() {
   const navigate = useNavigate();
   const [isHovered, setIsHovered] = useState(false);
   const isLogged = localStorage.getItem("isLogged");
+  const [activeFaq, setActiveFaq] = useState(null);
 
   const handleRedirect = () => {
     navigate("/application");
     window.scrollTo(0, 0);
   };
+
+  const faqItems = [
+    {
+      question: "How long does the claim process take?",
+      answer:
+        "With our AI-powered system, most claims are processed within minutes instead of days. You'll receive personalized guidance throughout the entire process.",
+    },
+    {
+      question: "What types of insurance claims do you support?",
+      answer:
+        "We currently support auto, home, health, and travel insurance claims. Our AI assistant can analyze policy documents from most major insurance providers.",
+    },
+    {
+      question: "Is my personal information secure?",
+      answer:
+        "Absolutely. We use bank-level encryption to protect your data. Your information is never shared with third parties without your explicit consent.",
+    },
+    {
+      question: "How accurate is the AI in analyzing my policy?",
+      answer:
+        "Our AI has been trained on thousands of insurance policies and can identify coverage details with over 96% accuracy. All analyses are backed by our expert review team.",
+    },
+    {
+      question: "What if I'm not satisfied with the results?",
+      answer:
+        "We offer a 100% satisfaction guarantee. If you're not happy with our service, we'll provide a full refund or work with you until you're completely satisfied.",
+    },
+  ];
+
+  const toggleFaq = (index) => {
+    setActiveFaq(activeFaq === index ? null : index);
+  };
+
   return (
     <>
       <Navbar />
@@ -183,7 +217,7 @@ export default function HomePage() {
         </div>
 
         {/* How It Works Section */}
-        <div className="max-w-6xl mx-auto px-4 md:px-8 py-16">
+        <div id="how-it-works" className="max-w-6xl mx-auto px-4 md:px-8 py-16">
           <div className="text-center mb-16">
             <div className="inline-block mb-3 px-4 py-1 bg-violet-50 rounded-full">
               <span className="text-violet-600 font-medium text-sm">
@@ -217,6 +251,59 @@ export default function HomePage() {
                 <p className="text-indigo-200 mt-2">Saved for Customers</p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* FAQ Section */}
+        <div id="faq" className="max-w-6xl mx-auto px-4 md:px-8 py-20 relative">
+          {/* Background design elements */}
+          <div className="absolute -top-10 right-0 w-64 h-64 bg-indigo-50 rounded-full opacity-50 blur-3xl"></div>
+          <div className="absolute bottom-10 -left-10 w-72 h-72 bg-violet-50 rounded-full opacity-50 blur-3xl"></div>
+
+          <div className="text-center mb-16 relative z-10">
+            <div className="inline-block mb-3 px-4 py-1 bg-indigo-50 rounded-full">
+              <span className="text-indigo-600 font-medium text-sm">
+                Got questions?
+              </span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-semibold">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Find answers to the most common questions about our insurance
+              claim process.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto relative z-10">
+            {faqItems.map((item, index) => (
+              <div key={index} className="mb-4">
+                <div
+                  className={`flex justify-between items-center p-5 rounded-xl cursor-pointer transition-all duration-300 bg-white hover:bg-gray-50 text-gray-800 shadow-md`}
+                  onClick={() => toggleFaq(index)}>
+                  <h3 className="font-medium text-lg">{item.question}</h3>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`h-5 w-5 transition-transform duration-300 ${activeFaq === index ? "transform rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+                <div
+                  className={`overflow-hidden transition-all duration-300 bg-white rounded-b-xl shadow-lg ${
+                    activeFaq === index ? "max-h-48 p-5 mt-1" : "max-h-0"
+                  }`}>
+                  <p className="text-gray-600">{item.answer}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

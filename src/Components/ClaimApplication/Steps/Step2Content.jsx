@@ -66,11 +66,8 @@ const Step2Content = ({
 
   const handleFileInput = (e) => {
     if (e.target.files && e.target.files[0]) {
-      // Check if user is trying to upload more than one file
-      if (e.target.files.length > 1 || uploadedFiles.length >= 1) {
-        setError("Only one file can be uploaded");
-        return;
-      }
+      // Reset the fileSelected state to ensure only the latest file is kept
+      setFileSelected([]);
 
       // Check if the file is a PDF
       const file = e.target.files[0];
@@ -79,16 +76,14 @@ const Step2Content = ({
         return;
       }
 
-      setFileSelected((prev) => [...prev, file]);
-      handleFiles(
-        Array.from(e.target.files).map((file) => ({
+      setFileSelected([file]);
+      handleFiles([
+        {
           name: file.name,
           size: (file.size / 1024).toFixed(1),
           type: file.type,
-          // Add a unique identifier to each file
-          id: Date.now() + "-" + Math.random().toString(36).substr(2, 9),
-        }))
-      );
+        },
+      ]);
     }
   };
 

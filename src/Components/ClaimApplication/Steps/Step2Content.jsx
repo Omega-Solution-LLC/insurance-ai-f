@@ -51,7 +51,7 @@ const Step2Content = ({
         return;
       }
 
-      // At least one file has been dropped
+      setFileSelected((prev) => [...prev, files[0]]);
       handleFiles(
         files.map((file) => ({
           name: file.name,

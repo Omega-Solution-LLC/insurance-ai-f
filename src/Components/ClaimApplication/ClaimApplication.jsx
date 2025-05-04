@@ -54,7 +54,6 @@ export default function ClaimApplication() {
     if (currentStep < 4) {
       const nextStepNumber = currentStep + 1;
       setCurrentStep(nextStepNumber);
-      // Update the max step reached when moving forward
       setMaxStepReached(Math.max(maxStepReached, nextStepNumber));
       navigate(`?step=${nextStepNumber}`, { replace: true });
       window.scrollTo(0, 0);
@@ -138,6 +137,7 @@ export default function ClaimApplication() {
             handleContinue={nextStep}
             handleBack={prevStep}
             formData={formData}
+            setFormData={setFormData}
             setAiData={setAiData}
           />
         )}

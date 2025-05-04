@@ -111,7 +111,7 @@ const Navbar = () => {
                 to="/application?step=1"
                 // onClick={handleGenerateNewClick}
                 className={activeNavLinkStyle}>
-                Generate New
+                Create New Claim
               </NavLink>
             )}
           </div>

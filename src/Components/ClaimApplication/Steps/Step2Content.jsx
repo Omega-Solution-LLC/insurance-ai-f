@@ -9,6 +9,7 @@ const Step2Content = ({
   handleContinue,
   handleBack,
   formData,
+  setFormData,
   setAiData,
 }) => {
   const [dragActive, setDragActive] = useState(false);
@@ -33,9 +34,26 @@ const Step2Content = ({
     setDragActive(false);
     // Handle the files
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      // Check if user is trying to upload more than one file
+      if (e.dataTransfer.files.length > 1 || uploadedFiles.length >= 1) {
+        setError("Only one file can be uploaded");
+        return;
+      }
+
+      // Check if all files are PDFs
+      const files = Array.from(e.dataTransfer.files);
+      const nonPdfFiles = files.filter(
+        (file) => file.type !== "application/pdf"
+      );
+
+      if (nonPdfFiles.length > 0) {
+        setError("Only PDF files are allowed");
+        return;
+      }
+
       // At least one file has been dropped
       handleFiles(
-        Array.from(e.dataTransfer.files).map((file) => ({
+        files.map((file) => ({
           name: file.name,
           size: (file.size / 1024).toFixed(1),
           type: file.type,
@@ -48,7 +66,20 @@ const Step2Content = ({
 
   const handleFileInput = (e) => {
     if (e.target.files && e.target.files[0]) {
-      setFileSelected((prev) => [...prev, e.target.files[0]]);
+      // Check if user is trying to upload more than one file
+      if (e.target.files.length > 1 || uploadedFiles.length >= 1) {
+        setError("Only one file can be uploaded");
+        return;
+      }
+
+      // Check if the file is a PDF
+      const file = e.target.files[0];
+      if (file.type !== "application/pdf") {
+        setError("Only PDF files are allowed");
+        return;
+      }
+
+      setFileSelected((prev) => [...prev, file]);
       handleFiles(
         Array.from(e.target.files).map((file) => ({
           name: file.name,
@@ -92,6 +123,12 @@ const Step2Content = ({
       setAiData(response?.data);
     } catch (error) {
       console.error("Error submitting files:", error);
+      // setFormData({
+      //   ...formData,
+      //   uploadedFiles: [],
+      // });
+      console.log("Error:", error);
+      setFileSelected([]);
       // Handle error
     } finally {
       setIsSubmitting(false);
@@ -170,7 +207,7 @@ const Step2Content = ({
                 id="file-upload"
                 className="hidden"
                 onChange={handleFileInput}
-                accept=".pdf,.jpg,.jpeg,.png"
+                accept=".pdf"
                 multiple
               />
               <button
@@ -181,23 +218,21 @@ const Step2Content = ({
             </div>
             <div className="flex flex-wrap items-center justify-center gap-2 text-xs text-gray-500 mt-2">
               <span className="bg-gray-100 px-3 py-1 rounded-full">PDF</span>
-              <span className="bg-gray-100 px-3 py-1 rounded-full">JPG</span>
-              <span className="bg-gray-100 px-3 py-1 rounded-full">JPEG</span>
-              <span className="bg-gray-100 px-3 py-1 rounded-full">PNG</span>
-              <span className="px-2">Max 10MB</span>
+
+              <span className="px-2">Max 20MB</span>
             </div>
           </div>
         </div>
 
-        {uploadedFiles.length > 0 && (
+        {uploadedFiles?.length > 0 && (
           <div className="mt-6 border border-gray-200 rounded-xl overflow-hidden">
             <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
               <h3 className="font-medium text-gray-700">
-                Uploaded Files ({uploadedFiles.length})
+                Uploaded Files ({uploadedFiles?.length})
               </h3>
             </div>
             <ul className="divide-y divide-gray-200">
-              {uploadedFiles.map((file, index) => (
+              {uploadedFiles?.map((file, index) => (
                 <li
                   key={index}
                   className="px-4 py-3 flex items-center justify-between hover:bg-gray-50">
@@ -219,9 +254,9 @@ const Step2Content = ({
                     </div>
                     <div>
                       <p className="font-medium text-sm truncate w-48 md:w-64">
-                        {file.name}
+                        {file?.name}
                       </p>
-                      <p className="text-xs text-gray-500">{file.size} KB</p>
+                      <p className="text-xs text-gray-500">{file?.size} KB</p>
                     </div>
                   </div>
                   <button

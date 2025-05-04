@@ -1,16 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FiArrowRight } from "react-icons/fi";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { LiaFileInvoiceSolid } from "react-icons/lia";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import InfographicTimeline from "./InfographicTimeline";
 
 export default function HomePage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isHovered, setIsHovered] = useState(false);
   const isLogged = localStorage.getItem("isLogged");
   const [activeFaq, setActiveFaq] = useState(null);
+
+  useEffect(() => {
+    if (location.hash) {
+      const sectionId = location.hash.substring(1);
+      const section = document.getElementById(sectionId);
+
+      if (section) {
+        // Add a small delay to ensure the page has fully loaded
+        setTimeout(() => {
+          const navbarHeight = 80; // Approximate navbar height in pixels
+          const offsetPosition = section.offsetTop - navbarHeight;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+          });
+        }, 100);
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [location.hash]);
 
   const handleRedirect = () => {
     navigate("/application");

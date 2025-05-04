@@ -16,54 +16,59 @@ const Navbar = () => {
 
   const isHomePage = location.pathname === "/";
 
-  const isInViewport = (element) => {
-    if (!element) return false;
-    const rect = element.getBoundingClientRect();
-    return rect.top <= 200 && rect.bottom >= 200;
-  };
+  const handleAnchorClick = (e, sectionId) => {
+    e.preventDefault();
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (isHomePage) {
-        const howItWorksSection = document.getElementById("how-it-works");
-        const faqSection = document.getElementById("faq");
+    // Check if we're already on the homepage
+    if (!isHomePage) {
+      // If not on homepage, navigate to homepage with hash'
+      setActiveSection(sectionId);
+      navigate(`/#${sectionId}`);
 
-        if (faqSection && isInViewport(faqSection)) {
-          setActiveSection("faq");
-        } else if (howItWorksSection && isInViewport(howItWorksSection)) {
-          setActiveSection("how-it-works");
-        } else {
-          setActiveSection(null);
-        }
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    if (isHomePage) {
-      setTimeout(handleScroll, 100); // Allow time for DOM to render
-    } else {
-      setActiveSection(null);
+      return;
     }
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHomePage]);
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const navbarHeight = 80; // Approximate navbar height in pixels
+      const offsetPosition = section.offsetTop - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+
+      setActiveSection(sectionId);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
   };
 
-  const activeNavLinkStyle = ({ isActive }) =>
-    isActive
-      ? "text-indigo-600 font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600 px-3 py-2 transition-all"
-      : "text-gray-700 hover:text-indigo-600 hover:bg-purple-50 px-3 py-2 rounded-full transition font-medium";
+  const activeNavLinkStyle = ({ isActive }) => {
+    if (isActive && !activeSection) {
+      return "text-indigo-600 font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600 px-3 py-2 transition-all";
+    }
+    return "text-gray-700 hover:text-indigo-600 hover:bg-purple-50 px-3 py-2 rounded-full transition font-medium";
+  };
 
-  const getAnchorLinkStyle = (section) =>
-    activeSection === section
-      ? "text-indigo-600 font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600 px-3 py-2 transition-all"
-      : "text-gray-700 hover:text-indigo-600 hover:bg-purple-50 px-3 py-2 rounded-full transition font-medium";
+  const getAnchorLinkStyle = (section) => {
+    if (activeSection === section) {
+      return "text-indigo-600 font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600 px-3 py-2 transition-all";
+    }
+    return "text-gray-700 hover:text-indigo-600 hover:bg-purple-50 px-3 py-2 rounded-full transition font-medium";
+  };
 
+  useEffect(() => {
+    const hash = location.hash.replace("#", "");
+    if (hash) {
+      setActiveSection(hash);
+    } else {
+      setActiveSection(null);
+    }
+  }, [location]);
   return (
     <nav className="fixed w-full z-50 transition-all duration-300 px-3 bg-white border-b border-gray-200 py-2">
       <header className="max-w-7xl mx-auto sticky top-0 z-10">
@@ -120,19 +125,21 @@ const Navbar = () => {
                 <NavLink to="/dashboard" className={activeNavLinkStyle}>
                   Dashboard
                 </NavLink>
-                <NavLink
-                  to="/application?step=1"
-                  className={activeNavLinkStyle}>
-                  Create New Claim
-                </NavLink>
               </>
             )}
+            <NavLink to="/application?step=1" className={activeNavLinkStyle}>
+              Create New Claim
+            </NavLink>
             <a
               href="/#how-it-works"
+              onClick={(e) => handleAnchorClick(e, "how-it-works")}
               className={getAnchorLinkStyle("how-it-works")}>
               How It Works
             </a>
-            <a href="/#faq" className={getAnchorLinkStyle("faq")}>
+            <a
+              href="/#faq"
+              onClick={(e) => handleAnchorClick(e, "faq")}
+              className={getAnchorLinkStyle("faq")}>
               FAQ
             </a>
           </div>
@@ -147,7 +154,9 @@ const Navbar = () => {
                   <span>{userData?.username || "User"}</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className={`h-4 w-4 transition-transform duration-200 ${showProfileDropdown ? "rotate-180" : ""}`}
+                    className={`h-4 w-4 transition-transform duration-200 ${
+                      showProfileDropdown ? "rotate-180" : ""
+                    }`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -251,8 +260,11 @@ const Navbar = () => {
                     Generate New
                   </NavLink>
                   <a
-                    href="/#how-it-works"
-                    onClick={() => setIsOpen(false)}
+                    href="#how-it-works"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "how-it-works");
+                      setIsOpen(false);
+                    }}
                     className={
                       activeSection === "how-it-works"
                         ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
@@ -261,8 +273,11 @@ const Navbar = () => {
                     How It Works
                   </a>
                   <a
-                    href="/#faq"
-                    onClick={() => setIsOpen(false)}
+                    href="#faq"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "faq");
+                      setIsOpen(false);
+                    }}
                     className={
                       activeSection === "faq"
                         ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
@@ -289,8 +304,11 @@ const Navbar = () => {
               ) : (
                 <>
                   <a
-                    href="/#how-it-works"
-                    onClick={() => setIsOpen(false)}
+                    href="#how-it-works"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "how-it-works");
+                      setIsOpen(false);
+                    }}
                     className={
                       activeSection === "how-it-works"
                         ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
@@ -299,8 +317,11 @@ const Navbar = () => {
                     How It Works
                   </a>
                   <a
-                    href="/#faq"
-                    onClick={() => setIsOpen(false)}
+                    href="#faq"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "faq");
+                      setIsOpen(false);
+                    }}
                     className={
                       activeSection === "faq"
                         ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"

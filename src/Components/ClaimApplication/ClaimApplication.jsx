@@ -9,6 +9,8 @@ import Page4Content from "./Steps/Step4Content";
 export default function ClaimApplication() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+  // Track the highest step the user has reached
+  const [maxStepReached, setMaxStepReached] = useState(1);
 
   const [formData, setFormData] = useState({
     description: "",
@@ -50,7 +52,10 @@ export default function ClaimApplication() {
 
   const nextStep = () => {
     if (currentStep < 4) {
-      setCurrentStep(currentStep + 1);
+      const nextStepNumber = currentStep + 1;
+      setCurrentStep(nextStepNumber);
+      setMaxStepReached(Math.max(maxStepReached, nextStepNumber));
+      navigate(`?step=${nextStepNumber}`, { replace: true });
       window.scrollTo(0, 0);
     }
   };
@@ -58,6 +63,17 @@ export default function ClaimApplication() {
   const prevStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
+      navigate(`?step=${currentStep - 1}`, { replace: true });
+      window.scrollTo(0, 0);
+    }
+  };
+
+  const handleToggle = (index) => {
+    const stepNumber = index + 1;
+
+    if (stepNumber <= maxStepReached) {
+      setCurrentStep(stepNumber);
+      navigate(`?step=${stepNumber}`, { replace: true });
       window.scrollTo(0, 0);
     }
   };
@@ -74,6 +90,19 @@ export default function ClaimApplication() {
       localStorage.setItem("applicationId", aiData.id);
     }
   }, [aiData?.id]);
+
+  const params = new URLSearchParams(window.location.search);
+
+  useEffect(() => {
+    const stepParam = params.get("step");
+    if (stepParam) {
+      const step = parseInt(stepParam);
+      if (step >= 1 && step <= 4 && step <= maxStepReached) {
+        setCurrentStep(step);
+      }
+    }
+  }, [params, maxStepReached]);
+
   return (
     <div className="min-h-screen p-4 md:p-8 relative overflow-hidden">
       {/* Set negative z-index for decorative background elements */}
@@ -82,7 +111,11 @@ export default function ClaimApplication() {
       <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-indigo-100 rounded-full opacity-20 transform -translate-y-1/2 z-[-1]" />
 
       <div className="max-w-[600px] mx-auto mt-20">
-        <StepIndicator currentStep={currentStep} />
+        <StepIndicator
+          currentStep={currentStep}
+          maxStepReached={maxStepReached}
+          handleToggle={handleToggle}
+        />
       </div>
 
       <div className="max-w-3xl mx-auto">
@@ -104,6 +137,7 @@ export default function ClaimApplication() {
             handleContinue={nextStep}
             handleBack={prevStep}
             formData={formData}
+            setFormData={setFormData}
             setAiData={setAiData}
           />
         )}

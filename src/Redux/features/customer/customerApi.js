@@ -55,7 +55,30 @@ export const customersApi = apiSlice.injectEndpoints({
           );
         }
       },
-      invalidatesTags: ["Customers", "CustomersAll", "Lead"],
+      invalidatesTags: ["Customers", "CustomersAll"],
+    }),
+
+    updateCustomer: builder.mutation({
+      query: ({ id, data }) => ({
+        url: `customer/${id}`,
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
+        body: data,
+      }),
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          toast.success("Profile updated successfully");
+        } catch (err) {
+          toast.error(
+            err?.error?.data?.error || "Something went wrong, Please try again"
+          );
+        }
+      },
+      invalidatesTags: ["Customers", "CustomersAll"],
     }),
 
     deleteCustomer: builder.mutation({
@@ -86,4 +109,5 @@ export const {
   useGetCustomerQuery,
   useGetCustomersQuery,
   useGetCustomersPaginatedQuery,
+  useUpdateCustomerMutation,
 } = customersApi;

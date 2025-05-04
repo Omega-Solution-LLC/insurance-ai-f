@@ -42,7 +42,7 @@ export default function InfographicTimeline() {
                 </span>
               </div>
               <h3 className="text-xl font-semibold mb-3 text-gray-800">
-                Describe Your Case
+                Describe Your Accident
               </h3>
               <p className="text-gray-600">
                 Tell us about your situation in detail. The more we know, the
@@ -211,7 +211,7 @@ export default function InfographicTimeline() {
                 </span>
               </div>
               <h3 className="text-lg font-semibold mb-2 text-gray-800">
-                Describe Your Case
+                Describe Your Accident
               </h3>
               <p className="text-gray-600 text-sm">
                 Tell us about your situation in detail. The more we know, the

@@ -1,4 +1,3 @@
-import React from "react";
 import { Toaster } from "react-hot-toast";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import Login from "./Components/Authentication/Login";
@@ -53,18 +52,19 @@ const App = () => {
               // </PrivateRoute>
             }
           />
+
+          <Route
+            path="dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
         </Route>
 
         <Route path="/*" element={<Page404 />} />
         {/* Routes outside the main layout */}
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
 
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

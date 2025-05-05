@@ -1,13 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoMdEye } from "react-icons/io";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { useGetCustomerQuery } from "../../Redux/features/customer/customerApi";
 import { useGetDocumentQuery } from "../../Redux/features/documents/documentsApi";
 import EmailTemplateDownloader from "../CommonUI/EmailTemplateDownloader";
 import TableComponent from "../CommonUI/TableComponent";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
   const id = localStorage.getItem("id");
   const isLogged = localStorage.getItem("isLogged");
   const [pageConfig, setPageConfig] = useState({
@@ -15,7 +14,7 @@ const Dashboard = () => {
     count: 10,
     status: true,
   });
-  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+
   const { data: documentData } = useGetDocumentQuery({ id, arg: pageConfig });
   const { data: userData } = useGetCustomerQuery(id, { skip: !isLogged });
 
@@ -55,13 +54,6 @@ const Dashboard = () => {
       ),
     },
   ];
-
-  const handleLogout = () => {
-    localStorage.clear();
-    navigate("/");
-  };
-
-  useEffect(() => {}, []);
 
   return (
     <div className=" relative overflow-hidden">

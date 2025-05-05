@@ -21,6 +21,9 @@ const Step2Content = ({
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (e.type === "dragover") {
+      e.preventDefault();
+    }
     if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
     } else if (e.type === "dragleave") {
@@ -161,6 +164,7 @@ const Step2Content = ({
               ? "border-indigo-500 bg-indigo-50 shadow-lg"
               : "border-gray-300 hover:border-purple-300 hover:bg-purple-50/30"
           }`}
+          onClick={() => document.getElementById("file-upload").click()}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
@@ -201,9 +205,7 @@ const Step2Content = ({
                 accept=".pdf"
                 multiple
               />
-              <button
-                onClick={() => document.getElementById("file-upload").click()}
-                className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
+              <button className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
                 Browse Files
               </button>
             </div>

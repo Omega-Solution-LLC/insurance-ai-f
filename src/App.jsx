@@ -61,13 +61,13 @@ const App = () => {
               </PrivateRoute>
             }
           />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
 
         <Route path="/*" element={<Page404 />} />
         {/* Routes outside the main layout */}
-
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
   );

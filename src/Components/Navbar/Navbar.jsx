@@ -1,56 +1,76 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useGetCustomerQuery } from "../../Redux/features/customer/customerApi";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const [activeSection, setActiveSection] = useState(null);
+
   const navigate = useNavigate();
+  const location = useLocation();
 
   const isLogged = localStorage.getItem("isLogged");
   const id = localStorage.getItem("id");
+  const { data: userData } = useGetCustomerQuery(id, { skip: !id });
 
-  const { data: userData, isLoading } = useGetCustomerQuery(id, { skip: !id });
+  const isHomePage = location.pathname === "/";
 
-  // Handle scroll effect for navbar background
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
+  const handleAnchorClick = (e, sectionId) => {
+    e.preventDefault();
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    // Check if we're already on the homepage
+    if (!isHomePage) {
+      // If not on homepage, navigate to homepage with hash'
+      setActiveSection(sectionId);
+      navigate(`/#${sectionId}`);
 
-  // Handle logout
+      return;
+    }
+
+    const section = document.getElementById(sectionId);
+    if (section) {
+      const navbarHeight = 80; // Approximate navbar height in pixels
+      const offsetPosition = section.offsetTop - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+
+      setActiveSection(sectionId);
+    }
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
   };
 
-  // const handleGenerateNewClick = (e) => {
-  //   // e.preventDefault();
-  //   // localStorage.removeItem("applicationId");
-  //   window.location.href = "/application";
-  // };
-
-  // Custom active link style for NavLink
   const activeNavLinkStyle = ({ isActive }) => {
-    return isActive
-      ? "text-indigo-600 font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600 px-3 py-2 transition-all"
-      : "text-gray-700 hover:text-indigo-600 hover:bg-purple-50 px-3 py-2 rounded-full transition font-medium";
+    if (isActive && !activeSection) {
+      return "text-indigo-600 font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600 px-3 py-2 transition-all";
+    }
+    return "text-gray-700 hover:text-indigo-600 hover:bg-purple-50 px-3 py-2 rounded-full transition font-medium";
   };
 
+  const getAnchorLinkStyle = (section) => {
+    if (activeSection === section) {
+      return "text-indigo-600 font-medium relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-indigo-600 px-3 py-2 transition-all";
+    }
+    return "text-gray-700 hover:text-indigo-600 hover:bg-purple-50 px-3 py-2 rounded-full transition font-medium";
+  };
+
+  useEffect(() => {
+    const hash = location.hash.replace("#", "");
+    if (hash) {
+      setActiveSection(hash);
+    } else {
+      setActiveSection(null);
+    }
+  }, [location]);
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 px-3 ${
-        scrolled ? "bg-white/95 shadow-md" : "bg-white/90"
-      } backdrop-blur-md border-b border-gray-200 py-2`}>
+    <nav className="fixed w-full z-50 transition-all duration-300 px-3 bg-white border-b border-gray-200 py-2">
       <header className="max-w-7xl mx-auto sticky top-0 z-10">
         <div className="flex justify-between gap-16 items-center py-3">
           {/* Logo */}
@@ -59,8 +79,8 @@ const Navbar = () => {
               <svg
                 className="h-5 w-5 text-white"
                 xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
                 fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
                 strokeWidth="2">
                 <path
@@ -98,25 +118,33 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Main Navigation */}
+          {/* Desktop Nav */}
           <div className="hidden md:flex items-center space-x-8">
             {isLogged && (
-              <NavLink to="/dashboard" className={activeNavLinkStyle}>
-                Dashboard
-              </NavLink>
+              <>
+                <NavLink to="/dashboard" className={activeNavLinkStyle}>
+                  Dashboard
+                </NavLink>
+              </>
             )}
-
-            {isLogged && (
-              <NavLink
-                to="/application?step=1"
-                // onClick={handleGenerateNewClick}
-                className={activeNavLinkStyle}>
-                Create New Claim
-              </NavLink>
-            )}
+            <NavLink to="/application?step=1" className={activeNavLinkStyle}>
+              Create New Claim
+            </NavLink>
+            <a
+              href="/#how-it-works"
+              onClick={(e) => handleAnchorClick(e, "how-it-works")}
+              className={getAnchorLinkStyle("how-it-works")}>
+              How It Works
+            </a>
+            <a
+              href="/#faq"
+              onClick={(e) => handleAnchorClick(e, "faq")}
+              className={getAnchorLinkStyle("faq")}>
+              FAQ
+            </a>
           </div>
 
-          {/* User Menu & Actions */}
+          {/* Auth/User Actions */}
           <div className="hidden md:flex items-center space-x-4">
             {isLogged ? (
               <div className="relative profile-dropdown">
@@ -140,7 +168,6 @@ const Navbar = () => {
                     />
                   </svg>
                 </button>
-
                 {showProfileDropdown && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl py-2 z-50 border border-gray-100 animate-fadeIn">
                     <Link
@@ -149,7 +176,6 @@ const Navbar = () => {
                       onClick={() => setShowProfileDropdown(false)}>
                       <div className="flex items-center text-sm">
                         <svg
-                          xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5 mr-2 text-indigo-500"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -164,17 +190,15 @@ const Navbar = () => {
                         My Profile
                       </div>
                     </Link>
-
                     <div className="border-t border-gray-100 my-1"></div>
                     <button
                       onClick={() => {
                         handleLogout();
                         setShowProfileDropdown(false);
                       }}
-                      className="block cursor-pointer w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
+                      className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-indigo-50 hover:text-indigo-600">
                       <div className="flex items-center text-sm">
                         <svg
-                          xmlns="http://www.w3.org/2000/svg"
                           className="h-5 w-5 mr-2 text-indigo-500"
                           fill="none"
                           viewBox="0 0 24 24"
@@ -227,10 +251,7 @@ const Navbar = () => {
                   </NavLink>
                   <NavLink
                     to="/application?step=1"
-                    onClick={(e) => {
-                      handleGenerateNewClick(e);
-                      setIsOpen(false);
-                    }}
+                    onClick={() => setIsOpen(false)}
                     className={({ isActive }) =>
                       isActive
                         ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
@@ -238,6 +259,32 @@ const Navbar = () => {
                     }>
                     Generate New
                   </NavLink>
+                  <a
+                    href="#how-it-works"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "how-it-works");
+                      setIsOpen(false);
+                    }}
+                    className={
+                      activeSection === "how-it-works"
+                        ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
+                        : "text-gray-700 pl-4"
+                    }>
+                    How It Works
+                  </a>
+                  <a
+                    href="#faq"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "faq");
+                      setIsOpen(false);
+                    }}
+                    className={
+                      activeSection === "faq"
+                        ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
+                        : "text-gray-700 pl-4"
+                    }>
+                    FAQ
+                  </a>
                   <div className="border-t border-gray-100 my-2"></div>
                   <Link
                     to="/profile"
@@ -256,6 +303,33 @@ const Navbar = () => {
                 </>
               ) : (
                 <>
+                  <a
+                    href="#how-it-works"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "how-it-works");
+                      setIsOpen(false);
+                    }}
+                    className={
+                      activeSection === "how-it-works"
+                        ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
+                        : "text-gray-700 pl-4"
+                    }>
+                    How It Works
+                  </a>
+                  <a
+                    href="#faq"
+                    onClick={(e) => {
+                      handleAnchorClick(e, "faq");
+                      setIsOpen(false);
+                    }}
+                    className={
+                      activeSection === "faq"
+                        ? "text-indigo-600 font-medium border-l-4 border-indigo-600 pl-3"
+                        : "text-gray-700 pl-4"
+                    }>
+                    FAQ
+                  </a>
+                  <div className="border-t border-gray-100 my-2"></div>
                   <Link
                     to="/login"
                     onClick={() => setIsOpen(false)}

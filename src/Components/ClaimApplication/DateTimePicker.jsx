@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // Custom Calendar Icon Component
 const CalendarIcon = () => (
@@ -42,25 +42,10 @@ export default function DateTimePicker({
   validateTime,
   validateDate,
 }) {
-  const [date, setDate] = useState("");
-  const [time, setTime] = useState("");
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [showTimePicker, setShowTimePicker] = useState(false);
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [date, setDate] = useState(formData.date || "");
+  const [time, setTime] = useState(formData.time || "");
+
   const [selection, setSelection] = useState("");
-
-  const formatDate = (dateObj) => {
-    const year = dateObj.getFullYear();
-    const month = String(dateObj.getMonth() + 1).padStart(2, "0");
-    const day = String(dateObj.getDate()).padStart(2, "0");
-    return `${year}-${month}-${day}`;
-  };
-
-  const formatTime = (dateObj) => {
-    const hours = String(dateObj.getHours()).padStart(2, "0");
-    const minutes = String(dateObj.getMinutes()).padStart(2, "0");
-    return `${hours}:${minutes}`;
-  };
 
   const updateSelection = (newDate, newTime) => {
     if (newDate && newTime) {
@@ -97,181 +82,10 @@ export default function DateTimePicker({
     updateSelection(date, newTime);
   };
 
-  const handleDateSelect = (selectedDate) => {
-    const newDate = formatDate(selectedDate);
-    setDate(newDate);
-    updateSelection(newDate, time);
-    setShowCalendar(false);
-  };
-
-  const toggleCalendar = () => {
-    setShowCalendar(!showCalendar);
-    setShowTimePicker(false);
-  };
-
-  const toggleTimePicker = () => {
-    setShowTimePicker(!showTimePicker);
-    setShowCalendar(false);
-  };
-
-  const prevMonth = () => {
-    setCurrentMonth(
-      new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1)
-    );
-  };
-
-  const nextMonth = () => {
-    setCurrentMonth(
-      new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1)
-    );
-  };
-
-  // Generate calendar view
-  const renderCalendar = () => {
-    const monthStart = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth(),
-      1
-    );
-    const monthEnd = new Date(
-      currentMonth.getFullYear(),
-      currentMonth.getMonth() + 1,
-      0
-    );
-    const startDate = new Date(monthStart);
-    const endDate = new Date(monthEnd);
-
-    const dateFormat = { month: "long", year: "numeric" };
-    const monthYearString = currentMonth.toLocaleDateString(
-      "en-US",
-      dateFormat
-    );
-
-    // Adjust to start from Sunday
-    const dayOfWeek = startDate.getDay();
-    startDate.setDate(startDate.getDate() - dayOfWeek);
-
-    const days = [];
-    const rows = [];
-    let day = new Date(startDate);
-
-    // Generate days of the week header
-    const daysOfWeek = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
-    const daysHeader = daysOfWeek.map((dayName) => (
-      <div
-        key={dayName}
-        className="w-8 h-8 flex items-center justify-center text-gray-500 font-medium">
-        {dayName}
-      </div>
-    ));
-
-    // Generate calendar days
-    while (day <= endDate || days.length % 7 !== 0) {
-      for (let i = 0; i < 7; i++) {
-        const cloneDay = new Date(day);
-        const isCurrentMonth = day.getMonth() === currentMonth.getMonth();
-        const isToday = day.toDateString() === new Date().toDateString();
-        const isSelected = date === formatDate(day);
-
-        days.push(
-          <div
-            key={day.toISOString()}
-            className={`w-8 h-8 flex items-center justify-center cursor-pointer rounded-full
-              ${isCurrentMonth ? "text-gray-900" : "text-gray-400"} 
-              ${isToday ? "bg-blue-100" : ""}
-              ${isSelected ? "bg-blue-500 text-white" : ""}
-              hover:bg-blue-200`}
-            onClick={() => handleDateSelect(new Date(cloneDay))}>
-            {day.getDate()}
-          </div>
-        );
-        day.setDate(day.getDate() + 1);
-      }
-      rows.push(
-        <div key={day.toISOString()} className="grid grid-cols-7 gap-1">
-          {days.slice(-7)}
-        </div>
-      );
-    }
-
-    return (
-      <div className="bg-white shadow-lg rounded-lg p-4 absolute z-10 mt-1">
-        <div className="flex justify-between items-center mb-4">
-          <button
-            className="p-1 hover:bg-gray-100 rounded-full"
-            onClick={prevMonth}>
-            &lt;
-          </button>
-          <div className="font-semibold">{monthYearString}</div>
-          <button
-            className="p-1 hover:bg-gray-100 rounded-full"
-            onClick={nextMonth}>
-            &gt;
-          </button>
-        </div>
-        <div className="grid grid-cols-7 gap-1 mb-2">{daysHeader}</div>
-        {rows}
-      </div>
-    );
-  };
-
-  // Generate time selector with hours and minutes
-  const renderTimePicker = () => {
-    const hours = [];
-    for (let i = 0; i < 24; i++) {
-      hours.push(
-        <option key={i} value={String(i).padStart(2, "0")}>
-          {String(i).padStart(2, "0")}
-        </option>
-      );
-    }
-
-    const minutes = [];
-    for (let i = 0; i < 60; i += 5) {
-      minutes.push(
-        <option key={i} value={String(i).padStart(2, "0")}>
-          {String(i).padStart(2, "0")}
-        </option>
-      );
-    }
-
-    const [timeHours, timeMinutes] = time.split(":");
-
-    return (
-      <div className="bg-white shadow-lg rounded-lg p-4 absolute z-10 mt-1">
-        <div className="flex items-center">
-          <select
-            className="p-2 border rounded mr-2"
-            value={timeHours}
-            onChange={(e) => setTime(`${e.target.value}:${timeMinutes}`)}>
-            {hours}
-          </select>
-          <span className="mx-1">:</span>
-          <select
-            className="p-2 border rounded ml-2"
-            value={timeMinutes}
-            onChange={(e) => setTime(`${timeHours}:${e.target.value}`)}>
-            {minutes}
-          </select>
-        </div>
-        <div className="flex justify-between mt-4">
-          <button
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            onClick={() => {
-              updateSelection(date, time);
-              setShowTimePicker(false);
-            }}>
-            Set Time
-          </button>
-          <button
-            className="border border-gray-300 px-4 py-2 rounded hover:bg-gray-100"
-            onClick={() => setShowTimePicker(false)}>
-            Cancel
-          </button>
-        </div>
-      </div>
-    );
-  };
+  useEffect(() => {
+    setDate(formData?.date || "");
+    setTime(formData?.time || "");
+  }, [formData.date, formData.time]);
 
   return (
     <div className=" ">
@@ -299,12 +113,9 @@ export default function DateTimePicker({
                 validateDate ? "border-red-500" : ""
               } `}
             />
-            <button
-              className="absolute left-2 top-2 text-gray-500 hover:text-blue-500"
-              onClick={toggleCalendar}>
+            <button className="absolute left-2 top-2 text-gray-500 hover:text-blue-500">
               <CalendarIcon />
             </button>
-            {showCalendar && renderCalendar()}
           </div>
           {validateDate && (
             <p className="text-red-500 text-sm mt-2">
@@ -326,12 +137,9 @@ export default function DateTimePicker({
                 validateTime ? "border-red-500" : ""
               }`}
             />
-            <button
-              className="absolute left-2 top-2 text-gray-500 hover:text-blue-500 flex"
-              onClick={toggleTimePicker}>
+            <button className="absolute left-2 top-2 text-gray-500 hover:text-blue-500 flex">
               <ClockIcon />
             </button>
-            {showTimePicker && renderTimePicker()}
           </div>
           {validateTime && (
             <p className="text-red-500 text-sm mt-2">

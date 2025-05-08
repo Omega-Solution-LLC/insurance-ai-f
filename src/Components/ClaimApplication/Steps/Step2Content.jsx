@@ -21,6 +21,9 @@ const Step2Content = ({
   const handleDrag = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (e.type === "dragover") {
+      e.preventDefault();
+    }
     if (e.type === "dragenter" || e.type === "dragover") {
       setDragActive(true);
     } else if (e.type === "dragleave") {
@@ -51,7 +54,7 @@ const Step2Content = ({
         return;
       }
 
-      // At least one file has been dropped
+      setFileSelected((prev) => [...prev, files[0]]);
       handleFiles(
         files.map((file) => ({
           name: file.name,
@@ -66,7 +69,9 @@ const Step2Content = ({
 
   const handleFileInput = (e) => {
     if (e.target.files && e.target.files[0]) {
-      // Check if user is trying to upload more than one file
+      // Reset the fileSelected state to ensure only the latest file is kept
+      setFileSelected([]);
+
       if (e.target.files.length > 1 || uploadedFiles.length >= 1) {
         setError("Only one file can be uploaded");
         return;
@@ -79,23 +84,15 @@ const Step2Content = ({
         return;
       }
 
-      setFileSelected((prev) => [...prev, file]);
-      handleFiles(
-        Array.from(e.target.files).map((file) => ({
-          name: file.name,
-          size: (file.size / 1024).toFixed(1),
-          type: file.type,
-          // Add a unique identifier to each file
-          id: Date.now() + "-" + Math.random().toString(36).substr(2, 9),
-        }))
-      );
+      setFileSelected([file]);
+      handleFiles([file]);
     }
   };
 
   const [addDocuments, { isLoading }] = useAddDocumentMutation();
   const handleSubmit = async () => {
     // Validate if files are attached
-    if (fileSelected.length === 0 || uploadedFiles.length === 0) {
+    if (uploadedFiles.length === 0) {
       setError("Please upload at least one document to continue");
       return;
     }
@@ -112,7 +109,9 @@ const Step2Content = ({
         customerId && formDataToSubmit.append("customerId", customerId);
       }
 
-      fileSelected.forEach((file) => {
+      const filesToSubmit =
+        fileSelected.length > 0 ? fileSelected : uploadedFiles;
+      filesToSubmit?.forEach((file) => {
         formDataToSubmit.append("files[]", file);
       });
 
@@ -122,11 +121,6 @@ const Step2Content = ({
       }
       setAiData(response?.data);
     } catch (error) {
-      console.error("Error submitting files:", error);
-      // setFormData({
-      //   ...formData,
-      //   uploadedFiles: [],
-      // });
       console.log("Error:", error);
       setFileSelected([]);
       // Handle error
@@ -170,6 +164,7 @@ const Step2Content = ({
               ? "border-indigo-500 bg-indigo-50 shadow-lg"
               : "border-gray-300 hover:border-purple-300 hover:bg-purple-50/30"
           }`}
+          onClick={() => document.getElementById("file-upload").click()}
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}
           onDragOver={handleDrag}
@@ -210,9 +205,7 @@ const Step2Content = ({
                 accept=".pdf"
                 multiple
               />
-              <button
-                onClick={() => document.getElementById("file-upload").click()}
-                className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
+              <button className="bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white py-2 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
                 Browse Files
               </button>
             </div>

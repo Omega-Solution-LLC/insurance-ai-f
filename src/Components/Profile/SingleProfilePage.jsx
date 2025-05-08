@@ -312,7 +312,7 @@ export default function InsuranceDetailPage() {
                           Expected Coverage
                         </p>
                         <p className="text-xl font-semibold text-green-600">
-                          {estimate?.expectedCoverage}%
+                        ${estimate?.expectedCoverage}
                         </p>
                       </div>
                       <div className="bg-white p-4 rounded-md shadow-sm text-center">
@@ -371,7 +371,7 @@ export default function InsuranceDetailPage() {
 
             {/* AI Advice */}
             <SectionCard
-              title="AI Recommendations"
+              title="AI Advice"
               icon={<FiMessageSquare className="text-blue-600" size={18} />}>
               <div className="space-y-4">
                 {insuranceData?.insuranceAiAdvice?.map((advice) => (
